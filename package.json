@@ -14,6 +14,8 @@
     "lottie-react": "^2.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-modal": "^3.16.3",
+    "react-modal-sheet": "^4.4.0",
     "react-router-dom": "^7.6.3",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
@@ -44,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-modal": "^3.16.3",
     "autoprefixer": "^10.4.21",
     "eslint": "8.22.0",
     "eslint-config-prettier": "^10.1.5",
