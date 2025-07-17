@@ -1,23 +1,21 @@
 /* Y이드스트릿체 Bold */
 @font-face {
-  font-family: "Ydestreet";
-  src:
-    url("../assets/fonts/YdestreetB00.woff2") format("woff2"),
-    url("../assets/fonts/YdestreetB00.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
+    font-family: 'Ydestreet';
+    src: url('../assets/fonts/YdestreetB00.woff2') format('woff2'),
+        url('../assets/fonts/YdestreetB00.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
 }
 
 /* Y이드스트릿체 Light */
 @font-face {
-  font-family: "Ydestreet";
-  src:
-    url("../assets/fonts/YdestreetL00.woff2") format("woff2"),
-    url("../assets/fonts/YdestreetL00.woff") format("woff");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
+    font-family: 'Ydestreet';
+    src: url('../assets/fonts/YdestreetL00.woff2') format('woff2'),
+        url('../assets/fonts/YdestreetL00.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
 }
 
 /* Pretendard Light */

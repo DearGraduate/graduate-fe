@@ -5,6 +5,7 @@ import CustomButton from "../components/common/button";
 import CustomLottie from "../components/Lotties/CustomLottie";
 import Home from "../pages/Home/Home";
 import Login from "../pages/login/Login";
+import ModalTest from "../pages/ModalTest";
 
 const router = createBrowserRouter([
     {
@@ -70,6 +71,11 @@ const router = createBrowserRouter([
                 //라이팅페이지
                 path: '/writing',
                 //element:
+            },
+            {
+                //라이팅페이지
+                path: '/modaltest',
+                element: <ModalTest />
             },
             // 아래 주석처리한 양식 참고해서 필요한 페이지 만들 때 추가하면 됩니다. 
             // {
