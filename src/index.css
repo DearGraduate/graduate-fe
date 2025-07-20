@@ -9,7 +9,7 @@ body {
   font-family: 'Pretendard', sans-serif;
   font-weight: 500; /* 기본 Medium으로 고정 */
   margin: 0;
-  background-color: var(--color-main);
+  /*background-color: var(--color-main);*/
   color: var(--color-text-white);
 }
 

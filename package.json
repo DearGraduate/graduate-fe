@@ -18,6 +18,7 @@
     "react-modal-sheet": "^4.4.0",
     "react-router-dom": "^7.6.3",
     "react-scripts": "5.0.1",
+    "styled-components": "^6.1.19",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@types/react-modal": "^3.16.3",
+    "@types/styled-components": "^5.1.34",
     "autoprefixer": "^10.4.21",
     "eslint": "8.22.0",
     "eslint-config-prettier": "^10.1.5",

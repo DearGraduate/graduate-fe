@@ -3,6 +3,8 @@ import RootLayout from "../layouts/RootLayout";
 import Notfound from "../pages/NotFound";
 import CustomButton from "../components/common/button";
 import CustomLottie from "../components/Lotties/CustomLottie";
+import Home from "../pages/Home/Home";
+import Login from "../pages/login/Login";
 import ModalTest from "../pages/ModalTest";
 
 const router = createBrowserRouter([
@@ -31,9 +33,14 @@ const router = createBrowserRouter([
 
             },
             {
+                //홈페이지
+                path: '/home',
+                element: <Home />
+            },
+            {
                 //로그인페이지
                 path: '/login',
-                //element:
+                element: <Login />
             },
             {
                 //회원가입페이지
