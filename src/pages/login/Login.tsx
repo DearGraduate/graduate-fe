@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import kakaoImg from '../../assets/kakao.png';
+import KAKAOMINI from '../../assets/icons/KAKAOMini.png';
 
 const LoginContainer = styled.div`
   width: 393px;
@@ -116,7 +116,7 @@ const KakaoInnerContainer = styled.div`
 `;
 
 const KakaoImgContainer = styled.div`
-  width: 24px;
+  width: 30px;
   height: 14px;
   display: flex;
   align-items: center;
@@ -161,7 +161,7 @@ const Login = () => {
             <KakaoButtonContainer>
                 <KakaoInnerContainer>
                     <KakaoImgContainer>
-                        <img src={kakaoImg} alt="카카오톡" style={{ width: '26px', height: '26px' }} />
+                        <img src={KAKAOMINI} alt="카카오톡" style={{ width: '26px', height: '26px' }} />
                     </KakaoImgContainer>
                     <KakaoTextContainer>
                         <KakaoText>KAKAO로 로그인 하기</KakaoText>

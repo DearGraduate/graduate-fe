@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import characterImg from '../../assets/character.png';
+import CharacterImg from '../../assets/images/Character.png';  
 import CustomButton from '../../components/common/button';
 import LoginModal from '../../components/modals/LoginModal';
 
@@ -113,7 +113,7 @@ const HomeGuest = () => {
         <TitleText>졸축위 의<br/>졸업 축하 앨범</TitleText>
       </TitleContainer>
       <ImageContainer>
-        <StyledImg src={characterImg} alt="졸축위 캐릭터" />
+        <StyledImg src={CharacterImg} alt="졸축위 캐릭터" />
       </ImageContainer>
       <TextContainer>
         150개의 앨범이 제작되었어요<br />2654개의 편지가 작성 되었어요

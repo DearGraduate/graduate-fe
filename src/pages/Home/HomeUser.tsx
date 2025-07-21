@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import setIcon from "../../assets/set.png";
+import SetIcon from "../../assets/icons/Set.png";
 import CustomButton from "../../components/common/button";
 
 const HomeUserContainer = styled.div`
@@ -176,7 +176,7 @@ const HomeUser = () => {
           <DayBox>
             <DayText>D-23</DayText>
           </DayBox>
-          <SettingIcon src={setIcon} alt="설정" />
+          <SettingIcon src={SetIcon} alt="설정" />
         </IconContainer>
         <TitleContainer>
           <TitleText>박성민 의<br/>졸업 축하 앨범</TitleText>
