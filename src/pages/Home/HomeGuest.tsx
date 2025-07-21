@@ -1,6 +1,9 @@
 import styled from 'styled-components';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import characterImg from '../../assets/character.png';
 import CustomButton from '../../components/common/button';
+import LoginModal from '../../components/modals/LoginModal';
 
 const HomeGuestContainer = styled.div`
   width: 393px;
@@ -88,6 +91,22 @@ const ButtonText = styled.span`
 `;
 
 const HomeGuest = () => {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    setIsLoginModalOpen(true);
+  };
+
+  const handleLoginModalClose = () => {
+    setIsLoginModalOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    setIsLoginModalOpen(false);
+    navigate('/login');
+  };
+
   return (
     <HomeGuestContainer>
       <TitleContainer>
@@ -103,16 +122,24 @@ const HomeGuest = () => {
         <CustomButton
           bgColor="bg-button-default"
           className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
+          onClick={handleButtonClick}
         >
           <ButtonText>나의 졸업 앨범 만들기</ButtonText>
         </CustomButton>
         <CustomButton
           bgColor="bg-button-default"
           className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
+          onClick={handleButtonClick}
         >
           <ButtonText>나의 졸업 앨범 보기</ButtonText>
         </CustomButton>
       </ButtonContainer>
+      
+      <LoginModal 
+        isOpen={isLoginModalOpen}
+        onRequestClose={handleLoginModalClose}
+        onLoginClick={handleLoginClick}
+      />
     </HomeGuestContainer>
   );
 };
