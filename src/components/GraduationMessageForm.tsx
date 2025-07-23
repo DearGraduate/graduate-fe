@@ -2,6 +2,7 @@ import { useState } from "react";
 import addPhotoIcon from "../icons/addphoto.png";
 import backButton from "../icons/chevron-back.png";
 import "../style/colors.css";
+import CustomCheckbox from "../style/CustomCheckbox";
 
 export default function GraduationMessageForm() {
   const [author, setAuthor] = useState("");
@@ -183,44 +184,16 @@ export default function GraduationMessageForm() {
             공개 설정 <span style={{ color: "#FF8F8F" }}>*</span>
           </label>
           <div style={{ display: "flex", gap: "13px", marginBottom: "100px" }}>
-            <label
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                fontSize: "10px",
-              }}
-            >
-              공개
-              <input
-                type="checkbox"
-                checked={isPublic === true}
-                onChange={() => setIsPublic(true)}
-                style={{
-                  transform: "scale(1.5)",
-                  cursor: "pointer",
-                }}
-              />
-            </label>
-            <label
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                fontSize: "10px",
-              }}
-            >
-              비공개
-              <input
-                type="checkbox"
-                checked={isPublic === false}
-                onChange={() => setIsPublic(false)}
-                style={{
-                  transform: "scale(1.5)",
-                  cursor: "pointer",
-                }}
-              />
-            </label>
+            <CustomCheckbox
+              label="공개"
+              checked={isPublic === true}
+              onClick={() => setIsPublic(true)}
+            />
+            <CustomCheckbox
+              label="비공개"
+              checked={isPublic === false}
+              onClick={() => setIsPublic(false)}
+            />
           </div>
 
           <button
