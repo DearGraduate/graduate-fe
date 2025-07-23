@@ -1,10 +1,14 @@
 import styled from "styled-components";
 import SetIcon from "../../assets/icons/Set.png";
 import CustomButton from "../../components/common/button";
+import AlbumSection from "../../components/home/AlbumSection";
+import EmptyAlbumMessage from "../../components/home/EmptyAlbumMessage";
+import DownloadPDF from "../../components/modals/DownloadPDF";
+import { useState } from "react";
 
 const HomeUserContainer = styled.div`
   width: 393px;
-  height: 852px;
+  height: 100vh;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -22,10 +26,7 @@ const TopContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
 `;
 
 const IconContainer = styled.div`
@@ -114,49 +115,18 @@ const DetailText = styled.div`
   color: #fff;
 `;
 
-const MiddleTextContainer = styled.div`
-  width: 230px;
-  height: 44px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 400px;
-`;
-
-const MiddleText1 = styled.div`
-  width: 159px;
-  height: 17px;
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-  color: #fff;
-`;
-
-const MiddleText2 = styled.div`
-  width: 230px;
-  height: 17px;
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-  color: #fff;
-`;
-
 const ButtonContainer = styled.div`
   width: 290px;
-  height: 95px;
   display: flex;
   flex-direction: column;
   gap: 15px;
   opacity: 1;
-  margin-top: 250px;
+  margin-top: auto;
+  margin-bottom: 40px;
+`;
+
+const Spacer = styled.div`
+  min-height: 20px;
 `;
 
 const ButtonText = styled.span`
@@ -169,6 +139,13 @@ const ButtonText = styled.span`
 `;
 
 const HomeUser = () => {
+  const albumExists = false;
+  const isRollingPaperExpired = true;
+  const [isDownloadModalOpen, setDownloadModalOpen] = useState(false);
+
+  const handleOpenDownloadModal = () => setDownloadModalOpen(true);
+  const handleCloseDownloadModal = () => setDownloadModalOpen(false);
+
   return (
     <HomeUserContainer>
       <TopContainer>
@@ -185,23 +162,51 @@ const HomeUser = () => {
           </DetailTextContainer>
         </TitleContainer>
       </TopContainer>
-      <MiddleTextContainer>
-        <MiddleText1>아직 졸업 축하 편지가 없어요</MiddleText1>
-        <MiddleText2>나의 졸업 앨범을 친구와 공유 해보세요😉</MiddleText2>
-      </MiddleTextContainer>
+
+      {albumExists ? (
+        <>
+          <AlbumSection />
+          <Spacer />
+        </>
+      ) : (
+        <>
+          <EmptyAlbumMessage />
+          <Spacer />
+        </>
+      )}
+      
       <ButtonContainer>
-        <CustomButton
-          bgColor="bg-button-default"
-          className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
-        >
-          <ButtonText>나에게 축하글 작성하기</ButtonText>
-        </CustomButton>
-        <CustomButton
-          bgColor="bg-button-default"
-          className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
-        >
-          <ButtonText>나의 졸업 앨범 공유하기</ButtonText>
-        </CustomButton>
+        {!isRollingPaperExpired ? (
+          <>
+            <CustomButton
+              bgColor="bg-button-default"
+              className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
+            >
+              <ButtonText>나에게 축하글 작성하기</ButtonText>
+            </CustomButton>
+            <CustomButton
+              bgColor="bg-button-default"
+              className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
+            >
+              <ButtonText>나의 졸업 앨범 공유하기</ButtonText>
+            </CustomButton>
+          </>
+        ) : (
+          <>
+            <CustomButton
+              bgColor="bg-button-default"
+              className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
+              onClick={handleOpenDownloadModal}
+            >
+              <ButtonText>나의 졸업 앨범 다운로드</ButtonText>
+            </CustomButton>
+            <DownloadPDF
+              isOpen={isDownloadModalOpen}
+              onRequestClose={handleCloseDownloadModal}
+              fileName="홍길동_졸업앨범_2025_02_17.pdf"
+            />
+          </>
+        )}
       </ButtonContainer>
     </HomeUserContainer>
   )
