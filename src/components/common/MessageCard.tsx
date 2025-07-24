@@ -1,57 +1,60 @@
-// src/components/MessageCard.tsx
+// src/components/common/MessageCard.tsx
 import React from 'react';
+import testImage from '../../assets/icons/img_default.png'
+import icondots from '../../assets/icons/icon_dots.png';
 
-export interface MessageCardProps {
-  author: string;
-  message: string;
+
+export interface Message {
+  name: string;
   imageUrl: string;
+  message: string;
 }
 
-export const defaultMessages: MessageCardProps[] = [
+//API 연동 후 변경해야 할 부분
+export const defaultMessages: Message[] = [
   {
-    author: '이름',
-    message: '메세지',
-    imageUrl: '/icons/img_pic.png',
+    name: '테스트이름',
+    imageUrl: testImage,
+    message: '나 자신 수고 했어 지난\n5년간 학교 다니느라',
   },
-  {
-    author: '이름',
-    message: '메세지',
-    imageUrl: '/icons/img_pic.png',
+    {
+    name: '테스트이름',
+    imageUrl: testImage,
+    message: '나 자신 수고 했어 지난\n5년간 학교 다니느라',
   },
-  {
-    author: '이름',
-    message: '메세지',
-    imageUrl: '/icons/img_pic.png',
+    {
+    name: '테스트_이름',
+    imageUrl: testImage,
+    message: '나 자신 수고 했어 지난\n5년간 학교 다니느라',
   },
-  {
-    author: '이름',
-    message: '메세지',
-    imageUrl: '/icons/img_pic.png',
-  },
-
 ];
 
-const MessageCard: React.FC<MessageCardProps> = ({ author, message, imageUrl }) => {
+
+const MessageCard: React.FC<Message> = ({ name, imageUrl, message }) => {
   return (
-    <div style={{
-      width: '160px',
-      backgroundColor: 'white',
-      borderRadius: '20px',
-      padding: '12px',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-    }}>
-      <div style={{ alignSelf: 'flex-start', fontWeight: 'bold', marginBottom: '8px' }}>{author}</div>
+    <div className="bg-white rounded-2xl p-4 shadow-md w-full max-w-[200px] text-center">
+      {/* 상단 이름 + 더보기 아이콘 */}
+      <div className="flex justify-between items-center text-black font-semibold text-sm mb-2">
+        <span>{name}</span>
+        <img
+          src={icondots}
+          alt="더보기"
+          className="w-4 h-4 object-contain"
+        />      
+      </div>
+
       <img
         src={imageUrl}
-        alt=""
-        style={{ width: '100%', borderRadius: '12px', marginBottom: '8px' }}
+        alt={`${name}의 이미지`}
+        className="w-full aspect-square object-cover rounded-xl mb-3"
       />
-      <div style={{ fontSize: '14px', textAlign: 'center', color: '#333' }}>{message}</div>
+      <div className="bg-white text-black text-sm rounded-xl px-3 py-2 whitespace-pre-line">
+        {message}
+      </div>
     </div>
   );
 };
+
+
 
 export default MessageCard;

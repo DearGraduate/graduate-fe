@@ -4,7 +4,6 @@ import Notfound from "../pages/NotFound";
 import CustomButton from "../components/common/button";
 import CustomLottie from "../components/Lotties/CustomLottie";
 import AlbumMakingPage from "../pages/AlbumMakingPage";
-import MyAlbum from "../pages/MyalbumPage";
 import SharePage from "../pages/SharePage";
 import Home from "../pages/Home/Home";
 import Login from "../pages/login/Login";
@@ -57,7 +56,7 @@ const router = createBrowserRouter([
             {
                 //마이앨범페이지
                 path: '/myalbum',
-                element: <MyAlbum />
+                //element:
                 
             },
             {
