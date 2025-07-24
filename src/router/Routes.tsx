@@ -6,7 +6,9 @@ import CustomLottie from "../components/Lotties/CustomLottie";
 import AlbumMakingPage from "../pages/AlbumMakingPage";
 import MyAlbum from "../pages/MyalbumPage";
 import SharePage from "../pages/SharePage";
-
+import Home from "../pages/Home/Home";
+import Login from "../pages/login/Login";
+import ModalTest from "../pages/ModalTest";
 
 const router = createBrowserRouter([
     {
@@ -34,9 +36,14 @@ const router = createBrowserRouter([
 
             },
             {
+                //홈페이지
+                path: '/home',
+                element: <Home />
+            },
+            {
                 //로그인페이지
                 path: '/login',
-                //element:
+                element: <Login />
             },
             {
                 //회원가입페이지
@@ -67,6 +74,11 @@ const router = createBrowserRouter([
                 //라이팅페이지
                 path: '/writing',
                 //element:
+            },
+            {
+                //라이팅페이지
+                path: '/modaltest',
+                element: <ModalTest />
             },
             // 아래 주석처리한 양식 참고해서 필요한 페이지 만들 때 추가하면 됩니다. 
             // {

@@ -34,6 +34,7 @@ const CustomButton = ({
         flex items-center justify-center leading-none py-3 px-10
         ${className}
         `}
+        style={{ fontFamily: 'Ydestreet', fontWeight: '300' }}
         >
             {children}
         </button>
