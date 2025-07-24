@@ -1,9 +1,10 @@
 ## 🙋 팀원 소개
 
-| <img src="https://github.com/joyeeon.png" width="80"/><br> 조희연 |
-| <img src="https://github.com/Simmee02.png" width="80"/><br> 심지영 |
-| <img src="https://github.com/PocheonLim.png" width="80"/><br> 임성훈 |
-| <img src="https://github.com/shail1027.png" width="80"/><br> 이예빈 |
+## 🙋 팀원 소개
+
+| <img src="https://github.com/joyeeon.png" width="80"/><br>조희연 | <img src="https://github.com/Simmee02.png" width="80"/><br>심지영 | <img src="https://github.com/PocheonLim.png" width="80"/><br>임성훈 | <img src="https://github.com/shail1027.png" width="80"/><br>이예빈 |
+|:--:|:--:|:--:|:--:|
+
 
 
 
