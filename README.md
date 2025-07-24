@@ -1,26 +1,15 @@
 ## 🙋 팀원 소개
 
-| <img src="https://github.com/joyeeon.png" width="80"/><br> 조희연
-| <img src="https://github.com/Simmee02.png" width="80"/><br> 심지영
-| <img src="https://github.com/PocheonLim.png" width="80"/><br> 임성훈
-| <img src="https://github.com/shail1027.png" width="80"/><br> 이예빈
+| <img src="https://github.com/joyeeon.png" width="80"/><br> 조희연 |
+| <img src="https://github.com/Simmee02.png" width="80"/><br> 심지영 |
+| <img src="https://github.com/PocheonLim.png" width="80"/><br> 임성훈 |
+| <img src="https://github.com/shail1027.png" width="80"/><br> 이예빈 |
 
 
 
 ## 🖥️ 데모
 
 🔗 [배포 링크](https://graduate-psbz6u7ba-joys-projects-a739eabd.vercel.app)
-
-## 실행
-npm start
----
-
-## 🛠️ 기술 스택
-
-| Frontend | Backend | 기타 |
-|----------|---------|------|
-| React / Vite | Node.js (Express) | Kakao SDK, html2pdf.js |
-| TypeScript | (선택) Firebase / S3 업로드 | Tailwind CSS |
 
 ---
 ## 🪴 Branch Convention (GitHub Flow)
