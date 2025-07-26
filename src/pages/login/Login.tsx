@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import kakaoImg from '../../assets/kakao.png';
+import KAKAOMINI from '../../assets/icons/KAKAOMini.png';
+import { useKakaoAuth } from '../../hooks/useKakaoAuth';
 
 const LoginContainer = styled.div`
   width: 393px;
@@ -144,6 +145,8 @@ const KakaoText = styled.span`
 `;
 
 const Login = () => {
+    const { handleKakaoLogin } = useKakaoAuth();
+
     return (
         <LoginContainer>
             <LogoContainer />
@@ -158,10 +161,10 @@ const Login = () => {
             <StatsTextContainer>
                 150개의 앨범이 제작 되었어요<br />2654개의 편지가 작성 되었어요
             </StatsTextContainer>
-            <KakaoButtonContainer>
+            <KakaoButtonContainer onClick={handleKakaoLogin}>
                 <KakaoInnerContainer>
                     <KakaoImgContainer>
-                        <img src={kakaoImg} alt="카카오톡" style={{ width: '26px', height: '26px' }} />
+                        <img src={KAKAOMINI} alt="카카오톡" style={{ width: '26px', height: '26px' }} />
                     </KakaoImgContainer>
                     <KakaoTextContainer>
                         <KakaoText>KAKAO로 로그인 하기</KakaoText>
