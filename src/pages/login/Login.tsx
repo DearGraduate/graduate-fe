@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import KAKAOMINI from '../../assets/icons/KAKAOMini.png';
-import { useKakaoAuth } from '../../hooks/useKakaoAuth';
+import { useKakaoLogin } from '../../hooks/useKakaoLogin';
 
 const LoginContainer = styled.div`
   width: 393px;
@@ -145,7 +145,7 @@ const KakaoText = styled.span`
 `;
 
 const Login = () => {
-    const { handleKakaoLogin } = useKakaoAuth();
+    const { handleKakaoLogin } = useKakaoLogin();
 
     return (
         <LoginContainer>

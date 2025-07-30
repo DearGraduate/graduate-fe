@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { kakaoAuth } from '../../api/auth';
+import { kakaoLoginAPI } from '../../api/kakaoLogin';
 
 const KakaoCallback = () => {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ const KakaoCallback = () => {
 
   useEffect(() => {
     // URL에서 인가 코드 추출
-    const code = new URL(window.location.href).searchParams.get("code");
+    const code = new URLSearchParams(window.location.search).get("code");
     
     if (code) {
       console.log('받은 인가 코드:', code);
@@ -22,15 +22,18 @@ const KakaoCallback = () => {
 
   const handleKakaoLogin = async (code: string) => {
     try {
-      const data = await kakaoAuth.loginWithCode(code);
+      const { data, tokens } = await kakaoLoginAPI.loginWithCode(code);
       console.log('카카오 로그인 응답:', data);
       
       if (data.isSuccess) {
         setStatus('로그인 성공! 홈으로 이동합니다...');
         
-        // 토큰이나 사용자 정보 저장 (result에서 추출)
-        if (data.result) {
-          localStorage.setItem('userInfo', JSON.stringify(data.result));
+        // 토큰 저장
+        if (tokens.accessToken) {
+          localStorage.setItem('accessToken', tokens.accessToken);
+        }
+        if (tokens.refreshToken) {
+          localStorage.setItem('refreshToken', tokens.refreshToken);
         }
         
         setTimeout(() => {
@@ -52,8 +55,9 @@ const KakaoCallback = () => {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[var(--color-main)]">
       <div className="text-white text-center">
-        <h2>카카오 로그인 {status}</h2>
-        <p>잠시만 기다려주세요.</p>
+        <h2 className="text-xl font-bold mb-4">카카오 로그인</h2>
+        <p className="text-lg mb-2">{status}</p>
+        <p className="text-sm opacity-80">잠시만 기다려주세요.</p>
       </div>
     </div>
   );

@@ -1,14 +1,14 @@
 import { useCallback } from 'react';
-import { kakaoAuth } from '../api/auth';
+import { kakaoLoginAPI } from '../api/kakaoLogin';
 
-interface UseKakaoAuthReturn {
+interface UseKakaoLoginReturn {
   handleKakaoLogin: () => void;
 }
 
-export const useKakaoAuth = (): UseKakaoAuthReturn => {
+export const useKakaoLogin = (): UseKakaoLoginReturn => {
   const handleKakaoLogin = useCallback((): void => {
     try {
-      kakaoAuth.redirectToKakao();
+      kakaoLoginAPI.redirectToKakao();
     } catch (error) {
       console.error('카카오 로그인 리다이렉트 에러:', error);
       alert('카카오 로그인 설정에 문제가 있습니다. 관리자에게 문의해주세요.');

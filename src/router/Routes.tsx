@@ -7,8 +7,8 @@ import AlbumMakingPage from "../pages/AlbumMakingPage";
 import SharePage from "../pages/SharePage";
 import Home from "../pages/Home/Home";
 import Login from "../pages/login/Login";
-import ModalTest from "../pages/ModalTest";
 import KakaoCallback from "../pages/login/KakaoCallback";
+import ModalTest from "../pages/ModalTest";
 
 const router = createBrowserRouter([
     {
@@ -46,6 +46,11 @@ const router = createBrowserRouter([
                 element: <Login />
             },
             {
+                //카카오 로그인 콜백 페이지
+                path: '/login/kakao/callback',
+                element: <KakaoCallback />
+            },
+            {
                 //회원가입페이지
                 path: '/signup',
                 //element:
@@ -79,11 +84,6 @@ const router = createBrowserRouter([
                 //라이팅페이지
                 path: '/modaltest',
                 element: <ModalTest />
-            },
-            {
-                //카카오 로그인 콜백
-                path: '/oauth/kakao/callback',
-                element: <KakaoCallback />
             },
             // 아래 주석처리한 양식 참고해서 필요한 페이지 만들 때 추가하면 됩니다. 
             // {
