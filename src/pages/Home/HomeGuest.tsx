@@ -6,20 +6,30 @@ import CustomButton from '../../components/common/button';
 import LoginModal from '../../components/modals/LoginModal';
 
 const HomeGuestContainer = styled.div`
-  width: 393px;
-  height: 852px;
-  margin: 0 auto;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   background: var(--color-main);
   position: relative;
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 0 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 10px;
+  }
 `;
 
 const TitleContainer = styled.div`
-  width: 237px;
-  height: 104px;
+  width: 100%;
+  max-width: 237px;
+  min-height: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,6 +37,14 @@ const TitleContainer = styled.div`
   gap: 10px;
   opacity: 1;
   margin-top: 110px;
+
+  @media (max-width: 768px) {
+    margin-top: 90px;
+  }
+
+  @media (max-width: 480px) {
+    margin-top: 70px;
+  }
 `;
 
 const TitleText = styled.div`
@@ -37,16 +55,35 @@ const TitleText = styled.div`
   letter-spacing: 0;
   color: #fff;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 28px;
+  }
 `;
 
 const ImageContainer = styled.div`
-  width: 247px;
+  width: 100%;
+  max-width: 247px;
   height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 1;
   margin-top: 130px;
+
+  @media (max-width: 768px) {
+    margin-top: 100px;
+    height: 200px;
+  }
+
+  @media (max-width: 480px) {
+    margin-top: 80px;
+    height: 180px;
+  }
 `;
 
 const StyledImg = styled.img`
@@ -56,8 +93,9 @@ const StyledImg = styled.img`
 `;
 
 const TextContainer = styled.div`
-  width: 127px;
-  height: 24px;
+  width: 100%;
+  max-width: 127px;
+  min-height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,16 +107,33 @@ const TextContainer = styled.div`
   opacity: 1;
   text-align: center;
   margin-top: 100px;
+
+  @media (max-width: 768px) {
+    margin-top: 80px;
+  }
+
+  @media (max-width: 480px) {
+    margin-top: 60px;
+  }
 `;
 
 const ButtonContainer = styled.div`
-  width: 290px;
-  height: 95px;
+  width: 100%;
+  max-width: 290px;
+  min-height: 95px;
   display: flex;
   flex-direction: column;
   gap: 15px;
   opacity: 1;
   margin-top: 20px;
+
+  @media (max-width: 768px) {
+    max-width: 280px;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 260px;
+  }
 `;
 
 const ButtonText = styled.span`
@@ -121,14 +176,14 @@ const HomeGuest = () => {
       <ButtonContainer>
         <CustomButton
           bgColor="bg-button-default"
-          className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
+          className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
           onClick={handleButtonClick}
         >
           <ButtonText>나의 졸업 앨범 만들기</ButtonText>
         </CustomButton>
         <CustomButton
           bgColor="bg-button-default"
-          className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
+          className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
           onClick={handleButtonClick}
         >
           <ButtonText>나의 졸업 앨범 보기</ButtonText>
