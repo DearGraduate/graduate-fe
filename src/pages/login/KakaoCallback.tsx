@@ -1,24 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { kakaoLoginAPI } from '../../api/kakaoLogin';
+import { useAuthStore } from '../../store/authStore';
 
 const KakaoCallback = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState<string>('처리 중...');
+  const hasProcessed = useRef(false);
+  const { login } = useAuthStore();
 
   useEffect(() => {
     // URL에서 인가 코드 추출
     const code = new URLSearchParams(window.location.search).get("code");
     
-    if (code) {
+    if (code && !hasProcessed.current) {
       console.log('받은 인가 코드:', code);
+      hasProcessed.current = true; // 중복 처리 방지
       handleKakaoLogin(code);
-    } else {
+    } else if (!code) {
       console.error('인가 코드가 없습니다.');
       setStatus('인가 코드를 받지 못했습니다.');
       setTimeout(() => navigate('/login'), 2000);
     }
-  }, [navigate]);
+  }, [navigate, login]);
 
   const handleKakaoLogin = async (code: string) => {
     try {
@@ -28,12 +32,19 @@ const KakaoCallback = () => {
       if (data.isSuccess) {
         setStatus('로그인 성공! 홈으로 이동합니다...');
         
-        // 토큰 저장
+        // Access Token만 로컬스토리지에 저장
+        // Refresh Token은 HttpOnly 쿠키로 자동 저장됨
         if (tokens.accessToken) {
-          localStorage.setItem('accessToken', tokens.accessToken);
-        }
-        if (tokens.refreshToken) {
-          localStorage.setItem('refreshToken', tokens.refreshToken);
+          // authStore에 로그인 상태 업데이트
+          // TODO: 서버에서 사용자 정보를 받아와야 함
+          // 현재는 임시로 기본 사용자 정보 사용
+          const user = {
+            socialId: 'temp', // 서버에서 받아와야 함
+            name: '사용자', // 서버에서 받아와야 함
+            email: 'temp@example.com' // 서버에서 받아와야 함
+          };
+          
+          login(user, tokens.accessToken);
         }
         
         setTimeout(() => {

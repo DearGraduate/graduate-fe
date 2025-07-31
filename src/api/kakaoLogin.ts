@@ -11,6 +11,7 @@ interface KakaoLoginResponse {
 const apiClient = axios.create({
   baseURL: 'https://api.photory.site',
   timeout: 10000,
+  withCredentials: true, // HttpOnly 쿠키 자동 전송을 위해 필요
   headers: {
     'Content-Type': 'application/json',
   },
@@ -37,7 +38,7 @@ export const kakaoLoginAPI = {
   },
   
   // 인가 코드로 카카오 로그인 처리
-  loginWithCode: async (code: string): Promise<{ data: KakaoLoginResponse; tokens: { accessToken?: string; refreshToken?: string } }> => {
+  loginWithCode: async (code: string): Promise<{ data: KakaoLoginResponse; tokens: { accessToken?: string } }> => {
     try {
       console.log('카카오 로그인 요청:', { code: code.substring(0, 20) + '...' });
       
@@ -48,18 +49,16 @@ export const kakaoLoginAPI = {
         },
       });
 
-      // 헤더에서 토큰 추출
+      // 헤더에서 Access Token만 추출 (Refresh Token은 HttpOnly 쿠키로 전송됨)
       const accessToken = response.headers['authorization'];
-      const refreshToken = response.headers['refresh-token'];
       
       console.log('카카오 로그인 성공:', response.data);
-      console.log('토큰 정보:', { accessToken, refreshToken });
+      console.log('Access Token:', accessToken);
       
       return {
         data: response.data,
         tokens: {
-          accessToken,
-          refreshToken
+          accessToken
         }
       };
     } catch (error: any) {
