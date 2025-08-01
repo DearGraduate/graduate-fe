@@ -1,0 +1,27 @@
+export const customModalStyles = {
+    content: { //내부 부분
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        minWidth: '320px',
+        width: '80%',
+        maxWidth: '500px',
+        minHeight: '170px',
+        backgroundColor: '#fff',
+        textAlign: 'center',
+        color: '#000',
+        borderRadius: '20px',
+        padding: '20px',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    overlay: { //바깥 부분 
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+        zIndex: 1000,
+        width: '100%',
+        height: '100%',
+        top: '0',
+        left: '0',
+    },
+} as const;

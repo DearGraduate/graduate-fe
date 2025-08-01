@@ -1,0 +1,4 @@
+// eslint를 적용하지 않을 파일을 적는다. 
+// .eslintignore
+node_modules
+dist

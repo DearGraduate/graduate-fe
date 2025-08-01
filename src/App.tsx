@@ -1,5 +1,7 @@
 import { RouterProvider } from "react-router-dom";
-import router from "./router/Routes"; // 정확한 경로인지 확인!
+import router from "./router/Routes";
+import Modal from "react-modal";
+Modal.setAppElement("#root");
 
 function App() {
   return <RouterProvider router={router} />;
