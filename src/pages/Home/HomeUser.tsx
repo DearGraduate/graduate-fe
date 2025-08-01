@@ -17,14 +17,6 @@ const HomeUserContainer = styled.div`
   position: relative;
   padding: 0 20px;
   box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    padding: 0 15px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 0 10px;
-  }
 `;
 
 const TopContainer = styled.div`
@@ -38,14 +30,7 @@ const TopContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   position: relative;
-
-  @media (max-width: 768px) {
-    padding: 30px 0 15px 0;
-  }
-
-  @media (max-width: 480px) {
-    padding: 25px 0 10px 0;
-  }
+  flex-shrink: 0; /* 고정 크기 유지 */
 `;
 
 const IconContainer = styled.div`
@@ -58,16 +43,6 @@ const IconContainer = styled.div`
   margin-top: 40px;
   padding: 0 35px;
   box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    padding: 0 30px;
-    margin-top: 30px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 0 25px;
-    margin-top: 25px;
-  }
 `;
 
 const DayBox = styled.div`
@@ -82,17 +57,6 @@ const DayBox = styled.div`
   padding: 3px 8px;
   background: transparent;
   opacity: 1;
-
-  @media (max-width: 768px) {
-    min-width: 48px;
-    height: 22px;
-  }
-
-  @media (max-width: 480px) {
-    min-width: 45px;
-    height: 20px;
-    padding: 2px 6px;
-  }
 `;
 
 const DayText = styled.span`
@@ -104,30 +68,12 @@ const DayText = styled.span`
   text-align: center;
   color: #fff;
   white-space: nowrap;
-
-  @media (max-width: 768px) {
-    font-size: 12px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 11px;
-  }
 `;
 
 const SettingIcon = styled.img`
   width: 23px;
   height: 23px;
   cursor: pointer;
-
-  @media (max-width: 768px) {
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 480px) {
-    width: 20px;
-    height: 20px;
-  }
 `;
 
 const TitleContainer = styled.div`
@@ -141,15 +87,6 @@ const TitleContainer = styled.div`
   gap: 5px;
   opacity: 1;
   margin-top: 30px;
-
-  @media (max-width: 768px) {
-    margin-top: 25px;
-  }
-
-  @media (max-width: 480px) {
-    margin-top: 20px;
-    max-width: 200px;
-  }
 `;
 
 const TitleText = styled.div`
@@ -160,14 +97,6 @@ const TitleText = styled.div`
   letter-spacing: 0;
   color: #fff;
   text-align: center;
-
-  @media (max-width: 768px) {
-    font-size: 32px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 28px;
-  }
 `;
 
 const DetailTextContainer = styled.div`
@@ -178,14 +107,6 @@ const DetailTextContainer = styled.div`
   align-items: center;
   justify-content: center;
   opacity: 1;
-
-  @media (max-width: 768px) {
-    max-width: 95px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 90px;
-  }
 `;
 
 const DetailText = styled.div`
@@ -197,14 +118,15 @@ const DetailText = styled.div`
   letter-spacing: 0;
   text-align: center;
   color: #fff;
+`;
 
-  @media (max-width: 768px) {
-    font-size: 11px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 10px;
-  }
+const AlbumContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0; /* 스크롤을 위해 필요 */
 `;
 
 const ButtonContainer = styled.div`
@@ -214,32 +136,8 @@ const ButtonContainer = styled.div`
   flex-direction: column;
   gap: 15px;
   opacity: 1;
-  margin-top: auto;
   margin-bottom: 40px;
-
-  @media (max-width: 768px) {
-    max-width: 280px;
-    gap: 12px;
-    margin-bottom: 35px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 260px;
-    gap: 10px;
-    margin-bottom: 30px;
-  }
-`;
-
-const Spacer = styled.div`
-  min-height: 20px;
-
-  @media (max-width: 768px) {
-    min-height: 15px;
-  }
-
-  @media (max-width: 480px) {
-    min-height: 10px;
-  }
+  flex-shrink: 0; /* 고정 크기 유지 */
 `;
 
 const ButtonText = styled.span`
@@ -249,14 +147,6 @@ const ButtonText = styled.span`
   line-height: 100%;
   letter-spacing: 0;
   text-align: center;
-
-  @media (max-width: 768px) {
-    font-size: 11px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 10px;
-  }
 `;
 
 const HomeUser = () => {
@@ -284,17 +174,13 @@ const HomeUser = () => {
         </TitleContainer>
       </TopContainer>
 
-      {albumExists ? (
-        <>
+      <AlbumContainer>
+        {albumExists ? (
           <AlbumSection />
-          <Spacer />
-        </>
-      ) : (
-        <>
+        ) : (
           <EmptyAlbumMessage />
-          <Spacer />
-        </>
-      )}
+        )}
+      </AlbumContainer>
       
       <ButtonContainer>
         {!isRollingPaperExpired ? (

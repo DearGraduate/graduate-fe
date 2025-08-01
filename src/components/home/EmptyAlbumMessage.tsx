@@ -8,19 +8,11 @@ const MiddleTextContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-top: 170px;
+  gap: 2vh;
+  margin-top: 15vh;
 
-  @media (max-width: 768px) {
-    max-width: 220px;
-    margin-top: 150px;
-    gap: 9px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 210px;
-    margin-top: 140px;
-    gap: 8px;
+  @media (max-height: 600px) {
+    display: none;
   }
 `;
 
@@ -35,16 +27,6 @@ const MiddleText1 = styled.div`
   letter-spacing: 0;
   text-align: center;
   color: #fff;
-
-  @media (max-width: 768px) {
-    max-width: 152px;
-    font-size: 13px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 145px;
-    font-size: 12px;
-  }
 `;
 
 const MiddleText2 = styled.div`
@@ -58,16 +40,6 @@ const MiddleText2 = styled.div`
   letter-spacing: 0;
   text-align: center;
   color: #fff;
-
-  @media (max-width: 768px) {
-    max-width: 220px;
-    font-size: 13px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 210px;
-    font-size: 12px;
-  }
 `;
 
 const EmptyAlbumMessage = () => (

@@ -16,14 +16,6 @@ const HomeGuestContainer = styled.div`
   position: relative;
   padding: 0 20px;
   box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    padding: 0 15px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 0 10px;
-  }
 `;
 
 const TitleContainer = styled.div`
@@ -36,15 +28,7 @@ const TitleContainer = styled.div`
   justify-content: center;
   gap: 10px;
   opacity: 1;
-  margin-top: 110px;
-
-  @media (max-width: 768px) {
-    margin-top: 90px;
-  }
-
-  @media (max-width: 480px) {
-    margin-top: 70px;
-  }
+  margin-top: 10vh;
 `;
 
 const TitleText = styled.div`
@@ -55,14 +39,6 @@ const TitleText = styled.div`
   letter-spacing: 0;
   color: #fff;
   text-align: center;
-
-  @media (max-width: 768px) {
-    font-size: 32px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 28px;
-  }
 `;
 
 const ImageContainer = styled.div`
@@ -73,16 +49,10 @@ const ImageContainer = styled.div`
   align-items: center;
   justify-content: center;
   opacity: 1;
-  margin-top: 130px;
+  margin-top: 8vh;
 
-  @media (max-width: 768px) {
-    margin-top: 100px;
-    height: 200px;
-  }
-
-  @media (max-width: 480px) {
-    margin-top: 80px;
-    height: 180px;
+  @media (max-height: 600px) {
+    display: none;
   }
 `;
 
@@ -106,15 +76,7 @@ const TextContainer = styled.div`
   color: var(--color-text-white);
   opacity: 1;
   text-align: center;
-  margin-top: 100px;
-
-  @media (max-width: 768px) {
-    margin-top: 80px;
-  }
-
-  @media (max-width: 480px) {
-    margin-top: 60px;
-  }
+  margin-top: 6vh;
 `;
 
 const ButtonContainer = styled.div`
@@ -125,15 +87,7 @@ const ButtonContainer = styled.div`
   flex-direction: column;
   gap: 15px;
   opacity: 1;
-  margin-top: 20px;
-
-  @media (max-width: 768px) {
-    max-width: 280px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 260px;
-  }
+  margin-top: 4vh;
 `;
 
 const ButtonText = styled.span`

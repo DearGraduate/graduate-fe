@@ -12,14 +12,6 @@ const LoginContainer = styled.div`
   position: relative;
   padding: 0 20px;
   box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    padding: 0 15px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 0 10px;
-  }
 `;
 
 const LogoContainer = styled.div`
@@ -32,18 +24,11 @@ const LogoContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-top: 150px;
+  margin-top: 15vh;
 
-  @media (max-width: 768px) {
-    max-width: 150px;
-    height: 125px;
-    margin-top: 130px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 140px;
-    height: 120px;
-    margin-top: 120px;
+  
+  @media (max-height: 600px) {
+    display: none;
   }
 `;
 
@@ -54,19 +39,9 @@ const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 2vh;
   opacity: 1;
-  margin-top: 15px;
-
-  @media (max-width: 768px) {
-    max-width: 240px;
-    gap: 13px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 230px;
-    gap: 12px;
-  }
+  margin-top: 2vh;
 `;
 
 const MainTextContainer = styled.div`
@@ -78,14 +53,6 @@ const MainTextContainer = styled.div`
   justify-content: center;
   gap: 5px;
   opacity: 1;
-
-  @media (max-width: 768px) {
-    max-width: 240px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 230px;
-  }
 `;
 
 const MainText = styled.div`
@@ -96,14 +63,6 @@ const MainText = styled.div`
   line-height: 100%;
   letter-spacing: 0;
   text-align: center;
-
-  @media (max-width: 768px) {
-    font-size: 34px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 32px;
-  }
 `;
 
 const SubTextContainer = styled.div`
@@ -114,14 +73,6 @@ const SubTextContainer = styled.div`
   align-items: center;
   justify-content: center;
   opacity: 1;
-
-  @media (max-width: 768px) {
-    max-width: 170px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 160px;
-  }
 `;
 
 const SubText = styled.div`
@@ -132,14 +83,6 @@ const SubText = styled.div`
   line-height: 100%;
   letter-spacing: 0;
   text-align: center;
-
-  @media (max-width: 768px) {
-    font-size: 13px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 12px;
-  }
 `;
 
 const StatsTextContainer = styled.div`
@@ -154,17 +97,7 @@ const StatsTextContainer = styled.div`
   color: #fff;
   opacity: 1;
   text-align: center;
-  margin-top: 250px;
-
-  @media (max-width: 768px) {
-    margin-top: 220px;
-    max-width: 125px;
-  }
-
-  @media (max-width: 480px) {
-    margin-top: 200px;
-    max-width: 120px;
-  }
+  margin-top: 25vh;
 `;
 
 const KakaoButtonContainer = styled.button`
@@ -181,18 +114,7 @@ const KakaoButtonContainer = styled.button`
   cursor: pointer;
   opacity: 1;
   margin: 0 auto;
-  margin-top: 30px;
-
-  @media (max-width: 768px) {
-    max-width: 280px;
-    margin-top: 25px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 260px;
-    height: 38px;
-    margin-top: 20px;
-  }
+  margin-top: 4vh;
 `;
 
 const KakaoInnerContainer = styled.div`
@@ -204,16 +126,6 @@ const KakaoInnerContainer = styled.div`
   align-items: center;
   gap: 21px;
   opacity: 1;
-
-  @media (max-width: 768px) {
-    max-width: 170px;
-    gap: 19px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 160px;
-    gap: 18px;
-  }
 `;
 
 const KakaoImgContainer = styled.div`
@@ -223,16 +135,6 @@ const KakaoImgContainer = styled.div`
   align-items: center;
   justify-content: center;
   opacity: 1;
-
-  @media (max-width: 768px) {
-    width: 28px;
-    height: 13px;
-  }
-
-  @media (max-width: 480px) {
-    width: 26px;
-    height: 12px;
-  }
 `;
 
 const KakaoTextContainer = styled.div`
@@ -243,14 +145,6 @@ const KakaoTextContainer = styled.div`
   align-items: center;
   justify-content: center;
   opacity: 1;
-
-  @media (max-width: 768px) {
-    max-width: 120px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 110px;
-  }
 `;
 
 const KakaoText = styled.span`
@@ -261,14 +155,6 @@ const KakaoText = styled.span`
   line-height: 100%;
   letter-spacing: 0;
   text-align: center;
-
-  @media (max-width: 768px) {
-    font-size: 13px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 12px;
-  }
 `;
 
 const Login = () => {

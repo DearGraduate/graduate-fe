@@ -4,32 +4,21 @@ import MessageCard, { defaultMessages } from "../common/MessageCard";
 const AlbumSectionWrapper = styled.div`
   width: 100%;
   max-width: 297px;
-  flex-grow: 1;
+  max-height: 40vh;
   display: flex;
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
+  overflow-x: hidden;
   scroll-behavior: smooth;
   overscroll-behavior: contain;
-  margin-top: 40px;
+  padding-right: 5px; /* 스크롤바 공간 확보 */
 
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
 
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
-  }
-
-  @media (max-width: 768px) {
-    max-width: 290px;
-    gap: 9px;
-    margin-top: 35px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 280px;
-    gap: 8px;
-    margin-top: 30px;
   }
 `;
 
@@ -41,18 +30,12 @@ const AlbumRow = styled.div`
   flex-direction: row;
   justify-content: space-between;
   gap: 37px;
+  flex-shrink: 0; /* 행이 압축되지 않도록 */
+`;
 
-  @media (max-width: 768px) {
-    max-width: 290px;
-    gap: 35px;
-    min-height: 175px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 280px;
-    gap: 30px;
-    min-height: 170px;
-  }
+const CardContainer = styled.div`
+  width: 130px;
+  flex-shrink: 0;
 `;
 
 const AlbumSection = () => {
@@ -70,15 +53,14 @@ const AlbumSection = () => {
       {messagePairs.map((pair, index) => (
         <AlbumRow key={index}>
           {pair.map((message, i) => (
-            <MessageCard
-              key={i}
-              name={message.name}
-              imageUrl={message.imageUrl}
-              message={message.message}
-            />
+            <CardContainer key={i}>
+              <MessageCard
+                name={message.name}
+                imageUrl={message.imageUrl}
+                message={message.message}
+              />
+            </CardContainer>
           ))}
-          {/* 메시지가 홀수개일 경우 오른쪽 자리 비우기 */}
-          {pair.length === 1 && <div style={{ width: "200px" }} />}
         </AlbumRow>
       ))}
     </AlbumSectionWrapper>
