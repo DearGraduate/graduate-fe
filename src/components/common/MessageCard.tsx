@@ -27,6 +27,16 @@ export const defaultMessages: Message[] = [
     imageUrl: testImage,
     message: '나 자신 수고 했어 지난\n5년간 학교 다니느라',
   },
+  {
+    name: '테스트이름',
+    imageUrl: testImage,
+    message: '나 자신 수고 했어 지난\n5년간 학교 다니느라',
+  },
+    {
+    name: '테스트이름',
+    imageUrl: testImage,
+    message: '나 자신 수고 했어 지난\n5년간 학교 다니느라',
+  },
 ];
 
 
