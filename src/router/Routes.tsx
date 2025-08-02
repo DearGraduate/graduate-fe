@@ -7,6 +7,7 @@ import AlbumMakingPage from "../pages/AlbumMakingPage";
 import SharePage from "../pages/SharePage";
 import Home from "../pages/Home/Home";
 import Login from "../pages/login/Login";
+import KakaoCallback from "../pages/login/KakaoCallback";
 import ModalTest from "../pages/ModalTest";
 
 const router = createBrowserRouter([
@@ -43,6 +44,11 @@ const router = createBrowserRouter([
                 //로그인페이지
                 path: '/login',
                 element: <Login />
+            },
+            {
+                //카카오 로그인 콜백 페이지
+                path: '/login/kakao/callback',
+                element: <KakaoCallback />
             },
             {
                 //회원가입페이지
