@@ -1,32 +1,37 @@
 import styled from "styled-components";
-import setIcon from "../../assets/set.png";
+import setIcon from "../../assets/icons/Set.png";
 import CustomButton from "../../components/common/button";
+import AlbumSection from "../../components/home/AlbumSection";
+import EmptyAlbumMessage from "../../components/home/EmptyAlbumMessage";
+import DownloadPDF from "../../components/modals/DownloadPDF";
+import { useState } from "react";
 import { useKakaoLogout } from "../../hooks/useKakaoLogout";
 
 const HomeUserContainer = styled.div`
-  width: 393px;
-  height: 852px;
-  margin: 0 auto;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   background: var(--color-main);
   position: relative;
+  padding: 0 20px;
+  box-sizing: border-box;
 `;
 
 const TopContainer = styled.div`
-  width: 393px;
-  height: 230px;
+  width: 100%;
+  max-width: 393px;
+  min-height: 200px;
+  padding: 40px 0 20px 0;
   opacity: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  flex-shrink: 0; /* 고정 크기 유지 */
 `;
 
 const IconContainer = styled.div`
@@ -38,10 +43,11 @@ const IconContainer = styled.div`
   position: relative;
   margin-top: 40px;
   padding: 0 35px;
+  box-sizing: border-box;
 `;
 
 const DayBox = styled.div`
-  width: 52px;
+  min-width: 52px;
   height: 23px;
   display: flex;
   align-items: center;
@@ -49,14 +55,12 @@ const DayBox = styled.div`
   gap: 3px;
   border-width: 1px;
   border: 1px solid #FFFFFF;
-  padding: 3px;
+  padding: 3px 8px;
   background: transparent;
   opacity: 1;
 `;
 
 const DayText = styled.span`
-  width: 40px;
-  height: 17px;
   font-family: 'Ydestreet', sans-serif;
   font-weight: 700;
   font-size: 13px;
@@ -64,6 +68,7 @@ const DayText = styled.span`
   letter-spacing: 0;
   text-align: center;
   color: #fff;
+  white-space: nowrap;
 `;
 
 const SettingIcon = styled.img`
@@ -78,8 +83,9 @@ const SettingIcon = styled.img`
 `;
 
 const TitleContainer = styled.div`
-  width: 237px;
-  height: 104px;
+  width: 100%;
+  max-width: 237px;
+  min-height: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -100,8 +106,9 @@ const TitleText = styled.div`
 `;
 
 const DetailTextContainer = styled.div`
-  width: 103px;
-  height: 16px;
+  width: 100%;
+  max-width: 103px;
+  min-height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -109,8 +116,7 @@ const DetailTextContainer = styled.div`
 `;
 
 const DetailText = styled.div`
-  width: 103px;
-  height: 16px;
+  width: 100%;
   font-family: 'Ydestreet', sans-serif;
   font-weight: 300;
   font-size: 12px;
@@ -120,49 +126,24 @@ const DetailText = styled.div`
   color: #fff;
 `;
 
-const MiddleTextContainer = styled.div`
-  width: 230px;
-  height: 44px;
+const AlbumContainer = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-top: 400px;
-`;
-
-const MiddleText1 = styled.div`
-  width: 159px;
-  height: 17px;
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-  color: #fff;
-`;
-
-const MiddleText2 = styled.div`
-  width: 230px;
-  height: 17px;
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-  color: #fff;
+  min-height: 0; /* 스크롤을 위해 필요 */
 `;
 
 const ButtonContainer = styled.div`
-  width: 290px;
-  height: 95px;
+  width: 100%;
+  max-width: 290px;
   display: flex;
   flex-direction: column;
   gap: 15px;
   opacity: 1;
-  margin-top: 250px;
+  margin-bottom: 40px;
+  flex-shrink: 0; /* 고정 크기 유지 */
 `;
 
 const ButtonText = styled.span`
@@ -175,6 +156,13 @@ const ButtonText = styled.span`
 `;
 
 const HomeUser = () => {
+  const albumExists = true;
+  const isRollingPaperExpired = false;
+  const [isDownloadModalOpen, setDownloadModalOpen] = useState(false);
+
+  const handleOpenDownloadModal = () => setDownloadModalOpen(true);
+  const handleCloseDownloadModal = () => setDownloadModalOpen(false);
+
   const { handleLogout } = useKakaoLogout();
 
   const handleSettingClick = () => {
@@ -205,23 +193,47 @@ const HomeUser = () => {
           </DetailTextContainer>
         </TitleContainer>
       </TopContainer>
-      <MiddleTextContainer>
-        <MiddleText1>아직 졸업 축하 편지가 없어요</MiddleText1>
-        <MiddleText2>나의 졸업 앨범을 친구와 공유 해보세요😉</MiddleText2>
-      </MiddleTextContainer>
+
+      <AlbumContainer>
+        {albumExists ? (
+          <AlbumSection />
+        ) : (
+          <EmptyAlbumMessage />
+        )}
+      </AlbumContainer>
+      
       <ButtonContainer>
-        <CustomButton
-          bgColor="bg-button-default"
-          className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
-        >
-          <ButtonText>나에게 축하글 작성하기</ButtonText>
-        </CustomButton>
-        <CustomButton
-          bgColor="bg-button-default"
-          className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
-        >
-          <ButtonText>나의 졸업 앨범 공유하기</ButtonText>
-        </CustomButton>
+        {!isRollingPaperExpired ? (
+          <>
+            <CustomButton
+              bgColor="bg-button-default"
+              className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
+            >
+              <ButtonText>나에게 축하글 작성하기</ButtonText>
+            </CustomButton>
+            <CustomButton
+              bgColor="bg-button-default"
+              className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
+            >
+              <ButtonText>나의 졸업 앨범 공유하기</ButtonText>
+            </CustomButton>
+          </>
+        ) : (
+          <>
+            <CustomButton
+              bgColor="bg-button-default"
+              className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
+              onClick={handleOpenDownloadModal}
+            >
+              <ButtonText>나의 졸업 앨범 다운로드</ButtonText>
+            </CustomButton>
+            <DownloadPDF
+              isOpen={isDownloadModalOpen}
+              onRequestClose={handleCloseDownloadModal}
+              fileName="홍길동_졸업앨범_2025_02_17.pdf"
+            />
+          </>
+        )}
       </ButtonContainer>
     </HomeUserContainer>
   )

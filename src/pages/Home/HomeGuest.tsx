@@ -1,29 +1,34 @@
 import styled from 'styled-components';
-import characterImg from '../../assets/character.png';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import CharacterImg from '../../assets/images/Character.png';  
 import CustomButton from '../../components/common/button';
+import LoginModal from '../../components/modals/LoginModal';
 
 const HomeGuestContainer = styled.div`
-  width: 393px;
-  height: 852px;
-  margin: 0 auto;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   background: var(--color-main);
   position: relative;
+  padding: 0 20px;
+  box-sizing: border-box;
 `;
 
 const TitleContainer = styled.div`
-  width: 237px;
-  height: 104px;
+  width: 100%;
+  max-width: 237px;
+  min-height: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
   opacity: 1;
-  margin-top: 110px;
+  margin-top: 10vh;
 `;
 
 const TitleText = styled.div`
@@ -37,13 +42,18 @@ const TitleText = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  width: 247px;
+  width: 100%;
+  max-width: 247px;
   height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 1;
-  margin-top: 130px;
+  margin-top: 8vh;
+
+  @media (max-height: 600px) {
+    display: none;
+  }
 `;
 
 const StyledImg = styled.img`
@@ -53,8 +63,9 @@ const StyledImg = styled.img`
 `;
 
 const TextContainer = styled.div`
-  width: 127px;
-  height: 24px;
+  width: 100%;
+  max-width: 127px;
+  min-height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,17 +76,18 @@ const TextContainer = styled.div`
   color: var(--color-text-white);
   opacity: 1;
   text-align: center;
-  margin-top: 100px;
+  margin-top: 6vh;
 `;
 
 const ButtonContainer = styled.div`
-  width: 290px;
-  height: 95px;
+  width: 100%;
+  max-width: 290px;
+  min-height: 95px;
   display: flex;
   flex-direction: column;
   gap: 15px;
   opacity: 1;
-  margin-top: 20px;
+  margin-top: 4vh;
 `;
 
 const ButtonText = styled.span`
@@ -88,13 +100,29 @@ const ButtonText = styled.span`
 `;
 
 const HomeGuest = () => {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    setIsLoginModalOpen(true);
+  };
+
+  const handleLoginModalClose = () => {
+    setIsLoginModalOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    setIsLoginModalOpen(false);
+    navigate('/login');
+  };
+
   return (
     <HomeGuestContainer>
       <TitleContainer>
         <TitleText>졸축위 의<br/>졸업 축하 앨범</TitleText>
       </TitleContainer>
       <ImageContainer>
-        <StyledImg src={characterImg} alt="졸축위 캐릭터" />
+        <StyledImg src={CharacterImg} alt="졸축위 캐릭터" />
       </ImageContainer>
       <TextContainer>
         150개의 앨범이 제작되었어요<br />2654개의 편지가 작성 되었어요
@@ -102,17 +130,25 @@ const HomeGuest = () => {
       <ButtonContainer>
         <CustomButton
           bgColor="bg-button-default"
-          className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
+          className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
+          onClick={handleButtonClick}
         >
           <ButtonText>나의 졸업 앨범 만들기</ButtonText>
         </CustomButton>
         <CustomButton
           bgColor="bg-button-default"
-          className="w-[290px] h-[40px] rounded-[25px] px-[15px]"
+          className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
+          onClick={handleButtonClick}
         >
           <ButtonText>나의 졸업 앨범 보기</ButtonText>
         </CustomButton>
       </ButtonContainer>
+      
+      <LoginModal 
+        isOpen={isLoginModalOpen}
+        onRequestClose={handleLoginModalClose}
+        onLoginClick={handleLoginClick}
+      />
     </HomeGuestContainer>
   );
 };
