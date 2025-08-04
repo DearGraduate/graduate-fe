@@ -28,7 +28,9 @@ const TitleContainer = styled.div`
   justify-content: center;
   gap: 10px;
   opacity: 1;
-  margin-top: 10vh;
+  margin-top: 5vh;
+  position: relative;
+  z-index: 10;
 `;
 
 const TitleText = styled.div`
@@ -43,13 +45,15 @@ const TitleText = styled.div`
 
 const ImageContainer = styled.div`
   width: 100%;
-  max-width: 247px;
-  height: 220px;
+  max-width: 377.86px;
+  max-height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 1;
-  margin-top: 8vh;
+  margin-top: -7vh;
+  transform: rotate(-18deg);
+  position: relative;
+  z-index: 0;
 
   @media (max-height: 600px) {
     display: none;

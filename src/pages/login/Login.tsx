@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import KAKAOMINI from '../../assets/icons/KAKAOMini.png';
+import LoginLogo from '../../assets/images/LoginLogo.png';
 import { useKakaoLogin } from '../../hooks/useKakaoLogin';
 
 const LoginContainer = styled.div`
@@ -17,9 +18,8 @@ const LoginContainer = styled.div`
 
 const LogoContainer = styled.div`
   width: 100%;
-  max-width: 158px;
-  height: 131px;
-  background: #D9D9D9;
+  max-width: 189px;
+  max-height: 197px;
   opacity: 1;
   display: flex;
   align-items: center;
@@ -35,55 +35,24 @@ const LogoContainer = styled.div`
 
 const TextContainer = styled.div`
   width: 100%;
-  max-width: 252px;
-  min-height: 60px;
+  max-width: 227px;
+  min-height: 44px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2vh;
-  opacity: 1;
+  justify-content: center;
+  gap: 10px;
   margin-top: 2vh;
 `;
 
-const MainTextContainer = styled.div`
-  width: 100%;
-  max-width: 252px;
-  min-height: 47px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  opacity: 1;
-`;
-
-const MainText = styled.div`
-  font-family: 'Ydestreet', sans-serif;
-  font-weight: 700;
-  font-size: 36px;
-  color: #fff;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-`;
-
-const SubTextContainer = styled.div`
-  width: 100%;
-  max-width: 180px;
-  min-height: 17px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-`;
-
-const SubText = styled.div`
+const ServiceDescriptionText = styled.div`
   font-family: 'Pretendard', sans-serif;
-  font-size: 14px;
   font-weight: 500;
-  color: #fff;
+  font-size: 14px;
   line-height: 100%;
   letter-spacing: 0;
   text-align: center;
+  color: var(--color-text-white);
 `;
 
 const StatsTextContainer = styled.div`
@@ -98,7 +67,7 @@ const StatsTextContainer = styled.div`
   color: #fff;
   opacity: 1;
   text-align: center;
-  margin-top: 25vh;
+  margin-top: 20vh;
 `;
 
 const KakaoButtonContainer = styled.button`
@@ -163,14 +132,12 @@ const Login = () => {
 
     return (
         <LoginContainer>
-            <LogoContainer />
+            <LogoContainer>
+                <img src={LoginLogo} alt="로그인 로고" style={{ width: '100%', height: '100%' }} />
+            </LogoContainer>
             <TextContainer>
-                <MainTextContainer>
-                    <MainText>졸업축하위원회</MainText>
-                </MainTextContainer>
-                <SubTextContainer>
-                    <SubText>특별한 졸업식을 만들어 드립니다</SubText>
-                </SubTextContainer>
+                <ServiceDescriptionText>나만을 위한 친구의 편지를 간직할 수 있는</ServiceDescriptionText>
+                <ServiceDescriptionText>편지 앨범 서비스, 포토:리</ServiceDescriptionText>
             </TextContainer>
             <StatsTextContainer>
                 150개의 앨범이 제작 되었어요<br />2654개의 편지가 작성 되었어요

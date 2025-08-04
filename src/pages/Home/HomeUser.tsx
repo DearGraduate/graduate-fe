@@ -4,7 +4,8 @@ import CustomButton from "../../components/common/button";
 import AlbumSection from "../../components/home/AlbumSection";
 import EmptyAlbumMessage from "../../components/home/EmptyAlbumMessage";
 import DownloadPDF from "../../components/modals/DownloadPDF";
-import { useState } from "react";
+import DownloadModal from "../../components/modals/DownloadModal";
+import { useState, useEffect } from "react";
 
 const HomeUserContainer = styled.div`
   width: 100vw;
@@ -151,11 +152,20 @@ const ButtonText = styled.span`
 
 const HomeUser = () => {
   const albumExists = true;
-  const isRollingPaperExpired = false;
+  const isRollingPaperExpired = true;
   const [isDownloadModalOpen, setDownloadModalOpen] = useState(false);
+  const [isDownloadCharacterModalOpen, setDownloadCharacterModalOpen] = useState(false);
 
   const handleOpenDownloadModal = () => setDownloadModalOpen(true);
   const handleCloseDownloadModal = () => setDownloadModalOpen(false);
+  const handleCloseDownloadCharacterModal = () => setDownloadCharacterModalOpen(false);
+
+  // isRollingPaperExpired가 true일 때 자동으로 다운로드 캐릭터 모달 열기
+  useEffect(() => {
+    if (isRollingPaperExpired) {
+      setDownloadCharacterModalOpen(true);
+    }
+  }, [isRollingPaperExpired]);
 
   return (
     <HomeUserContainer>
@@ -215,6 +225,11 @@ const HomeUser = () => {
           </>
         )}
       </ButtonContainer>
+
+      <DownloadModal 
+        isOpen={isDownloadCharacterModalOpen}
+        onRequestClose={handleCloseDownloadCharacterModal}
+      />
     </HomeUserContainer>
   )
 }

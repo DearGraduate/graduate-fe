@@ -1,52 +1,51 @@
 import styled from "styled-components";
+import Character_graduate from "../../assets/images/Character_graduate.png";
 
-const MiddleTextContainer = styled.div`
+const ImageContainer = styled.div`
   width: 100%;
-  max-width: 230px;
-  min-height: 44px;
+  max-width: 250px;
+  height: 280px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2vh;
-  margin-top: 15vh;
 
-  @media (max-height: 600px) {
+  @media (max-height: 700px) {
     display: none;
   }
 `;
 
-const MiddleText1 = styled.div`
-  width: 100%;
-  max-width: 159px;
-  min-height: 17px;
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-  color: #fff;
+const TextContainer = styled.div`
+  width: 256px;
+  height: 36px;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 20px;
 `;
 
-const MiddleText2 = styled.div`
-  width: 100%;
-  max-width: 230px;
-  min-height: 17px;
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 500;
+const AlbumCompleteText = styled.div`
+  font-family: 'Ydestreet', sans-serif;
+  font-weight: 700;
   font-size: 14px;
   line-height: 100%;
   letter-spacing: 0;
   text-align: center;
-  color: #fff;
+  color: var(--color-text-white);
 `;
 
 const EmptyAlbumMessage = () => (
-  <MiddleTextContainer>
-    <MiddleText1>아직 졸업 축하 편지가 없어요</MiddleText1>
-    <MiddleText2>나의 졸업 앨범을 친구와 공유 해보세요😉</MiddleText2>
-  </MiddleTextContainer>
+    <>
+        <ImageContainer>
+            <img src={Character_graduate} alt="Character_graduate" />
+        </ImageContainer>
+        <TextContainer>
+            <AlbumCompleteText>앨범이 완성 되었어요!</AlbumCompleteText>
+            <AlbumCompleteText>친구들에게 공유해 축하글을 모아보세요!</AlbumCompleteText>
+        </TextContainer>
+    </>
 );
 
 export default EmptyAlbumMessage;
