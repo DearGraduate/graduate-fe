@@ -3,6 +3,7 @@ import addPhotoIcon from "../icons/addphoto.png";
 import backButton from "../icons/chevron-back.png";
 import "../style/colors.css";
 import CustomCheckbox from "../style/CustomCheckbox";
+import CustomButton from "./common/button";
 
 export default function GraduationMessageForm() {
   const [author, setAuthor] = useState("");
@@ -17,14 +18,15 @@ export default function GraduationMessageForm() {
         backgroundColor: "white",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
-        padding: "40px 16px",
+        alignItems: "flex-start",
+        paddingTop: "0px",
+        paddingBottom: "0px",
         overflow: "hidden",
       }}
     >
       <div
         style={{
-          height: "100vh",
+          height: "852px",
           backgroundColor: "var(--color-main)",
           color: "var(--color-text-white)",
           boxSizing: "border-box",
@@ -47,27 +49,19 @@ export default function GraduationMessageForm() {
           />
         </div>
         <div style={{ paddingLeft: "52px" }}>
-          <div style={{ marginBottom: "24px", marginTop: "110px" }}>
+          <div style={{ marginBottom: "7px", marginTop: "110px" }}>
             <h2
               style={{
                 fontSize: "24px",
                 fontWeight: "bold",
-                marginBottom: "7px",
               }}
             >
               졸업 축하 작성하기
             </h2>
-            <p style={{ fontSize: "14px" }}>
-              친구에게 따뜻한 졸업 축하의 말을
-              <br />
-              작성해 주세요!
-            </p>
           </div>
-
           <label
             style={{
               fontSize: "14px",
-              fontWeight: 600,
               display: "block",
               marginBottom: "10px",
             }}
@@ -85,7 +79,7 @@ export default function GraduationMessageForm() {
               borderRadius: "5px",
               paddingLeft: "10px",
               border: "0.5px solid var(--color-line)",
-              marginBottom: "32px",
+              marginBottom: "25px",
               fontSize: "10px",
               color: "var(--color-text-white)",
               backgroundColor: "transparent",
@@ -96,13 +90,13 @@ export default function GraduationMessageForm() {
             style={{
               fontSize: "24px",
               fontWeight: "bold",
-              marginBottom: "10px",
               display: "block",
+              marginBottom: "10px"
             }}
           >
             사진 첨부
           </label>
-          <div style={{ display: "flex", gap: "10px", marginBottom: "29px" }}>
+          <div style={{ display: "flex", gap: "10px", marginBottom: "25px" }}>
             {[0, 1].map((i) => (
               <div
                 key={i}
@@ -176,7 +170,6 @@ export default function GraduationMessageForm() {
           <label
             style={{
               fontSize: "14px",
-              fontWeight: 600,
               display: "block",
               marginBottom: "9px",
             }}
@@ -196,22 +189,18 @@ export default function GraduationMessageForm() {
             />
           </div>
 
-          <button
+          <div
             style={{
-              width: "290px",
-              height: "40px",
-              padding: "10px",
-              borderRadius: "25px",
-              fontWeight: "bold",
+              position: "absolute",
+              top: "750px",
+              left: "50%",
+              transform: "translateX(-50%)",
               fontSize: "12px",
-              backgroundColor: "var(--color-button-calander)",
-              color: "var(--color-text-black)",
-              border: "none",
               cursor: "pointer",
             }}
           >
-            축하글 작성 완료하기
-          </button>
+            <CustomButton>축하글 작성 완료하기</CustomButton>
+          </div>
         </div>
       </div>
     </div>

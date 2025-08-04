@@ -1,5 +1,5 @@
 import CustomButton from "../../components/common/button";
-import photoryImg from "../../assets/icons/photory.png"; // 정확한 경로
+import photoryImg from "../../assets/icons/photory.png"; 
 
 export default function ErrorPage() {
   return (

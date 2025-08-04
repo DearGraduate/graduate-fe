@@ -9,6 +9,7 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/login/Login";
 import ModalTest from "../pages/ModalTest";
 import ErrorPage from "../pages/error/ErrorStatusPage"
+import GraduationMessagePage from "../pages/graduation-message";
 
 const router = createBrowserRouter([
     {
@@ -73,7 +74,7 @@ const router = createBrowserRouter([
             {
                 //라이팅페이지
                 path: '/writing',
-                //element:
+                element: <GraduationMessagePage />
             },
             {
                 //라이팅페이지
