@@ -1,9 +1,10 @@
 import HomeGuest from "./HomeGuest";
 import HomeUser from "./HomeUser";
-
-const isLoggedIn = true; // 임시 로그인 상태
+import { useAuthStore } from "../../store/authStore";
 
 const Home = () => {
+  const { isLoggedIn } = useAuthStore();
+  
   return isLoggedIn ? <HomeUser /> : <HomeGuest />;
 };
 

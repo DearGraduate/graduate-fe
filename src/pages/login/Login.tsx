@@ -1,20 +1,23 @@
 import styled from 'styled-components';
-import kakaoImg from '../../assets/kakao.png';
+import KAKAOMINI from '../../assets/icons/KAKAOMini.png';
+import { useKakaoLogin } from '../../hooks/useKakaoLogin';
 
 const LoginContainer = styled.div`
-  width: 393px;
-  height: 852px;
-  margin: 0 auto;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   background: var(--color-main);
   position: relative;
+  padding: 0 20px;
+  box-sizing: border-box;
 `;
 
 const LogoContainer = styled.div`
-  width: 158px;
+  width: 100%;
+  max-width: 158px;
   height: 131px;
   background: #D9D9D9;
   opacity: 1;
@@ -22,23 +25,30 @@ const LogoContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-top: 150px;
+  margin-top: 15vh;
+
+  
+  @media (max-height: 600px) {
+    display: none;
+  }
 `;
 
 const TextContainer = styled.div`
-  width: 252px;
-  height: 79px;
+  width: 100%;
+  max-width: 252px;
+  min-height: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 2vh;
   opacity: 1;
-  margin-top: 15px;
+  margin-top: 2vh;
 `;
 
 const MainTextContainer = styled.div`
-  width: 252px;
-  height: 47px;
+  width: 100%;
+  max-width: 252px;
+  min-height: 47px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,8 +67,9 @@ const MainText = styled.div`
 `;
 
 const SubTextContainer = styled.div`
-  width: 180px;
-  height: 17px;
+  width: 100%;
+  max-width: 180px;
+  min-height: 17px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,8 +87,9 @@ const SubText = styled.div`
 `;
 
 const StatsTextContainer = styled.div`
-  width: 127px;
-  height: 24px;
+  width: 100%;
+  max-width: 127px;
+  min-height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,11 +98,12 @@ const StatsTextContainer = styled.div`
   color: #fff;
   opacity: 1;
   text-align: center;
-  margin-top: 250px;
+  margin-top: 25vh;
 `;
 
 const KakaoButtonContainer = styled.button`
-  width: 290px;
+  width: 100%;
+  max-width: 290px;
   height: 40px;
   display: flex;
   align-items: center;
@@ -102,11 +115,12 @@ const KakaoButtonContainer = styled.button`
   cursor: pointer;
   opacity: 1;
   margin: 0 auto;
-  margin-top: 30px;
+  margin-top: 4vh;
 `;
 
 const KakaoInnerContainer = styled.div`
-  width: 177px;
+  width: 100%;
+  max-width: 177px;
   height: 26px;
   display: flex;
   flex-direction: row;
@@ -116,7 +130,7 @@ const KakaoInnerContainer = styled.div`
 `;
 
 const KakaoImgContainer = styled.div`
-  width: 24px;
+  width: 30px;
   height: 14px;
   display: flex;
   align-items: center;
@@ -125,7 +139,8 @@ const KakaoImgContainer = styled.div`
 `;
 
 const KakaoTextContainer = styled.div`
-  width: 126px;
+  width: 100%;
+  max-width: 126px;
   height: 17px;
   display: flex;
   align-items: center;
@@ -144,6 +159,8 @@ const KakaoText = styled.span`
 `;
 
 const Login = () => {
+    const { handleKakaoLogin } = useKakaoLogin();
+
     return (
         <LoginContainer>
             <LogoContainer />
@@ -158,10 +175,10 @@ const Login = () => {
             <StatsTextContainer>
                 150개의 앨범이 제작 되었어요<br />2654개의 편지가 작성 되었어요
             </StatsTextContainer>
-            <KakaoButtonContainer>
+            <KakaoButtonContainer onClick={handleKakaoLogin}>
                 <KakaoInnerContainer>
                     <KakaoImgContainer>
-                        <img src={kakaoImg} alt="카카오톡" style={{ width: '26px', height: '26px' }} />
+                        <img src={KAKAOMINI} alt="카카오톡" style={{ width: '26px', height: '26px' }} />
                     </KakaoImgContainer>
                     <KakaoTextContainer>
                         <KakaoText>KAKAO로 로그인 하기</KakaoText>
