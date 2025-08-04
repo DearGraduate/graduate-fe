@@ -2,82 +2,6 @@ import Modal from "react-modal";
 import type { ModalProps } from "../../types/Modal";
 import CustomButton from "../common/button";
 import GraduateCapIcon from "../../assets/icons/GraduateCap.png";
-import styled from "styled-components";
-
-const Container = styled.div`
-  width: 393px;
-  height: 224px;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const GrayBar = styled.div`
-  width: 120px;
-  height: 3px;
-  border-radius: 10px;
-  margin-top: 6px;
-  background: #D9D9D9;
-`;
-
-const ContentBox = styled.div`
-  width: 279px;
-  height: 164px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  gap: 45px;
-  margin-top: 10px;
-`;
-
-const Title = styled.div`
-  width: 97px;
-  height: 18px;
-  font-family: 'Ydestreet', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-  color: #191919;
-`;
-
-const FileNameBox = styled.div`
-  width: 236px;
-  height: 16px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 7px;
-  justify-content: center;
-`;
-
-const FileIcon = styled.img`
-  width: 16px;
-  height: 16px;
-`;
-
-const FileNameText = styled.div`
-  width: 213px;
-  height: 16px;
-  font-family: 'Ydestreet', sans-serif;
-  font-weight: 300;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0;
-  text-align: center;
-  color: #191919;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: flex;
-  align-items: flex-end;
-  padding-top: 2px;
-`;
 
 interface DownloadPDFModalProps extends ModalProps {
   fileName: string;
@@ -109,14 +33,18 @@ const DownloadPDF = ({ isOpen, onRequestClose, fileName, onDownload }: DownloadP
       }}
       ariaHideApp={false}
     >
-      <Container>
-        <GrayBar />
-        <ContentBox>
-          <Title>PDF 다운로드</Title>
-          <FileNameBox>
-            <FileIcon src={GraduateCapIcon} alt="pdf 아이콘" />
-            <FileNameText>{fileName}</FileNameText>
-          </FileNameBox>
+      <div className="w-[393px] h-[224px] rounded-t-[20px] bg-white flex flex-col items-center">
+        <div className="w-[120px] h-[3px] rounded-[10px] mt-[6px] bg-[#D9D9D9]"></div>
+        <div className="w-[279px] h-[164px] flex flex-col items-center justify-between gap-[45px] mt-[10px]">
+          <div className="w-[97px] h-[18px] font-ydestreet font-bold text-[14px] leading-[100%] tracking-[0] text-center text-[#191919]">
+            PDF 다운로드
+          </div>
+          <div className="w-[236px] h-[16px] flex flex-row items-center gap-[7px] justify-center">
+            <img src={GraduateCapIcon} alt="pdf 아이콘" className="w-[16px] h-[16px]" />
+            <div className="w-[213px] h-[16px] font-ydestreet font-light text-[12px] leading-[16px] tracking-[0] text-center text-[#191919] overflow-hidden text-ellipsis whitespace-nowrap flex items-end pt-[2px]">
+              {fileName}
+            </div>
+          </div>
           <CustomButton
             bgColor="bg-button-default"
             className="w-[279px] h-[40px] rounded-[25px] px-[15px]"
@@ -124,8 +52,8 @@ const DownloadPDF = ({ isOpen, onRequestClose, fileName, onDownload }: DownloadP
           >
             다운로드
           </CustomButton>
-        </ContentBox>
-      </Container>
+        </div>
+      </div>
     </Modal>
   );
 };

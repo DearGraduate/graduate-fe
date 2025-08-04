@@ -1,107 +1,8 @@
-import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CharacterImg from '../../assets/images/Character.png';  
 import CustomButton from '../../components/common/button';
 import LoginModal from '../../components/modals/LoginModal';
-
-const HomeGuestContainer = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: var(--color-main);
-  position: relative;
-  padding: 0 20px;
-  box-sizing: border-box;
-`;
-
-const TitleContainer = styled.div`
-  width: 100%;
-  max-width: 237px;
-  min-height: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  opacity: 1;
-  margin-top: 5vh;
-  position: relative;
-  z-index: 10;
-`;
-
-const TitleText = styled.div`
-  font-family: 'Ydestreet', sans-serif;
-  font-weight: 700;
-  font-size: 36px;
-  line-height: 150%;
-  letter-spacing: 0;
-  color: #fff;
-  text-align: center;
-`;
-
-const ImageContainer = styled.div`
-  width: 100%;
-  max-width: 377.86px;
-  max-height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: -7vh;
-  transform: rotate(-18deg);
-  position: relative;
-  z-index: 0;
-
-  @media (max-height: 600px) {
-    display: none;
-  }
-`;
-
-const StyledImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-`;
-
-const TextContainer = styled.div`
-  width: 100%;
-  max-width: 127px;
-  min-height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Pretendard', sans-serif;
-  font-size: 10px;
-  line-height: 100%;
-  letter-spacing: 0;
-  color: var(--color-text-white);
-  opacity: 1;
-  text-align: center;
-  margin-top: 6vh;
-`;
-
-const ButtonContainer = styled.div`
-  width: 100%;
-  max-width: 290px;
-  min-height: 95px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  opacity: 1;
-  margin-top: 4vh;
-`;
-
-const ButtonText = styled.span`
-  font-family: 'Ydestreet', sans-serif;
-  font-weight: 300;
-  font-size: 12px;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-`;
 
 const HomeGuest = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -121,39 +22,52 @@ const HomeGuest = () => {
   };
 
   return (
-    <HomeGuestContainer>
-      <TitleContainer>
-        <TitleText>졸축위 의<br/>졸업 축하 앨범</TitleText>
-      </TitleContainer>
-      <ImageContainer>
-        <StyledImg src={CharacterImg} alt="졸축위 캐릭터" />
-      </ImageContainer>
-      <TextContainer>
+    <div className="w-screen min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
+      <div className="w-full max-w-[237px] min-h-[80px] flex flex-col items-center justify-center gap-2.5 opacity-100 mt-[5vh] relative z-10">
+        <div className="font-ydestreet font-bold text-[36px] leading-[150%] tracking-[0] text-white text-center">
+          졸축위 의<br/>졸업 축하 앨범
+        </div>
+      </div>
+      
+      <div className="w-full max-w-[377.86px] max-h-[400px] flex items-center justify-center -mt-[6vh] -rotate-[18deg] relative z-0 short:hidden">
+        <img 
+          src={CharacterImg} 
+          alt="졸축위 캐릭터" 
+          className="w-full h-full object-contain"
+        />
+      </div>
+      
+      <div className="w-full max-w-[127px] min-h-[24px] flex items-center justify-center font-pretendard text-[10px] leading-[100%] tracking-[0] text-[var(--color-text-white)] opacity-100 text-center mt-[6vh]">
         150개의 앨범이 제작되었어요<br />2654개의 편지가 작성 되었어요
-      </TextContainer>
-      <ButtonContainer>
+      </div>
+      
+      <div className="w-full max-w-[290px] min-h-[95px] flex flex-col gap-[15px] opacity-100 mt-[4vh]">
         <CustomButton
           bgColor="bg-button-default"
           className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
           onClick={handleButtonClick}
         >
-          <ButtonText>나의 졸업 앨범 만들기</ButtonText>
+          <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
+            나의 졸업 앨범 만들기
+          </span>
         </CustomButton>
         <CustomButton
           bgColor="bg-button-default"
           className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
           onClick={handleButtonClick}
         >
-          <ButtonText>나의 졸업 앨범 보기</ButtonText>
+          <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
+            나의 졸업 앨범 보기
+          </span>
         </CustomButton>
-      </ButtonContainer>
+      </div>
       
       <LoginModal 
         isOpen={isLoginModalOpen}
         onRequestClose={handleLoginModalClose}
         onLoginClick={handleLoginClick}
       />
-    </HomeGuestContainer>
+    </div>
   );
 };
 

@@ -1,48 +1,23 @@
-import styled from "styled-components";
 import DownloadCharacter from "../../assets/images/DownloadCharacter.png";
 import { ModalProps } from "../../types/Modal";
-
-const ModalBackground = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ModalContent = styled.div`
-  position: relative;
-  background: transparent;
-  border: none;
-  outline: none;
-`;
-
-const DownloadContainer = styled.div`
-  width: 100%;
-  max-width: 388.71px;
-  height: 410.43px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: rotate(-17.19deg);
-`;
 
 const DownloadModal = ({ isOpen, onRequestClose }: ModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <ModalBackground onClick={onRequestClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
-        <DownloadContainer>
+    <div 
+      className="fixed top-0 left-0 w-screen h-screen backdrop-blur-sm z-[1000] flex justify-center items-center"
+      onClick={onRequestClose}
+    >
+      <div 
+        className="relative bg-transparent border-none outline-none"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="w-full max-w-[388.71px] h-[410.43px] flex items-center justify-center -rotate-[17.19deg]">
           <img src={DownloadCharacter} alt="DownloadCharacter" />
-        </DownloadContainer>
-      </ModalContent>
-    </ModalBackground>
+        </div>
+      </div>
+    </div>
   );
 };
 
