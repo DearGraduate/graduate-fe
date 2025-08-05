@@ -2,9 +2,21 @@ import React from 'react';
 import CustomButton from '../components/common/button'; 
 import imgShare from '../assets/icons/img_share.png'; 
 import imgHome from '../assets/icons/icon_home.png';
-
+import { useState } from 'react';
+import ShareModal from '../components/modals/ShareModal';
 
 const SharePage = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  
+      const openModal = () => {
+          setModalOpen(true);     
+      }
+          const closeModal = () => {
+          setModalOpen(false);
+      }   
+
+
+
   return (
     <div className="min-h-screen bg-[#415940] text-white px-6 py-10 flex flex-col items-center justify-between">
       {/* 상단 홈 아이콘 */}
@@ -44,10 +56,12 @@ const SharePage = () => {
         <CustomButton
           bgColor="bg-[#D9ECD2]"
           className="w-full font-semibold text-black"
-          onClick={() => console.log('나의 졸업 앨범 공유하기')}
+          onClick={openModal}
         >
           나의 졸업 앨범 공유하기
         </CustomButton>
+
+        <ShareModal isOpen={modalOpen} onRequestClose={closeModal} />
       </div>
     </div>
   );
