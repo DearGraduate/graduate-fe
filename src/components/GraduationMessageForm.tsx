@@ -1,5 +1,6 @@
 import { useState } from "react";
-import addPhotoIcon from "../icons/addphoto.png";
+import { useParams } from "react-router-dom";
+//import addPhotoIcon from "../icons/addphoto.png";
 import backButton from "../icons/chevron-back.png";
 import "../style/colors.css";
 import CustomCheckbox from "../style/CustomCheckbox";
@@ -9,6 +10,68 @@ export default function GraduationMessageForm() {
   const [author, setAuthor] = useState("");
   const [letter, setLetter] = useState("");
   const [isPublic, setIsPublic] = useState<null | boolean>(null);
+  const { albumId } = useParams();
+
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string>("");
+
+  // 업로드 버튼에서 호출
+  const handleImageUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (res.ok && data.url) {
+        setImageUrl(data.url); // 나중에 축하글 전송할 때 pic_url로 사용
+      } else {
+        alert("이미지 업로드 실패");
+      }
+    } catch (error) {
+      console.error("업로드 에러:", error);
+    }
+  };
+  const submitMessage = async () => {
+    console.log("author:", author);
+    console.log("letter:", letter);
+    console.log("isPublic:", isPublic);
+    console.log("imageUrl:", imageUrl);
+
+    if (!author || !letter || isPublic === null || !imageUrl) {
+      alert("모든 항목을 입력해 주세요");
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/albums/${albumId}/letter`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          writer_name: author,
+          pic_url: imageUrl,
+          message: letter,
+          isPublic: isPublic,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.isSuccess) {
+        alert("축하 메시지 등록 완료!");
+      } else {
+        alert("등록 실패: " + data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("등록 중 오류 발생");
+    }
+  };
 
   return (
     <div
@@ -91,12 +154,23 @@ export default function GraduationMessageForm() {
               fontSize: "24px",
               fontWeight: "bold",
               display: "block",
-              marginBottom: "10px"
+              marginBottom: "10px",
             }}
           >
             사진 첨부
           </label>
-          <div style={{ display: "flex", gap: "10px", marginBottom: "25px" }}>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              if (e.target.files?.[0]) {
+                setImageFile(e.target.files[0]);
+                handleImageUpload(e.target.files[0]);
+              }
+            }}
+          />
+
+          {/* <div style={{ display: "flex", gap: "10px", marginBottom: "25px" }}>
             {[0, 1].map((i) => (
               <div
                 key={i}
@@ -115,7 +189,7 @@ export default function GraduationMessageForm() {
                 />
               </div>
             ))}
-          </div>
+          </div> */}
 
           <label
             style={{
@@ -199,7 +273,9 @@ export default function GraduationMessageForm() {
               cursor: "pointer",
             }}
           >
-            <CustomButton>축하글 작성 완료하기</CustomButton>
+            <CustomButton onClick={submitMessage}>
+              축하글 작성 완료하기
+            </CustomButton>
           </div>
         </div>
       </div>
