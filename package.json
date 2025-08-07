@@ -18,6 +18,7 @@
     "react-dom": "^19.1.0",
     "react-modal": "^3.16.3",
     "react-modal-sheet": "^4.4.0",
+    "react-responsive": "^10.0.1",
     "react-router-dom": "^7.6.3",
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.19",
