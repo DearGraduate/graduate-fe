@@ -3,6 +3,7 @@ import router from "./router/Routes";
 import Modal from "react-modal";
 import { useEffect } from "react";
 import { initializeAuth } from "./store/authStore";
+import { useMediaQuery } from "react-responsive";
 
 Modal.setAppElement("#root");
 
@@ -12,7 +13,12 @@ function App() {
     initializeAuth();
   }, []);
 
-  return <RouterProvider router={router} />;
+  return (
+    <div>
+      <RouterProvider router={router} />
+    </div>
+    
+);
 }
 
 export default App;
