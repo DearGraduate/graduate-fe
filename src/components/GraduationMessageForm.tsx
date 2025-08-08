@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-//import addPhotoIcon from "../icons/addphoto.png";
+import addPhotoIcon from "../icons/addphoto.png";
 import backButton from "../icons/chevron-back.png";
 import "../style/colors.css";
 import CustomCheckbox from "../style/CustomCheckbox";
