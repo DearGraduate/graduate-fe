@@ -1,22 +1,24 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import addPhotoIcon from "../icons/addphoto.png";
+//import addPhotoIcon from "../icons/addphoto.png";
 import backButton from "../icons/chevron-back.png";
 import "../style/colors.css";
 import CustomCheckbox from "../style/CustomCheckbox";
 import CustomButton from "./common/button";
+import PhotoAttachStrip from "../components/PhotoAttach";
 
 export default function GraduationMessageForm() {
   const [author, setAuthor] = useState("");
   const [letter, setLetter] = useState("");
   const [isPublic, setIsPublic] = useState<null | boolean>(null);
-  const { albumId } = useParams();
+  const { albumId } = useParams<{ albumId: string }>();
 
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [picUrl, setPicUrl] = useState<string>("");
 
-  // 업로드 버튼에서 호출
   const handleImageUpload = async (file: File) => {
+    const localPreview = URL.createObjectURL(file);
+    setPicUrl(localPreview);
+
     const formData = new FormData();
     formData.append("file", file);
 
@@ -26,23 +28,32 @@ export default function GraduationMessageForm() {
         body: formData,
       });
       const data = await res.json();
+      const uploadedUrl: string | undefined = data?.url ?? data?.data?.url;
 
-      if (res.ok && data.url) {
-        setImageUrl(data.url); // 나중에 축하글 전송할 때 pic_url로 사용
+      if (res.ok && uploadedUrl) {
+        setPicUrl(uploadedUrl); 
       } else {
-        alert("이미지 업로드 실패");
+        alert("이미지 업로드에 실패했어요.");
       }
     } catch (error) {
       console.error("업로드 에러:", error);
+      alert("이미지 업로드 중 오류가 발생했어요.");
     }
   };
+
   const submitMessage = async () => {
+    // 디버깅용
     console.log("author:", author);
     console.log("letter:", letter);
     console.log("isPublic:", isPublic);
-    console.log("imageUrl:", imageUrl);
+    console.log("picUrl:", picUrl);
+    console.log("albumId:", albumId);
 
-    if (!author || !letter || isPublic === null || !imageUrl) {
+    if (!albumId) {
+      alert("albumId가 없습니다. 경로를 확인해 주세요.");
+      return;
+    }
+    if (!author.trim() || !letter.trim() || isPublic === null || !picUrl) {
       alert("모든 항목을 입력해 주세요");
       return;
     }
@@ -50,26 +61,24 @@ export default function GraduationMessageForm() {
     try {
       const res = await fetch(`/api/albums/${albumId}/letter`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           writer_name: author,
-          pic_url: imageUrl,
+          pic_url: picUrl,
           message: letter,
           isPublic: isPublic,
         }),
       });
 
       const data = await res.json();
-      if (res.ok && data.isSuccess) {
-        alert("축하 메시지 등록 완료!");
+      if (res.ok && data?.isSuccess) {
+        alert(data?.message || "축하 메시지가 등록되었어요!");
       } else {
-        alert("등록 실패: " + data.message);
+        alert("등록 실패: " + (data?.message ?? "알 수 없는 오류"));
       }
     } catch (err) {
       console.error(err);
-      alert("등록 중 오류 발생");
+      alert("등록 중 오류가 발생했어요.");
     }
   };
 
@@ -159,38 +168,12 @@ export default function GraduationMessageForm() {
           >
             사진 첨부
           </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              if (e.target.files?.[0]) {
-                setImageFile(e.target.files[0]);
-                handleImageUpload(e.target.files[0]);
-              }
-            }}
+
+          <PhotoAttachStrip
+            value={picUrl}
+            onChange={(url) => setPicUrl(url)} // 기본 이미지 선택 시 호출
+            onFileSelected={(file) => handleImageUpload(file)} // 파일 선택 시 업로드 로직 실행
           />
-
-          {/* <div style={{ display: "flex", gap: "10px", marginBottom: "25px" }}>
-            {[0, 1].map((i) => (
-              <div
-                key={i}
-                style={{
-                  width: "100px",
-                  height: "100px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <img
-                  src={addPhotoIcon}
-                  alt="사진 추가"
-                  style={{ width: "100px", height: "100px" }}
-                />
-              </div>
-            ))}
-          </div> */}
-
           <label
             style={{
               fontSize: "24px",
