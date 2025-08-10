@@ -36,15 +36,7 @@ const KakaoCallback = () => {
         // Refresh Token은 HttpOnly 쿠키로 자동 저장됨
         if (tokens.accessToken) {
           // authStore에 로그인 상태 업데이트
-          // TODO: 서버에서 사용자 정보를 받아와야 함
-          // 현재는 임시로 기본 사용자 정보 사용
-          const user = {
-            socialId: 'temp', // 서버에서 받아와야 함
-            name: '사용자', // 서버에서 받아와야 함
-            email: 'temp@example.com' // 서버에서 받아와야 함
-          };
-          
-          login(user, tokens.accessToken);
+          login(tokens.accessToken);
         }
         
         setTimeout(() => {
