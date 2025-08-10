@@ -3,7 +3,7 @@ import CustomButton from '../components/common/button';
 import imgShare from '../assets/icons/img_share.png'; 
 import imgHome from '../assets/icons/icon_home.png';
 import { useNavigate } from 'react-router-dom';
-
+import DisplayAds from '../components/GoogleAdvertise/GoogleAdvertise';
 
 
 const SharePage = () => {
@@ -28,6 +28,11 @@ const SharePage = () => {
       {/* 이미지 */}
       <div className="mt-10">
       <img src={imgShare} alt="졸업 이미지" className="w-60 h-auto" />
+      </div>
+      
+      <div>
+        <p>광고 표시</p>
+        <DisplayAds client="ca-pub-2792815043332792" slot="1234567890" />
       </div>
 
       {/* 설명 */}
