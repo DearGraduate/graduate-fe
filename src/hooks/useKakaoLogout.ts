@@ -13,8 +13,11 @@ export const useKakaoLogout = (): UseKakaoLogoutReturn => {
 
   const handleLogout = useCallback(async (): Promise<void> => {
     try {
+      // 현재 저장된 Access Token 가져오기
+      const currentAccessToken = useAuthStore.getState().accessToken;
+      
       // 서버에 로그아웃 요청
-      const { data } = await kakaoLogoutAPI.logout();
+      const { data } = await kakaoLogoutAPI.logout(currentAccessToken || undefined);
       
       if (data.isSuccess) {
         console.log('로그아웃 성공:', data.message);

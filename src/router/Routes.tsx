@@ -3,13 +3,17 @@ import RootLayout from "../layouts/RootLayout";
 import Notfound from "../pages/NotFound";
 import CustomButton from "../components/common/button";
 import CustomLottie from "../components/Lotties/CustomLottie";
-import AlbumMakingPage from "../pages/AlbumMakingPage";
+import AlbumMakingPage from "../pages/album/AlbumMakingPage";
 import SharePage from "../pages/SharePage";
 import Home from "../pages/Home/Home";
 import Login from "../pages/login/Login";
 import KakaoCallback from "../pages/login/KakaoCallback";
 import ModalTest from "../pages/ModalTest";
+
+import HomeSetting from "../pages/Home/HomeSetting";
+
 import ErrorPage from "../pages/error/ErrorStatusPage"
+
 
 const router = createBrowserRouter([
     {
@@ -85,6 +89,11 @@ const router = createBrowserRouter([
                 //라이팅페이지
                 path: '/modaltest',
                 element: <ModalTest />
+            },
+            {
+                //홈세틴페이지
+                path: '/setting',
+                element: <HomeSetting />
             },
             {
                 path: "*",
