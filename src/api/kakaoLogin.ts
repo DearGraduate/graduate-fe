@@ -54,13 +54,18 @@ export const kakaoLoginAPI = {
       // 헤더에서 Access Token만 추출 (Refresh Token은 HttpOnly 쿠키로 전송됨)
       const accessToken = response.headers['authorization'];
       
+      // Bearer 접두사 제거
+      const cleanToken = accessToken?.startsWith('Bearer ') 
+        ? accessToken.substring(7) 
+        : accessToken;
+      
       console.log('카카오 로그인 성공:', response.data);
-      console.log('Access Token:', accessToken);
+      console.log('Access Token:', cleanToken);
       
       return {
         data: response.data,
         tokens: {
-          accessToken
+          accessToken: cleanToken
         }
       };
     } catch (error: any) {
