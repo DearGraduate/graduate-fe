@@ -31,7 +31,7 @@ const ShareModal = ({ isOpen, onRequestClose }: ModalProps) => {
         }
     }
 
-    const TEMPLATE_ID = process.env.REACT_KAKAO_TEMPLATE_ID; 
+    const TEMPLATE_ID = Number(process.env.REACT_APP_KAKAO_TEMPLATE_ID?.trim());
 
     const ShareKaKao = () => {
         window.Kakao.Share.sendCustom({
