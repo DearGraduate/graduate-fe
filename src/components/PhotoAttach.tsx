@@ -88,7 +88,7 @@ export default function PhotoAttachStrip({
         <style>{`div::-webkit-scrollbar { display: none; }`}</style>
 
         <div onClick={openPicker} style={{ cursor: "pointer" }}>
-          <Tile src={addPhotoIcon} isSelected={false} onClick={openPicker} />
+          <Tile src={addPhotoIcon} isSelected={false} />
         </div>
 
         {defaults.map((src) => (

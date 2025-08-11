@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-//import addPhotoIcon from "../icons/addphoto.png";
+//import { useParams } from "react-router-dom";
 import backButton from "../icons/chevron-back.png";
 import "../style/colors.css";
 import CustomCheckbox from "../style/CustomCheckbox";
@@ -11,46 +10,45 @@ export default function GraduationMessageForm() {
   const [author, setAuthor] = useState("");
   const [letter, setLetter] = useState("");
   const [isPublic, setIsPublic] = useState<null | boolean>(null);
-  const { albumId } = useParams<{ albumId: string }>();
-
+  // const { albumId } = useParams<{ albumId: string }>();
+  const albumId = "1";
   const [picUrl, setPicUrl] = useState<string>("");
 
-  const handleImageUpload = async (file: File) => {
-    const localPreview = URL.createObjectURL(file);
-    setPicUrl(localPreview);
+  const API_BASE = "https://api.photory.site";
 
+  const handleImageUpload = async (file: File) => {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", file); 
 
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_BASE}/api/upload`, {
         method: "POST",
         body: formData,
       });
-      const data = await res.json();
-      const uploadedUrl: string | undefined = data?.url ?? data?.data?.url;
 
-      if (res.ok && uploadedUrl) {
-        setPicUrl(uploadedUrl); 
-      } else {
-        alert("이미지 업로드에 실패했어요.");
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Upload failed:", res.status, text);
+        alert(`업로드 실패 (${res.status})`);
+        return;
       }
-    } catch (error) {
-      console.error("업로드 에러:", error);
+
+      const data = await res.json();
+      const url = data?.url ?? data?.data?.url ?? data?.result?.url;
+      if (!url) {
+        alert("응답에서 이미지 URL을 찾지 못했어요.");
+        return;
+      }
+      setPicUrl(url);
+    } catch (e) {
+      console.error(e);
       alert("이미지 업로드 중 오류가 발생했어요.");
     }
   };
 
   const submitMessage = async () => {
-    // 디버깅용
-    console.log("author:", author);
-    console.log("letter:", letter);
-    console.log("isPublic:", isPublic);
-    console.log("picUrl:", picUrl);
-    console.log("albumId:", albumId);
-
     if (!albumId) {
-      alert("albumId가 없습니다. 경로를 확인해 주세요.");
+      alert("albumId가 없습니다.");
       return;
     }
     if (!author.trim() || !letter.trim() || isPublic === null || !picUrl) {
@@ -59,25 +57,25 @@ export default function GraduationMessageForm() {
     }
 
     try {
-      const res = await fetch(`/api/albums/${albumId}/letter`, {
+      const res = await fetch(`${API_BASE}/api/albums/${albumId}/letter`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           writer_name: author,
           pic_url: picUrl,
           message: letter,
-          isPublic: isPublic,
+          isPublic,
         }),
       });
 
       const data = await res.json();
       if (res.ok && data?.isSuccess) {
-        alert(data?.message || "축하 메시지가 등록되었어요!");
+        alert(data?.message || "등록 완료!");
       } else {
         alert("등록 실패: " + (data?.message ?? "알 수 없는 오류"));
       }
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      console.error(e);
       alert("등록 중 오류가 발생했어요.");
     }
   };
@@ -144,6 +142,7 @@ export default function GraduationMessageForm() {
             type="text"
             placeholder="본명으로 작성해 주세요!"
             value={author}
+            maxLength={5}
             onChange={(e) => setAuthor(e.target.value)}
             style={{
               width: "278px",
