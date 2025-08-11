@@ -1,12 +1,9 @@
 import axios from "axios";
-
-// 졸업 메시지 수정 요청 타입
 export interface PatchLetterRequest {
   message?: string;
   isPublic?: boolean;
 }
 
-// 졸업 메시지 수정 응답 타입
 export interface PatchLetterResponse {
   httpStatus: string;
   isSuccess: boolean;
@@ -14,7 +11,6 @@ export interface PatchLetterResponse {
   message: string;
 }
 
-// 졸업 메시지 수정 API 함수
 export const patchGraduationLetter = async (
   letterId: string,
   data: PatchLetterRequest,

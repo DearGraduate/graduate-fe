@@ -8,6 +8,10 @@ import {
   createGraduationLetter,
   CreateLetterRequest,
 } from "../api/graduationLetter";
+import {
+  patchGraduationLetter,
+  PatchLetterRequest,
+} from "../api/patchGraduationLetter";
 
 export default function GraduationMessageForm() {
   const { albumId = "1" } = { albumId: "1" };
@@ -16,6 +20,7 @@ export default function GraduationMessageForm() {
   const [isPublic, setIsPublic] = useState<null | boolean>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [defaultPicKey, setDefaultPicKey] = useState<string>("");
+  const [letterId, setLetterId] = useState<string | null>(null); // 편집용 letterId
   const currentPicValue = previewUrl || defaultPicKey || "";
 
   function onDefaultPick(url: string) {
@@ -34,37 +39,69 @@ export default function GraduationMessageForm() {
   }
 
   async function saveMessage() {
-    if (!author.trim() || !letter.trim() || isPublic === null) {
-      alert("작성자, 편지, 공개여부를 모두 입력해 주세요.");
+    if (!letter.trim() || isPublic === null) {
+      alert("편지, 공개여부를 모두 입력해 주세요.");
       return;
     }
-    const req: CreateLetterRequest = {
-      writer_name: author,
-      pic_url: currentPicValue,
-      message: letter,
-      isPublic,
-    };
-    try {
-      const data = await createGraduationLetter(albumId, req);
-      if (data.isSuccess) {
-        alert("축하 메시지가 성공적으로 등록되었습니다.");
-        setAuthor("");
-        setLetter("");
-        setIsPublic(null);
-        setPreviewUrl("");
-        setDefaultPicKey("");
-      } else {
-        alert(data.message || "등록에 실패했습니다.");
+    if (letterId) {
+      // PATCH (수정)
+      const req: PatchLetterRequest = {
+        message: letter,
+        isPublic,
+      };
+      try {
+        const data = await patchGraduationLetter(letterId, req);
+        if (data.isSuccess) {
+          alert("축하 메시지가 성공적으로 수정되었습니다.");
+          setLetter("");
+          setIsPublic(null);
+          setPreviewUrl("");
+          setDefaultPicKey("");
+          setLetterId(null);
+        } else {
+          alert(data.message || "수정에 실패했습니다.");
+        }
+      } catch (e: any) {
+        if (e.response && e.response.data && e.response.data.message) {
+          alert(e.response.data.message);
+        } else {
+          alert("네트워크 오류가 발생했습니다.");
+        }
       }
-    } catch (e: any) {
-      if (e.response && e.response.data && e.response.data.message) {
-        alert(e.response.data.message);
-      } else {
-        alert("네트워크 오류가 발생했습니다.");
+    } else {
+      // POST (작성)
+      if (!author.trim()) {
+        alert("작성자 이름을 입력해 주세요.");
+        return;
+      }
+      const req: CreateLetterRequest = {
+        writer_name: author,
+        pic_url: currentPicValue,
+        message: letter,
+        isPublic,
+      };
+      try {
+        const data = await createGraduationLetter(albumId, req);
+        if (data.isSuccess) {
+          alert("축하 메시지가 성공적으로 등록되었습니다.");
+          setAuthor("");
+          setLetter("");
+          setIsPublic(null);
+          setPreviewUrl("");
+          setDefaultPicKey("");
+        } else {
+          alert(data.message || "등록에 실패했습니다.");
+        }
+      } catch (e: any) {
+        if (e.response && e.response.data && e.response.data.message) {
+          alert(e.response.data.message);
+        } else {
+          alert("네트워크 오류가 발생했습니다.");
+        }
       }
     }
   }
-
+  // 함수 본문 닫기
   return (
     <div
       style={{
@@ -246,7 +283,7 @@ export default function GraduationMessageForm() {
             }}
           >
             <CustomButton onClick={saveMessage}>
-              축하글 작성 완료하기
+              {letterId ? "축하글 수정 완료하기" : "축하글 작성 완료하기"}
             </CustomButton>
           </div>
         </div>
