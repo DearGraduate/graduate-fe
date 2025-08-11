@@ -1,5 +1,5 @@
 import CustomButton from "../../components/common/button";
-import photoryImg from "../../assets/icons/photory.png"; 
+import photoryImg from "../../assets/icons/tory.png"; 
 
 export default function ErrorPage() {
   return (
@@ -60,10 +60,10 @@ export default function ErrorPage() {
           alt="포토리"
           style={{
             position: "absolute",
-            top: "281px",
-            left: "51.3%",
+            top: "289px",
+            left: "50%",
             transform: "translateX(-50%)",
-            width: "300px",
+            width: "273px",
           }}
         />
         <div
@@ -76,7 +76,7 @@ export default function ErrorPage() {
             cursor: "pointer",
           }}
         >
-          <CustomButton>나의 졸업 앨범으로 돌아가기</CustomButton>
+          <CustomButton>나의 앨범으로 돌아가기</CustomButton>
         </div>
       </div>
     </div>
