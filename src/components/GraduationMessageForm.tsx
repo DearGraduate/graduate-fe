@@ -1,84 +1,69 @@
 import { useState } from "react";
-//import { useParams } from "react-router-dom";
 import backButton from "../icons/chevron-back.png";
 import "../style/colors.css";
 import CustomCheckbox from "../style/CustomCheckbox";
 import CustomButton from "./common/button";
 import PhotoAttachStrip from "../components/PhotoAttach";
+import {
+  createGraduationLetter,
+  CreateLetterRequest,
+} from "../api/graduationLetter";
 
 export default function GraduationMessageForm() {
+  const { albumId = "1" } = { albumId: "1" };
   const [author, setAuthor] = useState("");
   const [letter, setLetter] = useState("");
   const [isPublic, setIsPublic] = useState<null | boolean>(null);
-  // const { albumId } = useParams<{ albumId: string }>();
-  const albumId = "1";
-  const [picUrl, setPicUrl] = useState<string>("");
+  const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [defaultPicKey, setDefaultPicKey] = useState<string>("");
+  const currentPicValue = previewUrl || defaultPicKey || "";
 
-  const API_BASE = "https://api.photory.site";
+  function onDefaultPick(url: string) {
+    setDefaultPicKey(url);
+    setPreviewUrl("");
+  }
 
-  const handleImageUpload = async (file: File) => {
-    const formData = new FormData();
-    formData.append("file", file); 
+  function onFileSelected(file: File) {
+    setDefaultPicKey("");
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const url = typeof ev.target?.result === "string" ? ev.target.result : "";
+      setPreviewUrl(url);
+    };
+    reader.readAsDataURL(file);
+  }
 
-    try {
-      const res = await fetch(`${API_BASE}/api/upload`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        console.error("Upload failed:", res.status, text);
-        alert(`업로드 실패 (${res.status})`);
-        return;
-      }
-
-      const data = await res.json();
-      const url = data?.url ?? data?.data?.url ?? data?.result?.url;
-      if (!url) {
-        alert("응답에서 이미지 URL을 찾지 못했어요.");
-        return;
-      }
-      setPicUrl(url);
-    } catch (e) {
-      console.error(e);
-      alert("이미지 업로드 중 오류가 발생했어요.");
-    }
-  };
-
-  const submitMessage = async () => {
-    if (!albumId) {
-      alert("albumId가 없습니다.");
+  async function saveMessage() {
+    if (!author.trim() || !letter.trim() || isPublic === null) {
+      alert("작성자, 편지, 공개여부를 모두 입력해 주세요.");
       return;
     }
-    if (!author.trim() || !letter.trim() || isPublic === null || !picUrl) {
-      alert("모든 항목을 입력해 주세요");
-      return;
-    }
-
+    const req: CreateLetterRequest = {
+      writer_name: author,
+      pic_url: currentPicValue,
+      message: letter,
+      isPublic,
+    };
     try {
-      const res = await fetch(`${API_BASE}/api/albums/${albumId}/letter`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          writer_name: author,
-          pic_url: picUrl,
-          message: letter,
-          isPublic,
-        }),
-      });
-
-      const data = await res.json();
-      if (res.ok && data?.isSuccess) {
-        alert(data?.message || "등록 완료!");
+      const data = await createGraduationLetter(albumId, req);
+      if (data.isSuccess) {
+        alert("축하 메시지가 성공적으로 등록되었습니다.");
+        setAuthor("");
+        setLetter("");
+        setIsPublic(null);
+        setPreviewUrl("");
+        setDefaultPicKey("");
       } else {
-        alert("등록 실패: " + (data?.message ?? "알 수 없는 오류"));
+        alert(data.message || "등록에 실패했습니다.");
       }
-    } catch (e) {
-      console.error(e);
-      alert("등록 중 오류가 발생했어요.");
+    } catch (e: any) {
+      if (e.response && e.response.data && e.response.data.message) {
+        alert(e.response.data.message);
+      } else {
+        alert("네트워크 오류가 발생했습니다.");
+      }
     }
-  };
+  }
 
   return (
     <div
@@ -167,12 +152,17 @@ export default function GraduationMessageForm() {
           >
             사진 첨부
           </label>
-
-          <PhotoAttachStrip
-            value={picUrl}
-            onChange={(url) => setPicUrl(url)} // 기본 이미지 선택 시 호출
-            onFileSelected={(file) => handleImageUpload(file)} // 파일 선택 시 업로드 로직 실행
-          />
+          <div
+            style={{
+              marginBottom: "25px",
+            }}
+          >
+            <PhotoAttachStrip
+              value={currentPicValue}
+              onChange={onDefaultPick}
+              onFileSelected={onFileSelected}
+            />
+          </div>
           <label
             style={{
               fontSize: "24px",
@@ -255,7 +245,7 @@ export default function GraduationMessageForm() {
               cursor: "pointer",
             }}
           >
-            <CustomButton onClick={submitMessage}>
+            <CustomButton onClick={saveMessage}>
               축하글 작성 완료하기
             </CustomButton>
           </div>
