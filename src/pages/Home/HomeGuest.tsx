@@ -22,7 +22,7 @@ const HomeGuest = () => {
   };
 
   return (
-    <div className="w-screen min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
+    <div className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
       <div className="w-full max-w-[237px] min-h-[80px] flex flex-col items-center justify-center gap-2.5 opacity-100 mt-[5vh] relative z-10">
         <div className="font-ydestreet font-bold text-[36px] leading-[150%] tracking-[0] text-white text-center">
           졸축위 의<br/>졸업 축하 앨범

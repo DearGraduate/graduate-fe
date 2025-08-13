@@ -5,12 +5,15 @@ import EmptyAlbumMessage from "../../components/home/EmptyAlbumMessage";
 import DownloadPDF from "../../components/modals/DownloadPDF";
 import DownloadModal from "../../components/modals/DownloadModal";
 import { useState, useEffect } from "react";
+import { useKakaoLogout } from "../../hooks/useKakaoLogout";
+import { useNavigate } from "react-router-dom";
 
 const HomeUser = () => {
   const albumExists = true;
   const isRollingPaperExpired = true;
   const [isDownloadModalOpen, setDownloadModalOpen] = useState(false);
   const [isDownloadCharacterModalOpen, setDownloadCharacterModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleOpenDownloadModal = () => setDownloadModalOpen(true);
   const handleCloseDownloadModal = () => setDownloadModalOpen(false);
@@ -23,8 +26,15 @@ const HomeUser = () => {
     }
   }, [isRollingPaperExpired]);
 
+  const { handleLogout } = useKakaoLogout();
+
+  const handleSettingClick = () => {
+    // 설정 아이콘 클릭 시 설정 페이지로 이동
+    navigate('/setting');
+  };
+
   return (
-    <div className="w-screen min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
+    <div className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
       <div className="w-full max-w-[393px] min-h-[200px] py-10 pb-5 opacity-100 flex flex-col items-center justify-start relative flex-shrink-0">
         <div className="w-full flex flex-row items-start justify-between relative mt-10 px-[35px] box-border">
           <div className="min-w-[52px] h-[23px] flex items-center justify-center gap-[3px] border border-white p-[3px] px-2 bg-transparent opacity-100">
@@ -32,7 +42,7 @@ const HomeUser = () => {
               D-23
             </span>
           </div>
-          <img src={SetIcon} alt="설정" className="w-[23px] h-[23px] cursor-pointer" />
+          <img src={SetIcon} alt="설정" className="w-[23px] h-[23px] cursor-pointer" onClick={handleSettingClick} />
         </div>
         
         <div className="w-full max-w-[237px] min-h-[80px] flex flex-col items-center justify-center gap-[5px] opacity-100 mt-[30px]">

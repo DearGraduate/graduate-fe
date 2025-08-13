@@ -6,7 +6,7 @@ const Login = () => {
     const { handleKakaoLogin } = useKakaoLogin();
 
     return (
-        <div className="w-screen min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
+        <div className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
             <div className="w-full max-w-[189px] max-h-[197px] opacity-100 flex items-center justify-center gap-2.5 mt-[15vh] short:hidden">
                 <img src={LoginLogo} alt="로그인 로고" className="w-full h-full" />
             </div>
