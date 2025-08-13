@@ -5,7 +5,6 @@ import EmptyAlbumMessage from "../../components/home/EmptyAlbumMessage";
 import DownloadPDF from "../../components/modals/DownloadPDF";
 import DownloadModal from "../../components/modals/DownloadModal";
 import { useState, useEffect } from "react";
-import { useKakaoLogout } from "../../hooks/useKakaoLogout";
 import { useNavigate } from "react-router-dom";
 
 const HomeUser = () => {
@@ -25,8 +24,6 @@ const HomeUser = () => {
       setDownloadCharacterModalOpen(true);
     }
   }, [isRollingPaperExpired]);
-
-  const { handleLogout } = useKakaoLogout();
 
   const handleSettingClick = () => {
     // 설정 아이콘 클릭 시 설정 페이지로 이동
