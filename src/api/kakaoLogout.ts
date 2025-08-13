@@ -30,7 +30,12 @@ export const kakaoLogoutAPI = {
       
       // Access Token이 있으면 Authorization 헤더에 추가
       if (accessToken) {
-        headers['Authorization'] = `Bearer ${accessToken}`;
+        // Bearer 접두사가 이미 있으면 제거하고 다시 추가
+        const cleanToken = accessToken.startsWith('Bearer ') 
+          ? accessToken.substring(7) 
+          : accessToken;
+        
+        headers['Authorization'] = `Bearer ${cleanToken}`;
       }
       
       const response = await apiClient.post<LogoutResponse>(
