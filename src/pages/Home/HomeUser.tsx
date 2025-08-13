@@ -5,6 +5,8 @@ import AlbumSection from "../../components/home/AlbumSection";
 import EmptyAlbumMessage from "../../components/home/EmptyAlbumMessage";
 import DownloadPDF from "../../components/modals/DownloadPDF";
 import { useState } from "react";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
 const HomeUserContainer = styled.div`
   width: 100vw;
@@ -157,8 +159,58 @@ const HomeUser = () => {
   const handleOpenDownloadModal = () => setDownloadModalOpen(true);
   const handleCloseDownloadModal = () => setDownloadModalOpen(false);
 
+  // ▼ 인쇄 대상
+  const printRef = useRef<HTMLDivElement>(null);
+
+  // 모달에서 넘겨주는 파일명 사용하고 싶다면 state로 보관해도 OK
+  const fileName = "Photo:ry졸업앨범.pdf";
+
+  // react-to-print 핸들러
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,                 // 인쇄할 루트
+    documentTitle: fileName.replace(/\.pdf$/i, ""), // 다이얼로그 파일명(확장자 제외)
+    onAfterPrint: handleCloseDownloadModal,
+    pageStyle: `
+      /* A4 세로 + 여백 */
+      @page { size: A4 portrait; margin: 12mm; }
+
+      /* 배경색/이미지 강제 인쇄 */
+      html, body, #print-root {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* 인쇄 영역 폭을 A4 내부에 예쁘게 맞추고 가운데 정렬 */
+      #print-root {
+        width: 186mm;            /* 210 - (12*2) 여백 기준 */
+        margin: 0 auto;
+      }
+
+      /* 스크롤 박스 풀어서 전체 내용 출력 */
+      [data-print-expand="true"] {
+        overflow: visible !important;
+        max-height: none !important;
+        height: auto !important;
+      }
+
+      /* 카드/행이 페이지 중간에 잘리지 않게 */
+      [data-print-keep="true"] {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      /* 인쇄 시 숨길 요소 */
+      [data-print-hide="true"] { display: none !important; }
+
+      /* 고정/절대/플렉스가 잘림을 유발하는 경우가 많아 완화 */
+      @media print {
+        * { box-shadow: none !important; }
+      }
+    `,
+  });
+
   return (
-    <HomeUserContainer>
+    <HomeUserContainer   id="print-root" ref={printRef}>
       <TopContainer>
         <IconContainer>
           <DayBox>
@@ -199,20 +251,21 @@ const HomeUser = () => {
             </CustomButton>
           </>
         ) : (
-          <>
-            <CustomButton
+          <div data-print-hide="true">
+            <CustomButton data-print-hide="true"
               bgColor="bg-button-default"
               className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
               onClick={handleOpenDownloadModal}
             >
-              <ButtonText>나의 졸업 앨범 다운로드</ButtonText>
+              <ButtonText >나의 졸업 앨범 다운로드</ButtonText>
             </CustomButton>
-            <DownloadPDF
+            <DownloadPDF data-print-hide="true"
+              onDownload={handlePrint}
               isOpen={isDownloadModalOpen}
               onRequestClose={handleCloseDownloadModal}
-              fileName="홍길동_졸업앨범_2025_02_17.pdf"
+              fileName={fileName}
             />
-          </>
+          </div>
         )}
       </ButtonContainer>
     </HomeUserContainer>

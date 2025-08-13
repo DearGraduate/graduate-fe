@@ -49,11 +49,11 @@ const AlbumSection = () => {
   }
 
   return (
-    <AlbumSectionWrapper>
+    <AlbumSectionWrapper  data-print-expand="true">
       {messagePairs.map((pair, index) => (
-        <AlbumRow key={index}>
+        <AlbumRow key={index} data-print-keep="true">
           {pair.map((message, i) => (
-            <CardContainer key={i}>
+            <CardContainer key={i} data-print-keep="true">
               <MessageCard
                 name={message.name}
                 imageUrl={message.imageUrl}
