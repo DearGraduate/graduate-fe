@@ -4,6 +4,7 @@ import imgShare from '../assets/icons/img_share.png';
 import imgHome from '../assets/icons/icon_home.png';
 import { useState } from 'react';
 import ShareModal from '../components/modals/ShareModal';
+import { useNavigate } from 'react-router-dom';
 
 const SharePage = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -16,20 +17,22 @@ const SharePage = () => {
       }   
 
 
+  const navigate = useNavigate();
+
 
   return (
     <div className="min-h-screen bg-[#415940] text-white px-6 py-10 flex flex-col items-center justify-between">
       {/* 상단 홈 아이콘 */}
       <div className="w-full flex justify-start">
-        <button>
+        <button onClick={() => navigate('/home')}>
         <img src={imgHome} alt="home" className="w-6 h-6" />
-        </button>
+      </button>
       </div>
 
       {/* 중앙 텍스트 */}
       <div className="text-center mt-10">
         <h1 className="text-2xl font-bold leading-tight">박성민 의<br />졸업 축하 앨범</h1>
-        <p className="text-sm text-[#B5B5B5] mt-2">드디어...졸업한다..!</p>
+        <p className="text-sm text-white mt-2">드디어...졸업한다..!</p>
       </div>
 
       {/* 이미지 */}
@@ -48,7 +51,7 @@ const SharePage = () => {
         <CustomButton
           bgColor="bg-[#D9ECD2]"
           className="w-full font-semibold text-black"
-          onClick={() => console.log('나에게 축하글 작성하기')}
+          //onClick={() => console.log('나에게 축하글 작성하기')}
         >
           나에게 축하글 작성하기
         </CustomButton>

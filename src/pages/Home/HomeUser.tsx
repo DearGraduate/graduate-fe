@@ -1,12 +1,14 @@
 import styled from "styled-components";
-import SetIcon from "../../assets/icons/Set.png";
+import setIcon from "../../assets/icons/Set.png";
 import CustomButton from "../../components/common/button";
 import AlbumSection from "../../components/home/AlbumSection";
 import EmptyAlbumMessage from "../../components/home/EmptyAlbumMessage";
 import DownloadPDF from "../../components/modals/DownloadPDF";
 import { useState } from "react";
+
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
+import { useKakaoLogout } from "../../hooks/useKakaoLogout";
 
 const HomeUserContainer = styled.div`
   width: 100vw;
@@ -76,6 +78,11 @@ const SettingIcon = styled.img`
   width: 23px;
   height: 23px;
   cursor: pointer;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
 const TitleContainer = styled.div`
@@ -209,6 +216,16 @@ const HomeUser = () => {
     `,
   });
 
+  const { handleLogout } = useKakaoLogout();
+
+  const handleSettingClick = () => {
+    // 설정 아이콘 클릭 시 로그아웃
+    if (window.confirm('로그아웃하시겠습니까?')) {
+      handleLogout();
+    }
+  };
+
+
   return (
     <HomeUserContainer   id="print-root" ref={printRef}>
       <TopContainer>
@@ -216,7 +233,12 @@ const HomeUser = () => {
           <DayBox>
             <DayText>D-23</DayText>
           </DayBox>
-          <SettingIcon src={SetIcon} alt="설정" />
+          <SettingIcon 
+            src={setIcon} 
+            alt="설정" 
+            onClick={handleSettingClick}
+            title="로그아웃"
+          />
         </IconContainer>
         <TitleContainer>
           <TitleText>박성민 의<br/>졸업 축하 앨범</TitleText>
