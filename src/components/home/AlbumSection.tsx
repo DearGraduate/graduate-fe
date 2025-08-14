@@ -1,42 +1,4 @@
-import styled from "styled-components";
 import MessageCard, { defaultMessages } from "../common/MessageCard";
-
-const AlbumSectionWrapper = styled.div`
-  width: 100%;
-  max-width: 297px;
-  max-height: 40vh;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  overscroll-behavior: contain;
-  padding-right: 5px; /* 스크롤바 공간 확보 */
-
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
-
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
-`;
-
-const AlbumRow = styled.div`
-  width: 100%;
-  max-width: 297px;
-  min-height: 180px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 37px;
-  flex-shrink: 0; /* 행이 압축되지 않도록 */
-`;
-
-const CardContainer = styled.div`
-  width: 130px;
-  flex-shrink: 0;
-`;
 
 const AlbumSection = () => {
   // MessageCard의 defaultMessages 사용
@@ -49,21 +11,21 @@ const AlbumSection = () => {
   }
 
   return (
-    <AlbumSectionWrapper  data-print-expand="true">
+    <div className="w-full max-w-[297px] max-h-[40vh] flex flex-col gap-2.5 overflow-y-auto overflow-x-hidden scroll-smooth overscroll-contain pr-[5px] pb-2 hide-scrollbar">
       {messagePairs.map((pair, index) => (
-        <AlbumRow key={index} data-print-keep="true">
+        <div key={index} className="w-full max-w-[297px] min-h-[180px] flex flex-row justify-between gap-[37px] flex-shrink-0">
           {pair.map((message, i) => (
-            <CardContainer key={i} data-print-keep="true">
+            <div key={i} className="w-[130px] flex-shrink-0">
               <MessageCard
                 name={message.name}
                 imageUrl={message.imageUrl}
                 message={message.message}
               />
-            </CardContainer>
+            </div>
           ))}
-        </AlbumRow>
+        </div>
       ))}
-    </AlbumSectionWrapper>
+    </div>
   );
 };
 

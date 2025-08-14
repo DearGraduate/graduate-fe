@@ -1,191 +1,45 @@
-import styled from 'styled-components';
 import KAKAOMINI from '../../assets/icons/KAKAOMini.png';
+import LoginLogo from '../../assets/images/LoginLogo.png';
 import { useKakaoLogin } from '../../hooks/useKakaoLogin';
-
-const LoginContainer = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: var(--color-main);
-  position: relative;
-  padding: 0 20px;
-  box-sizing: border-box;
-`;
-
-const LogoContainer = styled.div`
-  width: 100%;
-  max-width: 158px;
-  height: 131px;
-  background: #D9D9D9;
-  opacity: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 15vh;
-
-  
-  @media (max-height: 600px) {
-    display: none;
-  }
-`;
-
-const TextContainer = styled.div`
-  width: 100%;
-  max-width: 252px;
-  min-height: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2vh;
-  opacity: 1;
-  margin-top: 2vh;
-`;
-
-const MainTextContainer = styled.div`
-  width: 100%;
-  max-width: 252px;
-  min-height: 47px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  opacity: 1;
-`;
-
-const MainText = styled.div`
-  font-family: 'Ydestreet', sans-serif;
-  font-weight: 700;
-  font-size: 36px;
-  color: #fff;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-`;
-
-const SubTextContainer = styled.div`
-  width: 100%;
-  max-width: 180px;
-  min-height: 17px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-`;
-
-const SubText = styled.div`
-  font-family: 'Pretendard', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: #fff;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-`;
-
-const StatsTextContainer = styled.div`
-  width: 100%;
-  max-width: 127px;
-  min-height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Pretendard', sans-serif;
-  font-size: 10px;
-  color: #fff;
-  opacity: 1;
-  text-align: center;
-  margin-top: 25vh;
-`;
-
-const KakaoButtonContainer = styled.button`
-  width: 100%;
-  max-width: 290px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border-radius: 25px;
-  background: #FAE100;
-  border: none;
-  cursor: pointer;
-  opacity: 1;
-  margin: 0 auto;
-  margin-top: 4vh;
-`;
-
-const KakaoInnerContainer = styled.div`
-  width: 100%;
-  max-width: 177px;
-  height: 26px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 21px;
-  opacity: 1;
-`;
-
-const KakaoImgContainer = styled.div`
-  width: 30px;
-  height: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-`;
-
-const KakaoTextContainer = styled.div`
-  width: 100%;
-  max-width: 126px;
-  height: 17px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-`;
-
-const KakaoText = styled.span`
-  font-family: 'Pretendard', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-text-black);
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-`;
 
 const Login = () => {
     const { handleKakaoLogin } = useKakaoLogin();
 
     return (
-        <LoginContainer>
-            <LogoContainer />
-            <TextContainer>
-                <MainTextContainer>
-                    <MainText>졸업축하위원회</MainText>
-                </MainTextContainer>
-                <SubTextContainer>
-                    <SubText>특별한 졸업식을 만들어 드립니다</SubText>
-                </SubTextContainer>
-            </TextContainer>
-            <StatsTextContainer>
+        <div className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
+            <div className="w-full max-w-[189px] max-h-[197px] opacity-100 flex items-center justify-center gap-2.5 mt-[15vh] short:hidden">
+                <img src={LoginLogo} alt="로그인 로고" className="w-full h-full" />
+            </div>
+            
+            <div className="w-full max-w-[227px] min-h-[44px] flex flex-col items-center justify-center gap-2.5 mt-[2vh]">
+                <div className="font-pretendard font-medium text-[14px] leading-[100%] tracking-[0] text-center text-[var(--color-text-white)]">
+                    나만을 위한 친구의 편지를 간직할 수 있는
+                </div>
+                <div className="font-pretendard font-medium text-[14px] leading-[100%] tracking-[0] text-center text-[var(--color-text-white)]">
+                    편지 앨범 서비스, 포토:리
+                </div>
+            </div>
+            
+            <div className="w-full max-w-[127px] min-h-[24px] flex items-center justify-center font-pretendard text-[10px] text-white opacity-100 text-center mt-[20vh]">
                 150개의 앨범이 제작 되었어요<br />2654개의 편지가 작성 되었어요
-            </StatsTextContainer>
-            <KakaoButtonContainer onClick={handleKakaoLogin}>
-                <KakaoInnerContainer>
-                    <KakaoImgContainer>
-                        <img src={KAKAOMINI} alt="카카오톡" style={{ width: '26px', height: '26px' }} />
-                    </KakaoImgContainer>
-                    <KakaoTextContainer>
-                        <KakaoText>KAKAO로 로그인 하기</KakaoText>
-                    </KakaoTextContainer>
-                </KakaoInnerContainer>
-            </KakaoButtonContainer>
-        </LoginContainer>
+            </div>
+            
+            <button 
+                className="w-full max-w-[290px] h-10 flex items-center justify-center gap-2.5 rounded-[25px] bg-[#FAE100] border-none cursor-pointer opacity-100 mx-auto mt-[4vh]"
+                onClick={handleKakaoLogin}
+            >
+                <div className="w-full max-w-[177px] h-[26px] flex flex-row items-center gap-[21px] opacity-100">
+                    <div className="w-[30px] h-[14px] flex items-center justify-center opacity-100">
+                        <img src={KAKAOMINI} alt="카카오톡" className="w-[26px] h-[26px]" />
+                    </div>
+                    <div className="w-full max-w-[126px] h-[17px] flex items-center justify-center opacity-100">
+                        <span className="font-pretendard text-[14px] font-medium text-[var(--color-text-black)] leading-[100%] tracking-[0] text-center">
+                            KAKAO로 로그인 하기
+                        </span>
+                    </div>
+                </div>
+            </button>
+        </div>
     );
 };
 
