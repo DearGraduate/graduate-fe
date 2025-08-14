@@ -15,7 +15,10 @@ export const useRefreshToken = (): UseRefreshTokenReturn => {
     try {
       console.log('토큰 재발급 시작');
       
-      const { data, newAccessToken, expiresAt } = await refreshTokenAPI.refreshAccessToken();
+      // 현재 토큰 가져오기
+      const currentToken = useAuthStore.getState().accessToken;
+      
+      const { data, newAccessToken, expiresAt } = await refreshTokenAPI.refreshAccessToken(currentToken || undefined);
       
       if (data.isSuccess && newAccessToken) {
         console.log('토큰 재발급 성공');

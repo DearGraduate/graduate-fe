@@ -20,7 +20,7 @@ const apiClient = axios.create({
 // 토큰 재발급 API 함수
 export const refreshTokenAPI = {
   // 액세스 토큰 재발급
-  refreshAccessToken: async (): Promise<{ 
+  refreshAccessToken: async (accessToken?: string): Promise<{ 
     data: RefreshTokenResponse; 
     newAccessToken: string | null;
     expiresAt: number | null;
@@ -28,13 +28,24 @@ export const refreshTokenAPI = {
     try {
       console.log('액세스 토큰 재발급 요청');
       
+      const headers: Record<string, string> = {
+        'accept': '*/*',
+      };
+      
+      // Access Token이 있으면 Authorization 헤더에 추가 (Bearer 중복 방지)
+      if (accessToken) {
+        const cleanToken = accessToken.startsWith('Bearer ') 
+          ? accessToken.substring(7) 
+          : accessToken;
+        
+        headers['Authorization'] = `Bearer ${cleanToken}`;
+      }
+      
       const response = await apiClient.post<RefreshTokenResponse>(
         '/api/auth/refresh',
         null,
         {
-          headers: {
-            'accept': '*/*',
-          },
+          headers,
         }
       );
       
