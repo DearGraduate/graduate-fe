@@ -9,7 +9,7 @@ interface KakaoLoginResponse {
 
 // axios 인스턴스 생성
 const apiClient = axios.create({
-  baseURL: 'https://api.photory.site',
+  baseURL: process.env.REACT_APP_BASE_URL,
   timeout: 10000,
   withCredentials: true, // HttpOnly 쿠키 자동 전송을 위해 필요
   headers: {
