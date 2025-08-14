@@ -35,8 +35,20 @@ const KakaoCallback = () => {
         // Access Token만 로컬스토리지에 저장
         // Refresh Token은 HttpOnly 쿠키로 자동 저장됨
         if (tokens.accessToken) {
+          // JWT에서 만료 시간 추출
+          let expiresAt: number | undefined;
+          try {
+            const tokenParts = tokens.accessToken.replace('Bearer ', '').split('.');
+            if (tokenParts.length === 3) {
+              const payload = JSON.parse(atob(tokenParts[1]));
+              expiresAt = payload.exp * 1000; // Unix timestamp를 밀리초로 변환
+            }
+          } catch (error) {
+            console.error('토큰 파싱 실패:', error);
+          }
+          
           // authStore에 로그인 상태 업데이트
-          login(tokens.accessToken);
+          login(tokens.accessToken, expiresAt);
         }
         
         setTimeout(() => {

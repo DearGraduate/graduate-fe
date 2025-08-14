@@ -6,12 +6,14 @@ interface AuthState {
   // 상태
   isLoggedIn: boolean;
   accessToken: string | null;
+  tokenExpiresAt: number | null; // 토큰 만료 시간 (밀리초)
   
   // 액션
-  login: (accessToken: string) => void;
+  login: (accessToken: string, expiresAt?: number) => void;
   logout: () => void;
-  updateAccessToken: (token: string) => void;
+  updateAccessToken: (token: string, expiresAt?: number) => void;
   clearAuth: () => void;
+  isTokenExpiringSoon: () => boolean; // 토큰이 곧 만료될지 확인 (5분 전)
 }
 
 // 인증 스토어 생성
@@ -21,16 +23,21 @@ export const useAuthStore = create<AuthState>()(
       // 초기 상태
       isLoggedIn: false,
       accessToken: null,
+      tokenExpiresAt: null,
 
       // 로그인 액션
-      login: (accessToken: string) => {
+      login: (accessToken: string, expiresAt?: number) => {
         set({
           isLoggedIn: true,
           accessToken,
+          tokenExpiresAt: expiresAt || null,
         });
         
-        // 로컬스토리지에 Access Token 저장
+        // 로컬스토리지에 Access Token과 만료 시간 저장
         localStorage.setItem('accessToken', accessToken);
+        if (expiresAt) {
+          localStorage.setItem('tokenExpiresAt', expiresAt.toString());
+        }
       },
 
       // 로그아웃 액션
@@ -38,16 +45,24 @@ export const useAuthStore = create<AuthState>()(
         set({
           isLoggedIn: false,
           accessToken: null,
+          tokenExpiresAt: null,
         });
         
-        // 로컬스토리지에서 Access Token 제거
+        // 로컬스토리지에서 Access Token과 만료 시간 제거
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('tokenExpiresAt');
       },
 
       // Access Token 업데이트 액션
-      updateAccessToken: (token: string) => {
-        set({ accessToken: token });
+      updateAccessToken: (token: string, expiresAt?: number) => {
+        set({ 
+          accessToken: token,
+          tokenExpiresAt: expiresAt || null,
+        });
         localStorage.setItem('accessToken', token);
+        if (expiresAt) {
+          localStorage.setItem('tokenExpiresAt', expiresAt.toString());
+        }
       },
 
       // 인증 정보 초기화 액션
@@ -55,8 +70,21 @@ export const useAuthStore = create<AuthState>()(
         set({
           isLoggedIn: false,
           accessToken: null,
+          tokenExpiresAt: null,
         });
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('tokenExpiresAt');
+      },
+
+      // 토큰이 곧 만료될지 확인 (5분 전)
+      isTokenExpiringSoon: () => {
+        const { tokenExpiresAt } = get();
+        if (!tokenExpiresAt) return false;
+        
+        const now = Date.now();
+        const fiveMinutesFromNow = now + (5 * 60 * 1000); // 5분 후
+        
+        return tokenExpiresAt <= fiveMinutesFromNow;
       },
     }),
     {
@@ -65,6 +93,7 @@ export const useAuthStore = create<AuthState>()(
         // 로컬스토리지에 저장할 상태만 선택
         isLoggedIn: state.isLoggedIn,
         accessToken: state.accessToken,
+        tokenExpiresAt: state.tokenExpiresAt,
       }),
     }
   )
@@ -95,14 +124,16 @@ const isTokenValid = (token: string): boolean => {
 // 초기화 함수: 페이지 로드 시 토큰 유효성 검증
 export const initializeAuth = () => {
   const storedToken = localStorage.getItem('accessToken');
+  const storedExpiresAt = localStorage.getItem('tokenExpiresAt');
   const { isLoggedIn } = useAuthStore.getState();
   
   if (storedToken) {
     if (isTokenValid(storedToken)) {
       // 토큰이 유효한 경우에만 로그인 상태 유지
       if (!isLoggedIn) {
-        useAuthStore.getState().updateAccessToken(storedToken);
-        useAuthStore.getState().login(storedToken);
+        const expiresAt = storedExpiresAt ? parseInt(storedExpiresAt) : undefined;
+        useAuthStore.getState().updateAccessToken(storedToken, expiresAt);
+        useAuthStore.getState().login(storedToken, expiresAt);
       }
     } else {
       // 토큰이 만료되었거나 유효하지 않은 경우
