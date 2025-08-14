@@ -3,6 +3,10 @@ module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}', './public/index.html'],
   theme: {
     extend: {
+      fontFamily: {
+        'ydestreet': ['Ydestreet', 'sans-serif'],
+        'pretendard': ['Pretendard', 'sans-serif'],
+      },
       colors: {
         main: '#4A6350',
         line: '#EAFFEF',
@@ -22,6 +26,9 @@ module.exports = {
           gray: '#B5B5B5',
           black: '#191919',
         },
+      },
+      screens: {
+        'short': {'raw': '(max-height: 600px)'},
       },
     },
   },
