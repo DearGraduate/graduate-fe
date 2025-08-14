@@ -9,7 +9,11 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/login/Login";
 import KakaoCallback from "../pages/login/KakaoCallback";
 import ModalTest from "../pages/ModalTest";
+
 import HomeSetting from "../pages/Home/HomeSetting";
+
+import ErrorPage from "../pages/error/ErrorStatusPage"
+
 
 const router = createBrowserRouter([
     {
@@ -90,6 +94,10 @@ const router = createBrowserRouter([
                 //홈세틴페이지
                 path: '/setting',
                 element: <HomeSetting />
+            },
+            {
+                path: "*",
+                element: <ErrorPage />,
             },
             // 아래 주석처리한 양식 참고해서 필요한 페이지 만들 때 추가하면 됩니다. 
             // {
