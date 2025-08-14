@@ -1,0 +1,27 @@
+/* 바닐라 css (플러그인 사용 안 한 오리지널 css) 의 경우  */
+
+:root {
+    /* Main Color (BG Color) */
+    --color-main: #4A6350;
+
+    /* Line Color */
+    --color-line: #EAFFEF;
+    /* Letter Box Color */
+    --color-letter-box: #F7F7F7;
+
+    /* Sub Colors */
+    --color-sub-yellow: #FFE99C;
+    --color-sub-pink: #FFA5C0;
+    --color-sub-blue: #99C3CA;
+
+    /* Button Colors */
+    --color-button-default: #B4D9B1;
+    --color-button-hover: #9EC09B;
+    --color-button-press: #5D7B64;
+    --color-button-calander: #d9d9d9;
+
+    /* Text Colors */
+    --color-text-white: #FFFFFF;
+    --color-text-gray: #B5B5B5;
+    --color-text-black: #191919;
+}

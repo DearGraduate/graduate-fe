@@ -3,13 +3,15 @@ import RootLayout from "../layouts/RootLayout";
 import Notfound from "../pages/NotFound";
 import CustomButton from "../components/common/button";
 import CustomLottie from "../components/Lotties/CustomLottie";
-import AlbumMakingPage from "../pages/AlbumMakingPage";
+import AlbumMakingPage from "../pages/album/AlbumMakingPage";
 import SharePage from "../pages/SharePage";
 import Home from "../pages/Home/Home";
 import Login from "../pages/login/Login";
 import KakaoCallback from "../pages/login/KakaoCallback";
 import ModalTest from "../pages/ModalTest";
-
+import ErrorPage from "../pages/error/ErrorStatusPage"
+import GraduationMessagePage from "../pages/graduation-message";
+import HomeSetting from "../pages/Home/HomeSetting";
 const router = createBrowserRouter([
     {
         //루트 레이아웃
@@ -78,12 +80,21 @@ const router = createBrowserRouter([
             {
                 //라이팅페이지
                 path: '/writing',
-                //element:
+                element: <GraduationMessagePage />
             },
             {
                 //라이팅페이지
                 path: '/modaltest',
                 element: <ModalTest />
+            },
+            {
+                path: "*",
+                element: <ErrorPage />
+            },
+            {
+                //홈세틴페이지
+                path: '/setting',
+                element: <HomeSetting />
             },
             // 아래 주석처리한 양식 참고해서 필요한 페이지 만들 때 추가하면 됩니다. 
             // {
