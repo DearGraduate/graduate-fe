@@ -9,8 +9,9 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/login/Login";
 import KakaoCallback from "../pages/login/KakaoCallback";
 import ModalTest from "../pages/ModalTest";
+import ErrorPage from "../pages/error/ErrorStatusPage"
+import GraduationMessagePage from "../pages/graduation-message";
 import HomeSetting from "../pages/Home/HomeSetting";
-
 const router = createBrowserRouter([
     {
         //루트 레이아웃
@@ -79,12 +80,16 @@ const router = createBrowserRouter([
             {
                 //라이팅페이지
                 path: '/writing',
-                //element:
+                element: <GraduationMessagePage />
             },
             {
                 //라이팅페이지
                 path: '/modaltest',
                 element: <ModalTest />
+            },
+            {
+                path: "*",
+                element: <ErrorPage />
             },
             {
                 //홈세틴페이지

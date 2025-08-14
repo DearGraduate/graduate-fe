@@ -20,17 +20,24 @@ const apiClient = axios.create({
 // 로그아웃 API 함수
 export const kakaoLogoutAPI = {
   // 로그아웃 처리
-  logout: async (): Promise<{ data: LogoutResponse }> => {
+  logout: async (accessToken?: string): Promise<{ data: LogoutResponse }> => {
     try {
       console.log('로그아웃 요청');
+      
+      const headers: Record<string, string> = {
+        'accept': '*/*',
+      };
+      
+      // Access Token이 있으면 Authorization 헤더에 추가
+      if (accessToken) {
+        headers['Authorization'] = `Bearer ${accessToken}`;
+      }
       
       const response = await apiClient.post<LogoutResponse>(
         '/api/auth/logout',
         null,
         {
-          headers: {
-            'accept': '*/*',
-          },
+          headers,
         }
       );
       
