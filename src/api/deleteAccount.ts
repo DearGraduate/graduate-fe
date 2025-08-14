@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-// 로그아웃 응답 인터페이스
-interface LogoutResponse {
+// 회원 탈퇴 응답 인터페이스
+interface DeleteAccountResponse {
   isSuccess: boolean;
   code: string;
   message: string;
 }
 
-// axios 인스턴스 생성 (kakaoLogin.ts와 동일)
+// axios 인스턴스 생성 (다른 API와 동일)
 const apiClient = axios.create({
   baseURL: 'https://api.photory.site',
   timeout: 10000,
@@ -17,20 +17,19 @@ const apiClient = axios.create({
   },
 });
 
-// 로그아웃 API 함수
-export const kakaoLogoutAPI = {
-  // 로그아웃 처리
-  logout: async (accessToken?: string): Promise<{ data: LogoutResponse }> => {
+// 회원 탈퇴 API 함수
+export const deleteAccountAPI = {
+  // 회원 탈퇴 처리
+  deleteAccount: async (accessToken?: string): Promise<{ data: DeleteAccountResponse }> => {
     try {
-      console.log('로그아웃 요청');
+      console.log('회원 탈퇴 요청');
       
       const headers: Record<string, string> = {
         'accept': '*/*',
       };
       
-      // Access Token이 있으면 Authorization 헤더에 추가
+      // Access Token이 있으면 Authorization 헤더에 추가 (Bearer 중복 방지)
       if (accessToken) {
-        // Bearer 접두사가 이미 있으면 제거하고 다시 추가
         const cleanToken = accessToken.startsWith('Bearer ') 
           ? accessToken.substring(7) 
           : accessToken;
@@ -38,21 +37,21 @@ export const kakaoLogoutAPI = {
         headers['Authorization'] = `Bearer ${cleanToken}`;
       }
       
-      const response = await apiClient.post<LogoutResponse>(
-        '/api/auth/logout',
+      const response = await apiClient.post<DeleteAccountResponse>(
+        '/api/auth/delete',
         null,
         {
           headers,
         }
       );
       
-      console.log('로그아웃 성공:', response.data);
+      console.log('회원 탈퇴 성공:', response.data);
       
       return {
         data: response.data
       };
     } catch (error: any) {
-      console.error('로그아웃 실패:', error);
+      console.error('회원 탈퇴 실패:', error);
       
       if (error.response) {
         console.error('서버 응답:', error.response.data);

@@ -10,7 +10,7 @@ import { useReactToPrint } from "react-to-print";
 
 const HomeUser = () => {
   const albumExists = true;
-  const isRollingPaperExpired = true; 
+  const isRollingPaperExpired = false; 
   const [isDownloadModalOpen, setDownloadModalOpen] = useState(false);
   const [isDownloadCharacterModalOpen, setDownloadCharacterModalOpen] = useState(false);
   const navigate = useNavigate();
@@ -130,6 +130,7 @@ const HomeUser = () => {
             <CustomButton
               bgColor="bg-button-default"
               className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
+              onClick={() => navigate('/writing')}
             >
               <span className="font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center">
                 나에게 축하글 작성하기
@@ -138,6 +139,7 @@ const HomeUser = () => {
             <CustomButton
               bgColor="bg-button-default"
               className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
+              onClick={() => navigate('/sharing')}
             >
               <span className="font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center">
                 나의 졸업 앨범 공유하기
