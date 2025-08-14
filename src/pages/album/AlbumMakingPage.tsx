@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import Select from 'react-select';  // react-select import
 import CustomButton from '../../components/common/button';
 import '../../styles/colors.css';
 import '../../styles/fonts.css';
-import iconChevronDown from '../../assets/icons/ic_chevron_down.png';
+import left from '../../assets/icons/img_left.png';
 import { createAlbum, getAlbum, updateAlbum } from '../../api/Album';
 import { useNavigate } from 'react-router-dom';
-
 
 const AlbumMakingPage = () => {
   const [albumName, setAlbumName] = useState('');
@@ -14,8 +14,14 @@ const AlbumMakingPage = () => {
   const [description, setDescription] = useState('');
   const [isEdit, setIsEdit] = useState(false);
 
-    const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
+  const albumTypeOptions = [
+    { value: '직접 입력', label: '직접 입력' },
+    { value: '여름방학 앨범', label: '여름방학 앨범' },
+    { value: '졸업 앨범', label: '졸업 앨범' },
+    { value: '2025 상반기 앨범', label: '2025 상반기 앨범' },
+  ];
 
   // 앨범 정보 조회
   useEffect(() => {
@@ -32,7 +38,7 @@ const AlbumMakingPage = () => {
           setIsEdit(true);
         }
       } catch (err) {
-        console.log('앨범이 존재하지 않음 (신규 생성)');
+        //console.log('앨범이 존재하지 않음 (신규 생성)');
       }
     };
 
@@ -42,7 +48,7 @@ const AlbumMakingPage = () => {
   // 생성 or 수정 요청
   const handleSubmit = async () => {
     const payload = {
-      graduationDate: '2025-08-31',
+      graduationDate: '2025.08.31',
       albumName,
       albumType: albumType === '직접 입력' ? customAlbumType : albumType,
       description,
@@ -61,71 +67,104 @@ const AlbumMakingPage = () => {
     }
   };
 
+  // 앨범 유형 변경 핸들러
+  const handleAlbumTypeChange = (selectedOption: { value: string; label: string } | null) => {
+    if (selectedOption) {
+      setAlbumType(selectedOption.value);
+      if (selectedOption.value === '졸업 앨범') {
+        setCustomAlbumType('');
+      }
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#3F5845] text-white px-6 pt-6 pb-10 font-sans">
-      <button className="text-xl mb-4">{'<'}</button>
+    <div className="min-h-screen bg-[#3F5845] text-white px-6 pt-8 pb-10 font-sans">
+      <img
+        src={left}
+        className="cursor-pointer"
+        onClick={() => navigate(-1)}
+        style={{ width: '20px', height: '20px' }}
+      />
 
-      <h1 className="text-xl font-bold mb-1">나의 앨범 만들기</h1>
-      <p className="text-sm text-[#D1D5DB] mb-8">앨범은 8월 31일부터 다운로드가 가능합니다.</p>
+      <h1 className="text-[24px] font-semibold text-white pt-6">나의 앨범 만들기</h1>
+      <p className="text-[14px] text-white mb-8">앨범은 8월 31일부터 다운로드가 가능합니다.</p>
 
-      <h2 className="text-lg font-semibold mb-4">기본 정보를 작성해 주세요!</h2>
+      <h1 className="text-[24px] semibold text-white pt-6 mb-3">기본 정보를 작성해 주세요!</h1>
 
-      <label className="block text-sm font-medium mb-2">
-        앨범 이름<span className="text-red-500">*</span>
+      <label className="text-[14px] text-white font-medium">
+        앨범 이름<span className="text-[#FF8F8F]"> *</span>
       </label>
-      <div className="flex flex-row items-center gap-2 mb-4">
+      <div className="flex flex-row items-center gap-2 pt-2 mb-4">
         <input
           type="text"
           placeholder="본인 이름을 입력하세요"
-          className="w-1/2 px-3 py-2 rounded-md bg-transparent border border-white text-white placeholder-white text-sm"
+          className="w-1/2 px-3 py-2 rounded-md bg-transparent border border-[0.5px] border-line text-white placeholder-gray text-[10px] font-light "
           value={albumName}
           onChange={(e) => setAlbumName(e.target.value)}
         />
 
-        <span className="text-white text-sm">의</span>
+        <span className="text-white text-[14px]">의</span>
 
-        <div className="w-1/2 relative">
-          {albumType === '직접 입력' ? (
-            <input
-              type="text"
-              placeholder="앨범 유형 입력"
-              className="w-full px-3 py-2 rounded-md bg-transparent border border-white text-white placeholder-white text-sm"
-              value={customAlbumType}
-              onChange={(e) => setCustomAlbumType(e.target.value)}
-            />
-          ) : (
-            <>
-              <select
-                className="w-full px-3 py-2 pr-8 rounded-md bg-transparent border border-white text-white text-sm appearance-none"
-                value={albumType}
-                onChange={(e) => setAlbumType(e.target.value)}
-              >
-                <option value="직접 입력">직접 입력</option>
-                <option value="여름방학 앨범">여름방학 앨범</option>
-                <option value="졸업 앨범">졸업 앨범</option>
-                <option value="2025 상반기 앨범">2025 상반기 앨범</option>
-              </select>
+       <div className="w-1/2 relative">
+  <Select
+    options={albumTypeOptions}
+    onChange={handleAlbumTypeChange}  // selectedOption 처리
+    value={albumTypeOptions.find((option) => option.value === albumType)}
+    styles={{
+      control: (provided) => ({
+        ...provided,
+        width: '100%',
+        padding: '0px',
+        borderColor: 'gray',
+        borderWidth: '0.5px',
+        borderRadius: '0.375rem',
+        backgroundColor: 'transparent',
+      }),
+      option: (provided) => ({
+        ...provided,
+        backgroundColor: '#445E47',
+        color: 'white',
+        padding: '10px',
+        fontSize: '10px',
+      }),
+      singleValue: (provided) => ({
+        ...provided,
+        color: 'white',
+        fontSize: '10px',
+      }),
+      placeholder: (provided) => ({
+        ...provided,
+        color: '#bbb',
+        fontSize: '10px',
+      }),
+    }}
+    placeholder="앨범 유형을 선택하세요"
+  />
 
-              <img
-                src={iconChevronDown}
-                alt="드롭다운"
-                className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4"
-              />
-            </>
-          )}
-        </div>
+  {/* '직접 입력'을 선택한 경우에만 input 필드 추가 */}
+  {albumType === '직접 입력' && (
+    <input
+      type="text"
+      placeholder="앨범 유형을 입력하세요"
+      className="w-full mt-2 px-3 py-2 rounded-md bg-transparent border border-[0.5px] border-white text-white placeholder-gray text-[10px] font-light"
+      value={customAlbumType}
+      onChange={(e) => setCustomAlbumType(e.target.value)}
+    />
+  )}
+</div>
+
       </div>
 
       <label className="block text-sm font-medium mb-2">설명 (선택)</label>
       <textarea
         placeholder="이 앨범에 대한 간단한 설명을 적어 주세요."
-        className="w-full h-28 px-3 py-2 rounded-md bg-transparent border border-white text-white placeholder-white text-sm resize-none mb-10"
+        className="w-full h-28 px-3 py-2 rounded-md bg-transparent border border-[0.5px] border-white text-white placeholder-gray text-[10px] font-light resize-none mb-10"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
 
       <CustomButton
-        className="w-full bg-gray-300 text-black text-sm py-3 rounded-xl"
+        className="w-full bg-gray-300 text-black text-sm py-3 rounded-xl mt-14"
         onClick={handleSubmit}
       >
         {isEdit ? '앨범 수정하기' : '포토앨범 제작하기'}

@@ -23,6 +23,9 @@ module.exports = {
           black: '#191919',
         },
       },
+      fontFamily: {
+        ydestreet: ['Ydestreet'],
+      },
     },
   },
   plugins: [],
