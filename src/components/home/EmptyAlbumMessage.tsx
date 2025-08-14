@@ -1,52 +1,19 @@
-import styled from "styled-components";
-
-const MiddleTextContainer = styled.div`
-  width: 100%;
-  max-width: 230px;
-  min-height: 44px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2vh;
-  margin-top: 15vh;
-
-  @media (max-height: 600px) {
-    display: none;
-  }
-`;
-
-const MiddleText1 = styled.div`
-  width: 100%;
-  max-width: 159px;
-  min-height: 17px;
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-  color: #fff;
-`;
-
-const MiddleText2 = styled.div`
-  width: 100%;
-  max-width: 230px;
-  min-height: 17px;
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: center;
-  color: #fff;
-`;
+import Character_graduate from "../../assets/images/Character_graduate.png";
 
 const EmptyAlbumMessage = () => (
-  <MiddleTextContainer>
-    <MiddleText1>아직 졸업 축하 편지가 없어요</MiddleText1>
-    <MiddleText2>나의 졸업 앨범을 친구와 공유 해보세요😉</MiddleText2>
-  </MiddleTextContainer>
+    <>
+        <div className="w-full max-w-[250px] h-[280px] flex items-center justify-center short:hidden">
+            <img src={Character_graduate} alt="Character_graduate" />
+        </div>
+        <div className="w-[256px] h-[36px] opacity-100 flex flex-col items-center justify-center gap-1 mt-5">
+            <div className="font-ydestreet font-bold text-[14px] leading-[100%] tracking-[0] text-center text-[var(--color-text-white)]">
+                앨범이 완성 되었어요!
+            </div>
+            <div className="font-ydestreet font-bold text-[14px] leading-[100%] tracking-[0] text-center text-[var(--color-text-white)]">
+                친구들에게 공유해 축하글을 모아보세요!
+            </div>
+        </div>
+    </>
 );
 
 export default EmptyAlbumMessage;

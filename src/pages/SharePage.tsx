@@ -2,13 +2,25 @@ import React from 'react';
 import CustomButton from '../components/common/button'; 
 import imgShare from '../assets/icons/img_share.png'; 
 import imgHome from '../assets/icons/icon_home.png';
+import { useState } from 'react';
+import ShareModal from '../components/modals/ShareModal';
 import { useNavigate } from 'react-router-dom';
-
+import DisplayAds from '../components/GoogleAdvertise/GoogleAdvertise';
 
 
 const SharePage = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  
+      const openModal = () => {
+          setModalOpen(true);     
+      }
+          const closeModal = () => {
+          setModalOpen(false);
+      }   
+
 
   const navigate = useNavigate();
+
 
   return (
     <div className="min-h-screen bg-[#415940] text-white px-6 py-10 flex flex-col items-center justify-between">
@@ -28,6 +40,11 @@ const SharePage = () => {
       {/* 이미지 */}
       <div className="mt-10">
       <img src={imgShare} alt="졸업 이미지" className="w-60 h-auto" />
+      </div>
+      
+      <div>
+        <p>광고 표시</p>
+        <DisplayAds client="ca-pub-2792815043332792" slot="1234567890" />
       </div>
 
       {/* 설명 */}
@@ -49,10 +66,12 @@ const SharePage = () => {
         <CustomButton
           bgColor="bg-[#D9ECD2]"
           className="w-full font-semibold text-black"
-          //onClick={() => console.log('나의 졸업 앨범 공유하기')}
+          onClick={openModal}
         >
           나의 졸업 앨범 공유하기
         </CustomButton>
+
+        <ShareModal isOpen={modalOpen} onRequestClose={closeModal} />
       </div>
     </div>
   );
