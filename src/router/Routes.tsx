@@ -9,11 +9,9 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/login/Login";
 import KakaoCallback from "../pages/login/KakaoCallback";
 import ModalTest from "../pages/ModalTest";
-
-import HomeSetting from "../pages/Home/HomeSetting";
-
 import ErrorPage from "../pages/error/ErrorStatusPage"
-
+import GraduationMessagePage from "../pages/graduation-message";
+import HomeSetting from "../pages/Home/HomeSetting";
 
 const router = createBrowserRouter([
     {
@@ -83,7 +81,7 @@ const router = createBrowserRouter([
             {
                 //라이팅페이지
                 path: '/writing',
-                //element:
+                element: <GraduationMessagePage />
             },
             {
                 //라이팅페이지
@@ -91,13 +89,14 @@ const router = createBrowserRouter([
                 element: <ModalTest />
             },
             {
-                //홈세틴페이지
-                path: '/setting',
-                element: <HomeSetting />
+
+                path: "*",
+                element: <ErrorPage />
             },
             {
-                path: "*",
-                element: <ErrorPage />,
+                //홈세팅페이지
+                path: '/setting',
+                element: <HomeSetting />
             },
             // 아래 주석처리한 양식 참고해서 필요한 페이지 만들 때 추가하면 됩니다. 
             // {
