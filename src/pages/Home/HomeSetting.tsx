@@ -34,12 +34,6 @@ const HomeSetting = () => {
       <h2 className="font-bold text-lg">계정</h2>
       <div className="flex flex-col space-y-2">
         <hr className="border-t border-white/30" />
-        <button 
-          className="text-sm text-left" 
-          onClick={handleDeleteAccount}
-        >
-          회원탈퇴
-        </button>
         <button className="text-sm text-left" onClick={handleLogoutClick}>로그아웃</button>
         <button className="text-sm text-left" onClick={handleDeleteAccount}>회원탈퇴</button>
       </div>
