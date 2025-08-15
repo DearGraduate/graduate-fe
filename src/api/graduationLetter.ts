@@ -17,8 +17,8 @@ export interface CreateLetterResponse {
 
 export const createGraduationLetter = async (
   albumId: string,
-  data: CreateLetterRequest,
-  accessToken?: string 
+  data: FormData,
+  accessToken?: string
 ): Promise<CreateLetterResponse> => {
   const response = await axios.post<CreateLetterResponse>(
     `${BASE_URL}/api/albums/${albumId}/letter`,
@@ -26,7 +26,7 @@ export const createGraduationLetter = async (
     {
       headers: {
         ...(accessToken ? { Authorization: accessToken } : {}),
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
       withCredentials: true,
     }
