@@ -1,9 +1,9 @@
-// src/api/Album.ts
-
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+const withBearer = (t: string) => (t.startsWith('Bearer ') ? t : `Bearer ${t}`);
 
 interface CreateAlbumRequest {
   graduationDate: string;
@@ -36,7 +36,6 @@ interface Album {
 // 앨범 생성
 export const createAlbum = async (data: CreateAlbumRequest): Promise<CreateAlbumResponse> => {
   const { accessToken } = useAuthStore.getState();
-
   if (!accessToken) throw new Error('AccessToken이 존재하지 않습니다.');
 
   const response = await axios.post<CreateAlbumResponse>(
@@ -44,37 +43,32 @@ export const createAlbum = async (data: CreateAlbumRequest): Promise<CreateAlbum
     data,
     {
       headers: {
-        Authorization: accessToken,
+        Authorization: withBearer(accessToken), 
         'Content-Type': 'application/json',
       },
       withCredentials: true,
     }
   );
-
   return response.data;
 };
 
 // 앨범 조회
 export const getAlbum = async (): Promise<Album> => {
   const { accessToken } = useAuthStore.getState();
-
   if (!accessToken) throw new Error('AccessToken이 존재하지 않습니다.');
 
   const response = await axios.get<GetAlbumResponse>(`${BASE_URL}/api/albums`, {
     headers: {
-      Authorization: accessToken,
+      Authorization: withBearer(accessToken), 
     },
     withCredentials: true,
   });
-
   return response.data.result;
 };
-
 
 // 앨범 수정
 export const updateAlbum = async (data: CreateAlbumRequest): Promise<CreateAlbumResponse> => {
   const { accessToken } = useAuthStore.getState();
-
   if (!accessToken) throw new Error('AccessToken이 존재하지 않습니다.');
 
   const response = await axios.patch<CreateAlbumResponse>(
@@ -82,12 +76,11 @@ export const updateAlbum = async (data: CreateAlbumRequest): Promise<CreateAlbum
     data,
     {
       headers: {
-        Authorization: accessToken,
+        Authorization: withBearer(accessToken), 
         'Content-Type': 'application/json',
       },
       withCredentials: true,
     }
   );
-
   return response.data;
 };

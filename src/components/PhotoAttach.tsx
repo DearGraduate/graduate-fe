@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import addPhotoIcon from "../assets/icons/addphoto.png";
 import default1 from "../assets/icons/default1.png";
 import default2 from "../assets/icons/default2.png";
@@ -19,6 +19,7 @@ export default function PhotoAttachStrip({
 }: Props) {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const defaults = [default1, default2, default3];
+  const [preview, setPreview] = useState<string | null>(null);
 
   const openPicker = () => fileRef.current?.click();
 
@@ -30,9 +31,17 @@ export default function PhotoAttachStrip({
     const reader = new FileReader();
     reader.onload = (ev) => {
       const url = typeof ev.target?.result === "string" ? ev.target.result : "";
-      if (url) onChange(url);
+      if (url) {
+        setPreview(url); 
+        onChange(url);
+      }
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleDefaultPick = (src: string) => {
+    setPreview(null); 
+    onChange(src);
   };
 
   const Tile = ({
@@ -43,7 +52,6 @@ export default function PhotoAttachStrip({
     src: string;
     isSelected?: boolean;
     onClick?: () => void;
-
   }) => (
     <div
       onClick={onClick}
@@ -59,7 +67,6 @@ export default function PhotoAttachStrip({
         alignItems: "center",
         justifyContent: "center",
         cursor: onClick ? "pointer" : "default",
-
       }}
     >
       <img
@@ -88,7 +95,8 @@ export default function PhotoAttachStrip({
         <style>{`div::-webkit-scrollbar { display: none; }`}</style>
 
         <div onClick={openPicker} style={{ cursor: "pointer" }}>
-          <Tile src={addPhotoIcon} isSelected={false} />
+          {/* 기본 이미지 선택 시에도 addPhotoIcon을 보여줌 */}
+          <Tile src={preview || addPhotoIcon} isSelected={!!preview} />
         </div>
 
         {defaults.map((src) => (
@@ -96,7 +104,7 @@ export default function PhotoAttachStrip({
             key={src}
             src={src}
             isSelected={value === src}
-            onClick={() => onChange(src)}
+            onClick={() => handleDefaultPick(src)}
           />
         ))}
       </div>
