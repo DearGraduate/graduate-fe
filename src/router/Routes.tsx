@@ -23,18 +23,7 @@ const router = createBrowserRouter([
             {
                 //홈페이지
                 index: true,
-                element: <div style={{ fontFamily: 'Ydestreet', fontWeight: 'normal' }}>
-                    홈페이지
-                    <CustomButton bgColor="bg-button-default"
-                    className="w-80"
-                    onClick={() => console.log('앨범 만들기 클릭!')}
-                    >앨범 만들기</CustomButton>
-                    <CustomLottie
-                        loop={true}
-                        autoplay={true}
-                        style={{ width: 300, height: 300 }}
-                    />
-                </div> // 임시로 div 추가
+                element: <Home />
 
             },
             {
