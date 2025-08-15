@@ -23,7 +23,7 @@ const SharePage = () => {
 
 
   return (
-    <div className="min-h-screen bg-[#415940] text-white px-6 py-10 flex flex-col items-center justify-between">
+    <div className="min-h-screen bg-[#3F5845] text-white px-6 py-10 flex flex-col items-center justify-between ">
       {/* 상단 홈 아이콘 */}
       <div className="w-full flex justify-start">
         <button onClick={() => navigate('/home')}>
@@ -33,12 +33,12 @@ const SharePage = () => {
 
       {/* 중앙 텍스트 */}
       <div className="text-center mt-10">
-        <h1 className="text-2xl font-bold leading-tight">박성민 의<br />졸업 축하 앨범</h1>
-        <p className="text-sm text-white mt-2">드디어...졸업한다..!</p>
+        <h1 className="font-bold text-[36px] font-ydestreet">박성민 의<br />졸업 축하 앨범</h1>
+        <p className="font-light text-[12px] font-ydestreet text-white mt-2">드디어...졸업한다..!</p>
       </div>
 
       {/* 이미지 */}
-      <div className="mt-10">
+      <div className="mt-20">
       <img src={imgShare} alt="졸업 이미지" className="w-60 h-auto" />
       </div>
       
@@ -48,9 +48,9 @@ const SharePage = () => {
       </div>
 
       {/* 설명 */}
-      <div className="text-center text-sm mt-10 px-6">
-        <p>앨범이 완성 되었어요!</p>
-        <p>친구들에게 공유해 축하글을 모아보세요!</p>
+      <div className="text-center text-sm px-10 -mt-20">
+        <p className='font-bold text-[14px] font-ydestreet'>앨범이 완성 되었어요!</p>
+        <p className='font-bold text-[14px] font-ydestreet'>친구들에게 공유해 축하글을 모아보세요!</p>
       </div>
 
       {/* 하단 버튼 */}
@@ -58,7 +58,8 @@ const SharePage = () => {
         <CustomButton
           bgColor="bg-[#D9ECD2]"
           className="w-full font-semibold text-black"
-          //onClick={() => console.log('나에게 축하글 작성하기')}
+          onClick={() => navigate('/writing')}
+
         >
           나에게 축하글 작성하기
         </CustomButton>
