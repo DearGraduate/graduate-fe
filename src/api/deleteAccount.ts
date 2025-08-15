@@ -9,12 +9,9 @@ interface DeleteAccountResponse {
 
 // axios 인스턴스 생성 (다른 API와 동일)
 const apiClient = axios.create({
-  baseURL: 'https://api.photory.site',
+  baseURL: process.env.REACT_APP_BASE_URL,
   timeout: 10000,
   withCredentials: true, // HttpOnly 쿠키 자동 전송을 위해 필요
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 // 회원 탈퇴 API 함수
