@@ -8,10 +8,12 @@ import toggleIcon from '../../assets/icons/img_toggle.png';
 import { createAlbum, getAlbum, updateAlbum } from '../../api/Album';
 import { useNavigate } from 'react-router-dom';
 
+
 const OPTIONS = ['직접 입력', '여름방학 앨범', '졸업 앨범', '2025 상반기 앨범'] as const;
 const DIRECT = '직접 입력';
 
 const AlbumMakingPage = () => {
+
   const [albumName, setAlbumName] = useState('');
   const [albumType, setAlbumType] = useState(DIRECT);   
   const [customAlbumType, setCustomAlbumType] = useState('');
@@ -64,9 +66,9 @@ const AlbumMakingPage = () => {
   // 생성 or 수정 요청
   const handleSubmit = async () => {
     const payload = {
-      graduationDate: '2025.08.31',
+      graduationDate: '2025-08-31',
       albumName,
-      albumType: albumType === DIRECT ? customAlbumType : albumType, // 최종 문자열
+      albumType: albumType === DIRECT ? customAlbumType : albumType,
       description,
     };
 
