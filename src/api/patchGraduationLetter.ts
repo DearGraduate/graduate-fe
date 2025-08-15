@@ -13,7 +13,7 @@ export interface PatchLetterResponse {
 
 export const patchGraduationLetter = async (
   letterId: string,
-  data: PatchLetterRequest,
+  data: FormData,
   accessToken?: string // 인증이 필요하다면 사용
 ): Promise<PatchLetterResponse> => {
   const BASE_URL = process.env.REACT_APP_BASE_URL || "https://api.photory.site";
@@ -23,7 +23,7 @@ export const patchGraduationLetter = async (
     {
       headers: {
         ...(accessToken ? { Authorization: accessToken } : {}),
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
       withCredentials: true,
     }
