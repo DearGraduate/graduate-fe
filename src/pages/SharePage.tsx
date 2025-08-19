@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect , useRef } from 'react';
 import CustomButton from '../components/common/button'; 
 import imgShare from '../assets/icons/img_share.png'; 
 import imgHome from '../assets/icons/icon_home.png';
-import { useState } from 'react';
 import ShareModal from '../components/modals/ShareModal';
 import { useNavigate } from 'react-router-dom';
 import DisplayAds from '../components/GoogleAdvertise/GoogleAdvertise';
+import { useAlbumStore } from '../store/albumStore';
+import { albumService } from '../services/albumService';
+import { useShallow } from 'zustand/react/shallow'
 
 
 const SharePage = () => {
@@ -21,9 +23,24 @@ const SharePage = () => {
 
   const navigate = useNavigate();
 
+  const { albumName, albumType } = useAlbumStore(
+    useShallow((s) => ({
+      albumName: s.albumName,
+      albumType: s.albumType,
+    }))
+  )
+
+  const didFetch = useRef(false)
+  useEffect(() => {
+    if (didFetch.current) return
+    didFetch.current = true
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    albumService.fetch().catch(() => {})
+  }, [])
+
 
   return (
-    <div className="min-h-screen bg-[#3F5845] text-white px-6 py-10 flex flex-col items-center justify-between ">
+    <div className="min-h-screen bg-main text-white px-6 py-10 flex flex-col items-center justify-between ">
       {/* 상단 홈 아이콘 */}
       <div className="w-full flex justify-start">
         <button onClick={() => navigate('/home')}>
@@ -33,7 +50,12 @@ const SharePage = () => {
 
       {/* 중앙 텍스트 */}
       <div className="text-center mt-10">
-        <h1 className="font-bold text-[36px] font-ydestreet">박성민 의<br />졸업 축하 앨범</h1>
+        <h1 className="font-bold text-[36px] font-ydestreet leading-tight">
+          {albumName ?? '이름'}
+          <span className="whitespace-nowrap">의</span>
+          <br />
+          {albumType ?? '앨범 타입'}
+        </h1>
         <p className="font-light text-[12px] font-ydestreet text-white mt-2">드디어...졸업한다..!</p>
       </div>
 

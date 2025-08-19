@@ -7,6 +7,9 @@ import DownloadModal from "../../components/modals/DownloadModal";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
+import { useAlbumStore } from '../../store/albumStore';
+import { albumService } from '../../services/albumService';
+import { useShallow } from 'zustand/react/shallow'
 
 const HomeUser = () => {
   const albumExists = true;
@@ -81,6 +84,20 @@ const HomeUser = () => {
     navigate('/setting');
   };
 
+      const { albumName, albumType } = useAlbumStore(
+        useShallow((s) => ({
+          albumName: s.albumName,
+          albumType: s.albumType,
+        }))
+      )
+    
+      const didFetch = useRef(false)
+      useEffect(() => {
+        if (didFetch.current) return
+        didFetch.current = true
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        albumService.fetch().catch(() => {})
+      }, [])
 
   return (
     <div 
@@ -106,7 +123,7 @@ const HomeUser = () => {
         
         <div className="w-full max-w-[237px] min-h-[80px] flex flex-col items-center justify-center gap-[5px] opacity-100 mt-[30px]">
           <div className="font-ydestreet font-bold text-[36px] leading-[150%] tracking-[0] text-white text-center">
-            박성민 의<br/>졸업 축하 앨범
+            {albumName ?? '이름'}의<br/>{albumType ?? '앨범 타입'}
           </div>
           <div className="w-full max-w-[103px] min-h-[16px] flex items-center justify-center opacity-100">
             <div className="w-full font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center text-white">

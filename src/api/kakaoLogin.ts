@@ -7,6 +7,14 @@ interface KakaoLoginResponse {
   message: string;
 }
 
+// 앨범 조회 
+interface ApiResponse<T> {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: T;
+}
+
 // axios 인스턴스 생성
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -23,7 +31,7 @@ export const kakaoLoginAPI = {
   getAuthUrl: (): string => {
     const KAKAO_REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
     // 환경에 따라 리다이렉트 URI 설정
-    const REDIRECT_URI = 'https://graduate-web-coral.vercel.app/login/kakao/callback'
+    const REDIRECT_URI = 'http://localhost:3000/login/kakao/callback'
  
     
     if (!KAKAO_REST_API_KEY) {
@@ -40,7 +48,7 @@ export const kakaoLoginAPI = {
   },
   
   // 인가 코드로 카카오 로그인 처리
-  loginWithCode: async (code: string): Promise<{ data: KakaoLoginResponse; tokens: { accessToken?: string } }> => {
+  loginWithCode: async (code: string): Promise<{ data: KakaoLoginResponse; tokens: { accessToken?: string }; hasAlbum: boolean; }> => {
     try {
       console.log('카카오 로그인 요청:', { code: code.substring(0, 20) + '...' });
       
@@ -62,12 +70,35 @@ export const kakaoLoginAPI = {
       console.log('카카오 로그인 성공:', response.data);
       console.log('Access Token:', cleanToken);
       
+      
+      let hasAlbum = false;
+      try {
+        const getRes = await apiClient.get<ApiResponse<any>>('/api/albums', {
+          // 토큰이 있다면 Authorization 헤더로, 없으면 쿠키 세션으로 시도
+          headers: cleanToken ? { Authorization: `Bearer ${cleanToken}` } : undefined,
+        });
+        const result = (getRes.data as any)?.result;
+        hasAlbum = !!result && (typeof result === 'object')
+          ? Object.keys(result).length > 0
+          : true; 
+      } catch (e: any) {
+        const status = e?.response?.status;
+        if (status === 404) {
+          hasAlbum = false; 
+        } else {
+          console.warn('앨범 조회 실패, 상태:', status, e?.response?.data);
+          hasAlbum = false;
+        }
+      }
+
       return {
         data: response.data,
         tokens: {
           accessToken: cleanToken
-        }
+        },
+        hasAlbum, 
       };
+
     } catch (error: any) {
       console.error('카카오 로그인 실패:', error);
       

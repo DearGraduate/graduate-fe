@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import React, { useState, useEffect , useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CharacterImg from '../../assets/images/Character.png';  
 import CustomButton from '../../components/common/button';
 import LoginModal from '../../components/modals/LoginModal';
+import { useAlbumStore } from '../../store/albumStore';
+import { albumService } from '../../services/albumService';
+import { useShallow } from 'zustand/react/shallow'
+import AlbumInfo from '../../components/common/AlbumInfo';
 
 const HomeGuest = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -21,11 +25,27 @@ const HomeGuest = () => {
     navigate('/login');
   };
 
+
+    const { albumName, albumType } = useAlbumStore(
+      useShallow((s) => ({
+        albumName: s.albumName,
+        albumType: s.albumType,
+      }))
+    )
+  
+    const didFetch = useRef(false)
+    useEffect(() => {
+      if (didFetch.current) return
+      didFetch.current = true
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      albumService.fetch().catch(() => {})
+    }, [])
+
   return (
     <div className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
       <div className="w-full max-w-[237px] min-h-[80px] flex flex-col items-center justify-center gap-2.5 opacity-100 mt-[5vh] relative z-10">
         <div className="font-ydestreet font-bold text-[36px] leading-[150%] tracking-[0] text-white text-center">
-          졸축위 의<br/>졸업 축하 앨범
+          {albumName ?? '이름'}의<br/>{albumType ?? '앨범 타입'}
         </div>
       </div>
       
@@ -38,7 +58,7 @@ const HomeGuest = () => {
       </div>
       
       <div className="w-full max-w-[127px] min-h-[24px] flex items-center justify-center font-pretendard text-[10px] leading-[100%] tracking-[0] text-[var(--color-text-white)] opacity-100 text-center mt-[6vh]">
-        150개의 앨범이 제작되었어요<br />2654개의 편지가 작성 되었어요
+        <AlbumInfo />
       </div>
       
       <div className="w-full max-w-[290px] min-h-[95px] flex flex-col gap-[15px] opacity-100 mt-[4vh]">
