@@ -40,7 +40,7 @@ const SharePage = () => {
 
 
   return (
-    <div className="min-h-screen bg-[#3F5845] text-white px-6 py-10 flex flex-col items-center justify-between ">
+    <div className="min-h-screen bg-main text-white px-6 py-10 flex flex-col items-center justify-between ">
       {/* 상단 홈 아이콘 */}
       <div className="w-full flex justify-start">
         <button onClick={() => navigate('/home')}>

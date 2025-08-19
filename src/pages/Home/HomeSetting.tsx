@@ -19,7 +19,7 @@ const HomeSetting = () => {
 
   return (
     <div 
-    className="min-h-screen bg-[#445E47] text-white px-6 py-8 space-y-8"
+    className="min-h-screen bg-main text-white px-6 py-8 space-y-8"
     style={{
     backgroundImage: `url(${img})`,
     backgroundRepeat: 'no-repeat',
