@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { deleteAlbum } from './album';
 
 // 회원 탈퇴 응답 인터페이스
 interface DeleteAccountResponse {
@@ -20,6 +21,14 @@ export const deleteAccountAPI = {
   deleteAccount: async (accessToken?: string): Promise<{ data: DeleteAccountResponse }> => {
     try {
       console.log('회원 탈퇴 요청');
+
+      // 앨범 삭제
+      try {
+        await deleteAlbum();
+        console.log('앨범 삭제 완료');
+      } catch (e) {
+        console.warn('앨범 삭제 실패:', e);
+      }
       
       const headers: Record<string, string> = {
         'accept': '*/*',

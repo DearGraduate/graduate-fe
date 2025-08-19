@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-// import Select from 'react-select';  // ← 사용 안 함
 import CustomButton from '../../components/common/button';
 import '../../styles/colors.css';
 import '../../styles/fonts.css';
 import left from '../../assets/icons/img_left.png';
 import toggleIcon from '../../assets/icons/img_toggle.png'; 
-import { createAlbum, getAlbum, updateAlbum } from '../../api/Album';
+import { createAlbum, getAlbum, updateAlbum } from '../../api/album';
 import { useNavigate } from 'react-router-dom';
 
 
