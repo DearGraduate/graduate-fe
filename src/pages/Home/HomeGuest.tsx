@@ -6,6 +6,7 @@ import LoginModal from '../../components/modals/LoginModal';
 import { useAlbumStore } from '../../store/albumStore';
 import { albumService } from '../../services/albumService';
 import { useShallow } from 'zustand/react/shallow'
+import AlbumInfo from '../../components/common/AlbumInfo';
 
 const HomeGuest = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -57,7 +58,7 @@ const HomeGuest = () => {
       </div>
       
       <div className="w-full max-w-[127px] min-h-[24px] flex items-center justify-center font-pretendard text-[10px] leading-[100%] tracking-[0] text-[var(--color-text-white)] opacity-100 text-center mt-[6vh]">
-        150개의 앨범이 제작되었어요<br />2654개의 편지가 작성 되었어요
+        <AlbumInfo />
       </div>
       
       <div className="w-full max-w-[290px] min-h-[95px] flex flex-col gap-[15px] opacity-100 mt-[4vh]">

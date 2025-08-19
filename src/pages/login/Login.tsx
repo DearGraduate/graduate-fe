@@ -1,5 +1,6 @@
 import KAKAOMINI from '../../assets/icons/KAKAOMini.png';
 import LoginLogo from '../../assets/images/LoginLogo.png';
+import AlbumInfo from '../../components/common/AlbumInfo';
 import { useKakaoLogin } from '../../hooks/useKakaoLogin';
 
 const Login = () => {
@@ -20,8 +21,8 @@ const Login = () => {
                 </div>
             </div>
             
-            <div className="w-full max-w-[127px] min-h-[24px] flex items-center justify-center font-pretendard text-[10px] text-white opacity-100 text-center mt-[20vh]">
-                150개의 앨범이 제작 되었어요<br />2654개의 편지가 작성 되었어요
+            <div className="w-full max-w-[127px] min-h-[24px] flex items-center justify-center  text-white opacity-100 text-center mt-[20vh]">
+                <AlbumInfo />
             </div>
             
             <button 
