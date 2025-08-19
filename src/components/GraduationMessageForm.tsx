@@ -6,10 +6,14 @@ import CustomCheckbox from "../style/CustomCheckbox";
 import CustomButton from "./common/button";
 import PhotoAttachStrip from "../components/PhotoAttach";
 import axios from "axios";
+import { useAlbumStore } from '../store/albumStore'
+
 
 export default function GraduationMessageForm() {
   const navigate = useNavigate();
-  const { albumId = "1" } = { albumId: "1" };
+  //const { albumId = "1" } = { albumId: "1" };
+  //기존에 하드 코딩 되어있던 부분 앨범 ID 로 변경
+  const albumId = useAlbumStore(s => s.albumId)
   const [author, setAuthor] = useState("");
   const [letter, setLetter] = useState("");
   const [isPublic, setIsPublic] = useState<null | boolean>(null);
@@ -95,7 +99,7 @@ export default function GraduationMessageForm() {
   return (
     <div
       style={{
-        position: "fixed",
+        // position: "fixed",
         inset: 0,
         backgroundColor: "white",
         display: "flex",
@@ -103,7 +107,8 @@ export default function GraduationMessageForm() {
         alignItems: "flex-start",
         paddingTop: "0px",
         paddingBottom: "0px",
-        overflow: "hidden",
+        overflowY: "auto",
+        // overflow: "hidden",
       }}
     >
       <div

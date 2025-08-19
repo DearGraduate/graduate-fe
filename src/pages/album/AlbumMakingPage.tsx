@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-// import Select from 'react-select';  // ← 사용 안 함
 import CustomButton from '../../components/common/button';
 import '../../styles/colors.css';
 import '../../styles/fonts.css';
 import left from '../../assets/icons/img_left.png';
 import toggleIcon from '../../assets/icons/img_toggle.png'; 
-import { createAlbum, getAlbum, updateAlbum } from '../../api/Album';
+import { createAlbum, getAlbum, updateAlbum } from '../../api/album';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -28,6 +27,10 @@ const AlbumMakingPage = () => {
   const LIMIT = 5;
   const len = albumName.length;
   const isLimitReached = albumName.length >= LIMIT;
+
+  //필수 필드 체크
+  const isTypeFilled = albumType === DIRECT ? !!customAlbumType.trim() : true
+  const canSubmit = !!albumName.trim() && isTypeFilled && !isLimitReached
 
   // 바깥 클릭 시 닫기
   useEffect(() => {
@@ -94,7 +97,7 @@ const AlbumMakingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#3F5845] text-white px-6 pt-8 pb-10 font-sans">
+    <div className="min-h-screen bg-main text-white px-6 pt-8 pb-10 font-sans">
       <img
         src={left}
         className="cursor-pointer"
@@ -201,13 +204,16 @@ const AlbumMakingPage = () => {
       />
 
       <CustomButton
-        className="w-full bg-gray-300 text-black text-sm py-3 rounded-xl mt-14"
-        onClick={handleSubmit}
-      >
-        {isEdit ? '앨범 수정하기' : '포토앨범 제작하기'}
-      </CustomButton>
-    </div>
-  );
-};
+          className="w-full font-semibold text-black
+                    disabled:bg-gray-300 disabled:text-gray-600
+                    disabled:cursor-not-allowed disabled:opacity-100"
+          onClick={handleSubmit}
+          disabled={!canSubmit}
+        >
+          {isEdit ? '앨범 수정하기' : '포토앨범 제작하기'}
+        </CustomButton>
+          </div>
+        );
+      };
 
 export default AlbumMakingPage;

@@ -5,6 +5,7 @@ type CustomButtonProps = {
     children?: React.ReactNode;
     onClick?: () => void;
     className?: string; // 외부에서 크기나 여백 조정 가능
+    disabled?: boolean;  
 };
 
 const CustomButton = ({
@@ -12,10 +13,12 @@ const CustomButton = ({
     children,
     onClick,
     className = '',
+    disabled = false, 
 }: CustomButtonProps) => {
     const [isPressed, setIsPressed] = useState(false);
 
     const handleClick = () => {
+        if (disabled) return; 
         setIsPressed(true);
         onClick?.(); // 외부 onClick 호출
 
@@ -25,6 +28,7 @@ const CustomButton = ({
 
     return (
         <button
+            disabled={disabled} 
             onClick={handleClick}
             className={`
         ${isPressed ? 'bg-button-press' : bgColor}
