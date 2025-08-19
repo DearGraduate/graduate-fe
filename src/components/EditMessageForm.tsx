@@ -1,29 +1,38 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useState, useEffect } from "react";
 import backButton from "../icons/chevron-back.png";
 import "../style/colors.css";
 import CustomCheckbox from "../style/CustomCheckbox";
 import CustomButton from "./common/button";
 import PhotoAttachStrip from "../components/PhotoAttach";
 import axios from "axios";
-import { useAlbumStore } from '../store/albumStore'
 
+interface EditGraduationMessageFormProps {
+  albumId: string;
+  letterId: string;
+  initialAuthor?: string;
+  initialLetter?: string;
+  initialIsPublic?: boolean;
+  initialPicUrl?: string;
+}
 
-export default function GraduationMessageForm() {
-  const navigate = useNavigate();
-  //const { albumId = "1" } = { albumId: "1" };
-  //기존에 하드 코딩 되어있던 부분 앨범 ID 로 변경
-  const albumId = useAlbumStore(s => s.albumId)
-  const [author, setAuthor] = useState("");
-  const [letter, setLetter] = useState("");
-  const [isPublic, setIsPublic] = useState<null | boolean>(null);
-  const [previewUrl, setPreviewUrl] = useState<string>("");
+export default function EditGraduationMessageForm({
+  albumId = "1",
+  letterId,
+  initialAuthor = "",
+  initialLetter = "",
+  initialIsPublic = true,
+  initialPicUrl = "",
+}: EditGraduationMessageFormProps) {
+  const [author, setAuthor] = useState(initialAuthor);
+  const [letter, setLetter] = useState(initialLetter);
+  const [isPublic, setIsPublic] = useState<null | boolean>(initialIsPublic);
+  const [previewUrl, setPreviewUrl] = useState<string>(initialPicUrl);
   const [defaultPicKey, setDefaultPicKey] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
 
   function onDefaultPick(url: string) {
     setDefaultPicKey(url);
-    setPreviewUrl("");
+    setPreviewUrl(url);
     setFile(null);
   }
 
@@ -38,7 +47,7 @@ export default function GraduationMessageForm() {
     reader.readAsDataURL(selectedFile);
   }
 
-  async function saveMessage() {
+  async function updateMessage() {
     if (!letter.trim() || isPublic === null) {
       alert("편지, 공개여부를 모두 입력해 주세요.");
       return;
@@ -49,6 +58,7 @@ export default function GraduationMessageForm() {
     }
     const formData = new FormData();
 
+    // PATCH는 수정할 내용만 보내면 됩니다
     const jsonData = new Blob(
       [JSON.stringify({ writerName: author, message: letter, isPublic })],
       { type: "application/json" }
@@ -57,24 +67,19 @@ export default function GraduationMessageForm() {
 
     if (file) {
       formData.append("file", file, file.name);
-
-      console.log("업로드 파일 정보:", file);
-      console.log("파일명:", file.name);
-      const fileUrl = URL.createObjectURL(file);
-      console.log("이미지 파일 브라우저 미리보기 URL:", fileUrl);
     } else if (defaultPicKey) {
       const urlBlob = new Blob([defaultPicKey], { type: "text/plain" });
       formData.append("file", urlBlob, "defaultPic.txt");
-      console.log("기본 이미지 URL:", defaultPicKey);
     }
 
+    // 디버깅: FormData 내용 출력
     Array.from(formData.entries()).forEach(pair => {
       console.log("FormData:", pair[0], pair[1]);
     });
 
     try {
-      const response = await axios.post(
-        `https://api.photory.site/api/albums/${albumId}/letter`,
+      const response = await axios.patch(
+        `https://api.photory.site/api/letters/${letterId}`,
         formData,
         {
           headers: {
@@ -83,15 +88,9 @@ export default function GraduationMessageForm() {
         }
       );
       console.log("서버 응답:", response.data);
-      alert("축하 메시지가 성공적으로 등록되었습니다.");
-      setAuthor("");
-      setLetter("");
-      setIsPublic(null);
-      setPreviewUrl("");
-      setDefaultPicKey("");
-      setFile(null);
+      alert("축하 메시지가 성공적으로 수정되었습니다.");
     } catch (e: any) {
-      console.error("업로드 실패:", e.response?.data || e);
+      console.error("수정 실패:", e.response?.data || e);
       alert("네트워크 오류가 발생했습니다.");
     }
   }
@@ -99,7 +98,7 @@ export default function GraduationMessageForm() {
   return (
     <div
       style={{
-        // position: "fixed",
+        position: "fixed",
         inset: 0,
         backgroundColor: "white",
         display: "flex",
@@ -107,8 +106,7 @@ export default function GraduationMessageForm() {
         alignItems: "flex-start",
         paddingTop: "0px",
         paddingBottom: "0px",
-        overflowY: "auto",
-        // overflow: "hidden",
+        overflow: "hidden",
       }}
     >
       <div
@@ -133,7 +131,6 @@ export default function GraduationMessageForm() {
               left: "25px",
               cursor: "pointer",
             }}
-            onClick={() => navigate(-1)} 
           />
         </div>
         <div style={{ paddingLeft: "52px" }}>
@@ -144,7 +141,7 @@ export default function GraduationMessageForm() {
                 fontWeight: "bold",
               }}
             >
-              졸업 축하 작성하기
+              졸업 축하글 수정하기
             </h2>
           </div>
           <label
@@ -278,8 +275,8 @@ export default function GraduationMessageForm() {
               cursor: "pointer",
             }}
           >
-            <CustomButton onClick={saveMessage}>
-              {"축하글 작성 완료하기"}
+            <CustomButton onClick={updateMessage}>
+              {"축하글 수정 완료하기"}
             </CustomButton>
           </div>
         </div>

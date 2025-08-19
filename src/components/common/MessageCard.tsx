@@ -1,70 +1,38 @@
-// src/components/common/MessageCard.tsx
-import React from 'react';
+import React from 'react'
 import testImage from '../../assets/icons/img_default.png'
-import icondots from '../../assets/icons/icon_dots.png';
+import icondots from '../../assets/icons/icon_dots.png'
 
-
-export interface Message {
-  name: string;
-  imageUrl: string;
-  message: string;
+export interface MessageProps {
+  name: string
+  imageUrl?: string | null 
+  message: string
+  detailClick?: () => void  
 }
 
-//API 연동 후 변경해야 할 부분
-export const defaultMessages: Message[] = [
-  {
-    name: '테스트이름',
-    imageUrl: testImage,
-    message: '나 자신 수고 했어 지난\n5년간 학교 다니느라',
-  },
-    {
-    name: '테스트이름',
-    imageUrl: testImage,
-    message: '나 자신 수고 했어 지난\n5년간 학교 다니느라',
-  },
-    {
-    name: '테스트_이름',
-    imageUrl: testImage,
-    message: '나 자신 수고 했어 지난\n5년간 학교 다니느라',
-  },
-  {
-    name: '테스트이름',
-    imageUrl: testImage,
-    message: '나 자신 수고 했어 지난\n5년간 학교 다니느라',
-  },
-    {
-    name: '테스트이름',
-    imageUrl: testImage,
-    message: '나 자신 수고 했어 지난\n5년간 학교 다니느라',
-  },
-];
+const MessageCard: React.FC<MessageProps> = ({ name, imageUrl, message, detailClick }) => {  const src = imageUrl && imageUrl.trim() !== '' ? imageUrl : (testImage as unknown as string)
 
-
-const MessageCard: React.FC<Message> = ({ name, imageUrl, message }) => {
   return (
-    <div className="bg-white rounded-2xl p-4 shadow-md w-full max-w-[200px] text-center">
+    <div className="bg-letterBox rounded-2xl p-4 shadow-md w-full max-w-[200px] text-center">
       {/* 상단 이름 + 더보기 아이콘 */}
-      <div className="flex justify-between items-center text-black font-semibold text-sm mb-2">
-        <span>{name}</span>
-        <img
-          src={icondots}
-          alt="더보기"
-          className="w-4 h-4 object-contain"
-        />      
+      <div className="flex justify-between items-center text-black font-semibold text-[14px] mb-1 font-ydestreet">
+        <span className="truncate">{name}</span>
+        <button type="button" onClick={detailClick} aria-label="더보기" className="p-1">
+          <img src={icondots} alt="더보기" className="w-4 h-4 object-contain" />
+        </button>
       </div>
 
       <img
-        src={imageUrl}
+        src={src}
         alt={`${name}의 이미지`}
-        className="w-full aspect-square object-cover rounded-xl mb-3"
+        className="w-full aspect-square object-cover rounded-xl mb-2"
+        loading="lazy"
       />
-      <div className="bg-white text-black text-sm rounded-xl px-3 py-2 whitespace-pre-line">
+
+      <div className="bg-white text-black font-light text-[10px] rounded-xl px-1 py-1 whitespace-pre-line break-words">
         {message}
       </div>
     </div>
-  );
-};
+  )
+}
 
-
-
-export default MessageCard;
+export default MessageCard
