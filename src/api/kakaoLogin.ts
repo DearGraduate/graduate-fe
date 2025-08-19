@@ -5,6 +5,10 @@ interface KakaoLoginResponse {
   isSuccess: boolean;
   code: string;
   message: string;
+  result: {
+    albumExists: boolean;
+    albumId: number;
+  };
 }
 
 // 앨범 조회 
@@ -48,7 +52,7 @@ export const kakaoLoginAPI = {
   },
   
   // 인가 코드로 카카오 로그인 처리
-  loginWithCode: async (code: string): Promise<{ data: KakaoLoginResponse; tokens: { accessToken?: string }; hasAlbum: boolean; }> => {
+  loginWithCode: async (code: string): Promise<{ data: KakaoLoginResponse; tokens: { accessToken?: string }; hasAlbum: boolean; albumId?: number; }> => {
     try {
       console.log('카카오 로그인 요청:', { code: code.substring(0, 20) + '...' });
       
