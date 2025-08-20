@@ -7,6 +7,7 @@ import CustomButton from "./common/button";
 import PhotoAttachStrip from "../components/PhotoAttach";
 import axios from "axios";
 import { useAlbumStore } from '../store/albumStore'
+import { useAuthStore } from '../store/authStore'; 
 
 
 export default function GraduationMessageForm() {
@@ -20,6 +21,7 @@ export default function GraduationMessageForm() {
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [defaultPicKey, setDefaultPicKey] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
+  const accessToken = useAuthStore.getState().accessToken; // 토큰 가져오기
 
   function onDefaultPick(url: string) {
     setDefaultPicKey(url);
@@ -54,21 +56,17 @@ export default function GraduationMessageForm() {
       { type: "application/json" }
     );
     formData.append("data", jsonData);
-
+    // 파일이 있을 때만 file 필드 추가
     if (file) {
       formData.append("file", file, file.name);
-
       console.log("업로드 파일 정보:", file);
       console.log("파일명:", file.name);
       const fileUrl = URL.createObjectURL(file);
       console.log("이미지 파일 브라우저 미리보기 URL:", fileUrl);
-    } else if (defaultPicKey) {
-      const urlBlob = new Blob([defaultPicKey], { type: "text/plain" });
-      formData.append("file", urlBlob, "defaultPic.txt");
-      console.log("기본 이미지 URL:", defaultPicKey);
     }
 
     Array.from(formData.entries()).forEach(pair => {
+      console.log("id", albumId)
       console.log("FormData:", pair[0], pair[1]);
     });
 
@@ -78,7 +76,8 @@ export default function GraduationMessageForm() {
         formData,
         {
           headers: {
-            Accept: "application/json",
+            Accept: "*/*",
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -90,6 +89,7 @@ export default function GraduationMessageForm() {
       setPreviewUrl("");
       setDefaultPicKey("");
       setFile(null);
+      navigate("/"); // 작성 성공 시 메인 페이지로 이동
     } catch (e: any) {
       console.error("업로드 실패:", e.response?.data || e);
       alert("네트워크 오류가 발생했습니다.");
