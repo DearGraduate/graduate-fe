@@ -4,7 +4,7 @@ const BASE = (process.env.REACT_APP_BASE_URL ?? '').replace(/\/+$/, '')
 const withBearer = (t: string) => (t.startsWith('Bearer ') ? t : `Bearer ${t}`)
 
 export interface AlbumLetterDTO {
-  id: number
+  letterId: number
   writerName: string | null
   picUrl: string | null
   message: string

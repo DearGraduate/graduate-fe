@@ -3,20 +3,25 @@ import testImage from '../../assets/icons/img_default.png'
 import icondots from '../../assets/icons/icon_dots.png'
 import EditDeleteBottomSheet from '../modals/EditDeleteModal'
 import {useState } from 'react';
+import { useLetterStore } from '../../store/letterStore';
 
 export interface MessageProps {
   name: string
   imageUrl?: string | null 
   message: string
   detailClick?: () => void  
+  letterId: string | number
 }
 
-const MessageCard: React.FC<MessageProps> = ({ name, imageUrl, message, detailClick }) => {  const src = imageUrl && imageUrl.trim() !== '' ? imageUrl : (testImage as unknown as string)
+const MessageCard: React.FC<MessageProps> = ({ name, imageUrl, message, detailClick, letterId }) => {  const src = imageUrl && imageUrl.trim() !== '' ? imageUrl : (testImage as unknown as string)
   const [modalOpen, setModalOpen] = useState(false);
+  const setSelectedLetterId = useLetterStore(s => s.setSelectedLetterId);
 
   const openModal = () => {
-        setModalOpen(true);     
-    }
+    console.log('MessageCard letterId:', letterId);
+    setSelectedLetterId(String(letterId));
+    setModalOpen(true);
+  }
         const closeModal = () => {
         setModalOpen(false);
     }   
@@ -31,7 +36,7 @@ const MessageCard: React.FC<MessageProps> = ({ name, imageUrl, message, detailCl
         </button>
       </div>
       
-      <EditDeleteBottomSheet isOpen={modalOpen} onRequestClose={closeModal}/>
+      <EditDeleteBottomSheet isOpen={modalOpen} onRequestClose={closeModal} />
 
       <img
         src={src}

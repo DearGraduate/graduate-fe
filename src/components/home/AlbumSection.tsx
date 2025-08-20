@@ -22,7 +22,7 @@ export default function AlbumSection() {
     if (list.length === 0) return {}
     const last = list[list.length - 1]
     const ts = last.updatedAt ?? last.createdAt
-    return ts ? { lastUpdatedAt: ts, lastLetterId: last.id } : { lastLetterId: last.id }
+    return ts ? { lastUpdatedAt: ts, lastLetterId: last.letterId } : { lastLetterId: last.letterId }
   }
 
   const load = async (append = false) => {
@@ -38,8 +38,8 @@ export default function AlbumSection() {
       const data = await getAlbumLetters(albumId, token ?? undefined, { limit: LIMIT, ...cursor })
       setLetters(prev => {
         if (!append) return data
-        const prevIds = new Set(prev.map(l => l.id))
-        const newData = data.filter(l => !prevIds.has(l.id))
+        const prevIds = new Set(prev.map(l => l.letterId))
+        const newData = data.filter(l => !prevIds.has(l.letterId))
         return [...prev, ...newData]
       })
       setHasMore(data.length === LIMIT)
@@ -59,7 +59,8 @@ export default function AlbumSection() {
   const messages = useMemo(
     () =>
       letters.map(l => ({
-        key: l.id,
+        key: l.letterId,
+        letterId: l.letterId,
         name: l.isPublic ? (l.writerName ?? '익명') : '익명',
         imageUrl: l.picUrl ?? (testImage as unknown as string),
         message: l.message,
@@ -78,7 +79,7 @@ export default function AlbumSection() {
       <div className="grid grid-cols-2 gap-x-[37px] gap-y-2.5">
         {messages.map(m => (
           <div key={m.key} className="w-[130px]">
-            <MessageCard name={m.name} imageUrl={m.imageUrl} message={m.message} />
+            <MessageCard name={m.name} imageUrl={m.imageUrl} message={m.message} letterId={m.letterId} />
           </div>
         ))}
       </div>
