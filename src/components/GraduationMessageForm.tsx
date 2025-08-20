@@ -70,6 +70,11 @@ export default function GraduationMessageForm() {
       console.log("FormData:", pair[0], pair[1]);
     });
 
+    // 디버깅: 작성 직전 사진 URL 확인
+    console.log("사진 첨부 상태 - file:", file);
+    console.log("사진 첨부 상태 - previewUrl:", previewUrl);
+    console.log("사진 첨부 상태 - defaultPicKey:", defaultPicKey);
+
     try {
       const response = await axios.post(
         `https://api.photory.site/api/albums/${albumId}/letter`,
