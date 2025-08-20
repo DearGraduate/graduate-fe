@@ -33,7 +33,6 @@ export default function PhotoAttachStrip({
       const url = typeof ev.target?.result === "string" ? ev.target.result : "";
       if (url) {
         setPreview(url); 
-        onChange(url);
       }
     };
     reader.readAsDataURL(file);

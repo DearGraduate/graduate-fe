@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import backButton from "../icons/chevron-back.png";
 import "../style/colors.css";
@@ -20,27 +20,32 @@ export default function GraduationMessageForm() {
   const [isPublic, setIsPublic] = useState<null | boolean>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [defaultPicKey, setDefaultPicKey] = useState<string>("");
-  const [file, setFile] = useState<File | null>(null);
+  const fileRef = useRef<File | null>(null);
   const accessToken = useAuthStore.getState().accessToken; // 토큰 가져오기
 
   function onDefaultPick(url: string) {
     setDefaultPicKey(url);
     setPreviewUrl("");
-    setFile(null);
+    fileRef.current = null;
   }
 
   function onFileSelected(selectedFile: File) {
+    console.log('onFileSelected called, selectedFile:', selectedFile);
     setDefaultPicKey("");
-    setFile(selectedFile);
+    fileRef.current = selectedFile;
     const reader = new FileReader();
     reader.onload = (ev) => {
       const url = typeof ev.target?.result === "string" ? ev.target.result : "";
       setPreviewUrl(url);
     };
     reader.readAsDataURL(selectedFile);
+    setTimeout(() => {
+      console.log('fileRef.current after set:', fileRef.current);
+    }, 100);
   }
 
-  async function saveMessage() {
+  async function saveMessage(file: File | null) {
+    console.log('saveMessage called, file:', file);
     if (!letter.trim() || isPublic === null) {
       alert("편지, 공개여부를 모두 입력해 주세요.");
       return;
@@ -93,7 +98,7 @@ export default function GraduationMessageForm() {
       setIsPublic(null);
       setPreviewUrl("");
       setDefaultPicKey("");
-      setFile(null);
+      fileRef.current = null;
       navigate("/"); // 작성 성공 시 메인 페이지로 이동
     } catch (e: any) {
       console.error("업로드 실패:", e.response?.data || e);
@@ -283,7 +288,7 @@ export default function GraduationMessageForm() {
               cursor: "pointer",
             }}
           >
-            <CustomButton onClick={saveMessage}>
+            <CustomButton onClick={() => saveMessage(fileRef.current)}>
               {"축하글 작성 완료하기"}
             </CustomButton>
           </div>
