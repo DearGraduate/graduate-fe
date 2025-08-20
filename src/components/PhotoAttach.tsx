@@ -94,7 +94,6 @@ export default function PhotoAttachStrip({
         <style>{`div::-webkit-scrollbar { display: none; }`}</style>
 
         <div onClick={openPicker} style={{ cursor: "pointer" }}>
-          {/* 기본 이미지 선택 시에도 addPhotoIcon을 보여줌 */}
           <Tile src={preview || addPhotoIcon} isSelected={!!preview} />
         </div>
 

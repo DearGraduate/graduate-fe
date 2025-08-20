@@ -61,7 +61,6 @@ export default function GraduationMessageForm() {
       { type: "application/json" }
     );
     formData.append("data", jsonData);
-    // 파일이 있을 때만 file 필드 추가
     if (file) {
       formData.append("file", file, file.name);
       console.log("업로드 파일 정보:", file);
@@ -75,7 +74,6 @@ export default function GraduationMessageForm() {
       console.log("FormData:", pair[0], pair[1]);
     });
 
-    // 디버깅: 작성 직전 사진 URL 확인
     console.log("사진 첨부 상태 - file:", file);
     console.log("사진 첨부 상태 - previewUrl:", previewUrl);
     console.log("사진 첨부 상태 - defaultPicKey:", defaultPicKey);
@@ -99,7 +97,7 @@ export default function GraduationMessageForm() {
       setPreviewUrl("");
       setDefaultPicKey("");
       fileRef.current = null;
-      navigate("/"); // 작성 성공 시 메인 페이지로 이동
+      navigate("/"); 
     } catch (e: any) {
       console.error("업로드 실패:", e.response?.data || e);
       alert("네트워크 오류가 발생했습니다.");
