@@ -73,7 +73,7 @@ const EditDeleteBottomSheet = ({ isOpen, onRequestClose }: ModalProps) => {
 
                         <div className="flex flex-row justify-center gap-[12px]">
                             <CustomButton
-                                onClick={() => navigate('/writing')}
+                                onClick={() => navigate('/editing')}
                                 className="px-[15px] py-[15px] w-fit whitespace-nowrap text-center"
                             >축하글 수정하기</CustomButton>
                             <CustomButton

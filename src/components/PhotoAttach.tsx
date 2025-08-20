@@ -88,10 +88,13 @@ export default function PhotoAttachStrip({
           overflowX: "auto",
           padding: "2px 0",
           width: viewportWidth,
-          WebkitOverflowScrolling: "touch",    
+          WebkitOverflowScrolling: "touch",
         }}
       >
-        <style>{`div::-webkit-scrollbar { display: none; }`}</style>
+        <style>{`
+          div::-webkit-scrollbar { height: 8px; background: #eee; border-radius: 4px;}
+          div::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        `}</style>
 
         <div onClick={openPicker} style={{ cursor: "pointer" }}>
           <Tile src={preview || addPhotoIcon} isSelected={!!preview} />
