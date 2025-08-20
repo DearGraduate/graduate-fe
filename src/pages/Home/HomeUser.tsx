@@ -11,7 +11,11 @@ import { useAlbumStore } from '../../store/albumStore';
 import { albumService } from '../../services/albumService';
 import { useShallow } from 'zustand/react/shallow'
 
-const HomeUser = () => {
+interface HomeUserProps {
+  albumId?: number;
+}
+
+const HomeUser = ({ albumId }: HomeUserProps) => {
   const albumExists = true;
   const isRollingPaperExpired = false; 
   const [isDownloadModalOpen, setDownloadModalOpen] = useState(false);

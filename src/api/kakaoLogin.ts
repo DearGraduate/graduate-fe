@@ -74,8 +74,9 @@ export const kakaoLoginAPI = {
       console.log('카카오 로그인 성공:', response.data);
       console.log('Access Token:', cleanToken);
       
-      
       let hasAlbum = false;
+      let albumId: number | undefined;
+      
       try {
         const getRes = await apiClient.get<ApiResponse<any>>('/api/albums', {
           // 토큰이 있다면 Authorization 헤더로, 없으면 쿠키 세션으로 시도
@@ -84,7 +85,10 @@ export const kakaoLoginAPI = {
         const result = (getRes.data as any)?.result;
         hasAlbum = !!result && (typeof result === 'object')
           ? Object.keys(result).length > 0
-          : true; 
+          : true;
+        
+        // albumId는 로그인 응답에서 직접 가져오기
+        albumId = response.data.result?.albumId;
       } catch (e: any) {
         const status = e?.response?.status;
         if (status === 404) {
@@ -93,6 +97,8 @@ export const kakaoLoginAPI = {
           console.warn('앨범 조회 실패, 상태:', status, e?.response?.data);
           hasAlbum = false;
         }
+        // 에러가 발생해도 albumId는 로그인 응답에서 가져오기
+        albumId = response.data.result?.albumId;
       }
 
       return {
@@ -100,7 +106,8 @@ export const kakaoLoginAPI = {
         tokens: {
           accessToken: cleanToken
         },
-        hasAlbum, 
+        hasAlbum,
+        albumId
       };
 
     } catch (error: any) {
