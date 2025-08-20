@@ -5,8 +5,8 @@ const withBearer = (t: string) => (t.startsWith('Bearer ') ? t : `Bearer ${t}`)
 
 export interface AlbumLetterDTO {
   id: number
-  writer_name: string | null
-  pic_url: string | null
+  writerName: string | null
+  picUrl: string | null
   message: string
   createdAt?: string
   updatedAt?: string

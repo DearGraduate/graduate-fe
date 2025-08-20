@@ -60,8 +60,8 @@ export default function AlbumSection() {
     () =>
       letters.map(l => ({
         key: l.id,
-        name: l.writer_name ?? '익명',
-        imageUrl: l.pic_url ?? (testImage as unknown as string),
+        name: l.isPublic ? (l.writerName ?? '익명') : '익명',
+        imageUrl: l.picUrl ?? (testImage as unknown as string),
         message: l.message,
       })),
     [letters]
