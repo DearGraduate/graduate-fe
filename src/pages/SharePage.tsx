@@ -23,10 +23,11 @@ const SharePage = () => {
 
   const navigate = useNavigate();
 
-  const { albumName, albumType } = useAlbumStore(
+  const { albumName, albumType, albumId } = useAlbumStore(
     useShallow((s) => ({
       albumName: s.albumName,
       albumType: s.albumType,
+      albumId: s.albumId,
     }))
   )
 
@@ -38,12 +39,21 @@ const SharePage = () => {
     albumService.fetch().catch(() => {})
   }, [])
 
+  // 홈 아이콘 클릭 핸들러 - 앨범 ID가 있으면 /home/{albumId}로, 없으면 /home으로 이동
+  const handleHomeClick = () => {
+    if (albumId) {
+      navigate(`/home/${albumId}`);
+    } else {
+      navigate('/home');
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-main text-white px-6 py-10 flex flex-col items-center justify-between ">
       {/* 상단 홈 아이콘 */}
       <div className="w-full flex justify-start">
-        <button onClick={() => navigate('/home')}>
+        <button onClick={handleHomeClick}>
         <img src={imgHome} alt="home" className="w-6 h-6" />
       </button>
       </div>

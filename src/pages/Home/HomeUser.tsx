@@ -13,9 +13,10 @@ import { useShallow } from 'zustand/react/shallow'
 
 interface HomeUserProps {
   albumId?: number;
+  isMyAlbum?: boolean;
 }
 
-const HomeUser = ({ albumId }: HomeUserProps) => {
+const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
   const albumExists = true;
   const isRollingPaperExpired = false; 
   const [isDownloadModalOpen, setDownloadModalOpen] = useState(false);
@@ -88,6 +89,26 @@ const HomeUser = ({ albumId }: HomeUserProps) => {
     navigate('/setting');
   };
 
+  // 축하글 작성 핸들러 - 앨범 ID가 있으면 해당 앨범에 작성
+  const handleWriteCongratulatoryMessage = () => {
+    if (albumId) {
+      navigate(`/writing?albumId=${albumId}`);
+    } else {
+      navigate('/writing');
+    }
+  };
+
+  // 내 앨범 보기/앨범 만들기 핸들러
+  const handleViewMyAlbum = () => {
+    if (isMyAlbum) {
+      // 내 앨범인 경우 현재 페이지 유지
+      return;
+    } else {
+      // 남의 앨범인 경우 내 앨범으로 이동
+      navigate('/');
+    }
+  };
+
       const { albumName, albumType } = useAlbumStore(
         useShallow((s) => ({
           albumName: s.albumName,
@@ -116,13 +137,15 @@ const HomeUser = ({ albumId }: HomeUserProps) => {
               D-23
             </span>
           </div>
-          <img 
-            src={SetIcon} 
-            alt="설정" 
-            className="w-[23px] h-[23px] cursor-pointer hover:opacity-70 transition-opacity duration-200" 
-            onClick={handleSettingClick}
-            title="설정정"
-          />
+          {isMyAlbum && (
+            <img 
+              src={SetIcon} 
+              alt="설정" 
+              className="w-[23px] h-[23px] cursor-pointer hover:opacity-70 transition-opacity duration-200" 
+              onClick={handleSettingClick}
+              title="설정"
+            />
+          )}
         </div>
         
         <div className="w-full max-w-[237px] min-h-[80px] flex flex-col items-center justify-center gap-[5px] opacity-100 mt-[30px]">
@@ -139,7 +162,7 @@ const HomeUser = ({ albumId }: HomeUserProps) => {
 
       <div className="flex-1 flex flex-col items-center justify-center min-h-0 mb-4">
         {albumExists ? (
-          <AlbumSection />
+          <AlbumSection albumId={albumId} />
         ) : (
           <EmptyAlbumMessage />
         )}
@@ -151,19 +174,19 @@ const HomeUser = ({ albumId }: HomeUserProps) => {
             <CustomButton
               bgColor="bg-button-default"
               className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
-              onClick={() => navigate('/writing')}
+              onClick={handleWriteCongratulatoryMessage}
             >
               <span className="font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center">
-                나에게 축하글 작성하기
+                {isMyAlbum ? '나에게 축하글 작성하기' : '축하글 작성하기'}
               </span>
             </CustomButton>
             <CustomButton
               bgColor="bg-button-default"
               className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
-              onClick={() => navigate('/sharing')}
+              onClick={handleViewMyAlbum}
             >
               <span className="font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center">
-                나의 졸업 앨범 공유하기
+                {isMyAlbum ? '나의 졸업 앨범 공유하기' : '내 앨범 보기/앨범 만들기'}
               </span>
             </CustomButton>
           </>
