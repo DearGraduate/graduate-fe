@@ -42,6 +42,7 @@ export async function getAlbumLetters(
   if (status >= 200 && status < 300) {
     const result = data?.result ?? data
     if (Array.isArray(result)) return result
+    if (Array.isArray(result?.letters)) return result.letters
     if (Array.isArray(result?.items)) return result.items
     if (Array.isArray(result?.content)) return result.content
     return []
