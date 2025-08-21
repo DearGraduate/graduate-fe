@@ -30,6 +30,15 @@ const EditDeleteBottomSheet = ({ isOpen, onRequestClose, letterData }: EditDelet
     const accessToken = useAuthStore(s => s.accessToken);
     const selectedLetterId = useLetterStore(s => s.selectedLetterId);
     const setSelectedLetterData = useLetterStore(s => s.setSelectedLetterData);
+    const FRAME_WIDTH = 360;
+    const mountEl = typeof window !== 'undefined'
+        ? document.getElementById('app-frame')!
+        : null;
+    if (!mountEl) {
+        console.error("Mount element not found. Ensure 'app-frame' exists in your HTML.");
+        return null;
+    }
+
 
     const handleDelete = async () => {
         console.log('Delete button clicked');
@@ -54,47 +63,51 @@ const EditDeleteBottomSheet = ({ isOpen, onRequestClose, letterData }: EditDelet
         <Sheet
             isOpen={isOpen}
             onClose={onRequestClose}
-            ref={ref}
-            onSnap={setSnapPoint}
+            mountPoint={mountEl}                 
             snapPoints={SHEET_SNAP_POINTS}
             initialSnap={SHEET_INITIAL_SNAP}
+            ref={ref}
+            onSnap={setSnapPoint}
+
         >
+            {/* <Sheet.Backdrop onTap={onRequestClose} /> */}
+
             <Sheet.Backdrop onTap={onRequestClose} />
-            <Sheet.Container
-                className={`bg-white rounded-t-[40px]
-    ${isWindow
-                        ? 'max-w-[360px] mx-auto'
-                        : isTablet
-                            ? 'w-screen'
-                            : isMobile
-                                ? 'w-screen' : ''}`}
-            >
-                <Sheet.Header />
-                <Sheet.Content>
-                    <div className="flex flex-col justify-center items-center p-10 w-full text-center mb-5">
-                        <h3
-                            style={{ fontFamily: 'Ydestreet', fontWeight: '700', fontSize: '14px' }}
-                            className="text-lg font-semibold mb-6 w-full whitespace-nowrap text-center text-black">
-                            축하글을 수정하거나 삭제하시겠어요?</h3>
 
-                        <div className="flex flex-row justify-center gap-[12px]">
-                            <CustomButton
-                                onClick={() => {
-                                    if (letterData) setSelectedLetterData(letterData);
-                                    navigate('/editing');
-                                }}
-                                className="px-[15px] py-[15px] w-fit whitespace-nowrap text-center"
-                            >축하글 수정하기</CustomButton>
-                            <CustomButton
-                                onClick={handleDelete}
-                                className="px-[15px] py-[15px] w-fit whitespace-nowrap text-center"
-                            >축하글 삭제하기</CustomButton>
-                        </div>
+{/* ✅ Container: 폭만 프레임에 맞추고 중앙 정렬. position/top/left 등은 절대 주지 말 것 */}
+<Sheet.Container className="bg-white rounded-t-[40px] w-full  mx-auto">
+  <Sheet.Header />
+  <Sheet.Content>
+    {/* 내부에 fixed/left/transform 같은 좌표계 스타일 주지 말고, 그냥 일반 레이아웃 */}
+    <div className="px-6 pb-8 pt-4">
+      <h3
+        style={{ fontFamily: 'Ydestreet', fontWeight: 700, fontSize: '14px' }}
+        className="text-lg font-semibold mb-6 text-center text-black"
+      >
+        축하글을 수정하거나 삭제하시겠어요?
+      </h3>
 
-                    </div>
-                </Sheet.Content>
-            </Sheet.Container>
-            <Sheet.Backdrop />
+      <div className="flex justify-center gap-3">
+        <CustomButton
+          onClick={() => {
+            if (letterData) setSelectedLetterData(letterData);
+            navigate('/editing');
+          }}
+          className="px-[15px] py-[15px] w-fit whitespace-nowrap text-center"
+        >
+          축하글 수정하기
+        </CustomButton>
+
+        <CustomButton
+          onClick={handleDelete}
+          className="px-[15px] py-[15px] w-fit whitespace-nowrap text-center"
+        >
+          축하글 삭제하기
+        </CustomButton>
+      </div>
+    </div>
+  </Sheet.Content>
+</Sheet.Container>
         </Sheet>
     )
 }

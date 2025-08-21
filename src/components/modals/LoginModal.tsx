@@ -27,6 +27,7 @@ const LoginModal = ({ isOpen, onRequestClose, onLoginClick }: LoginModalProps) =
                     borderRadius: '20px',
                 },
             }}
+            parentSelector={() => document.querySelector('main') as HTMLElement}
         >
             <div className="flex flex-col justify-center items-center h-full gap-4">
                 <h3 

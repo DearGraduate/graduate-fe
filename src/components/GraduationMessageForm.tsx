@@ -118,6 +118,8 @@ export default function GraduationMessageForm() {
         paddingTop: "0px",
         paddingBottom: "0px",
         overflowY: "auto",
+        width: "100%",
+        
         // overflow: "hidden",
       }}
     >
@@ -280,10 +282,10 @@ export default function GraduationMessageForm() {
 
           <div
             style={{
-              position: "absolute",
-              top: "750px",
-              left: "50%",
-              transform: "translateX(-50%)",
+              position: "relative",
+              
+              display: "flex",
+              justifyContent: "center",
               fontSize: "12px",
               cursor: "pointer",
             }}
