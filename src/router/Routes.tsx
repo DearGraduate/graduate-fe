@@ -12,6 +12,7 @@ import ModalTest from "../pages/ModalTest";
 import ErrorPage from "../pages/error/ErrorStatusPage"
 import GraduationMessagePage from "../pages/graduation-message";
 import HomeSetting from "../pages/Home/HomeSetting";
+import EditGraduationMessageForm from "../components/EditGraduationMessageForm";
 const router = createBrowserRouter([
     {
         //루트 레이아웃
@@ -84,6 +85,11 @@ const router = createBrowserRouter([
                 //홈세틴페이지
                 path: '/setting',
                 element: <HomeSetting />
+            },
+            {
+                //축하글 수정페이지
+                path: '/editing',
+                element: <EditGraduationMessageForm />
             },
             // 아래 주석처리한 양식 참고해서 필요한 페이지 만들 때 추가하면 됩니다. 
             // {

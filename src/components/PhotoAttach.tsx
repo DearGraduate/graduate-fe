@@ -33,7 +33,6 @@ export default function PhotoAttachStrip({
       const url = typeof ev.target?.result === "string" ? ev.target.result : "";
       if (url) {
         setPreview(url); 
-        onChange(url);
       }
     };
     reader.readAsDataURL(file);
@@ -89,13 +88,15 @@ export default function PhotoAttachStrip({
           overflowX: "auto",
           padding: "2px 0",
           width: viewportWidth,
-          WebkitOverflowScrolling: "touch",    
+          WebkitOverflowScrolling: "touch",
         }}
       >
-        <style>{`div::-webkit-scrollbar { display: none; }`}</style>
+        <style>{`
+          div::-webkit-scrollbar { height: 8px; background: #eee; border-radius: 4px;}
+          div::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        `}</style>
 
         <div onClick={openPicker} style={{ cursor: "pointer" }}>
-          {/* 기본 이미지 선택 시에도 addPhotoIcon을 보여줌 */}
           <Tile src={preview || addPhotoIcon} isSelected={!!preview} />
         </div>
 
