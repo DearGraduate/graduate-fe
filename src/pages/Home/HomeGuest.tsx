@@ -4,6 +4,7 @@ import CharacterImg from '../../assets/images/Character.png';
 import CustomButton from '../../components/common/button';
 import LoginModal from '../../components/modals/LoginModal';
 import { useAlbumStore } from '../../store/albumStore';
+import { useAuthStore } from '../../store/authStore';
 import { albumService } from '../../services/albumService';
 import { useShallow } from 'zustand/react/shallow'
 import AlbumInfo from '../../components/common/AlbumInfo';
@@ -15,6 +16,7 @@ interface HomeGuestProps {
 const HomeGuest = ({ albumId }: HomeGuestProps) => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuthStore();
 
   const handleButtonClick = () => {
     setIsLoginModalOpen(true);
@@ -53,15 +55,18 @@ const HomeGuest = ({ albumId }: HomeGuestProps) => {
     useEffect(() => {
       if (didFetch.current) return
       didFetch.current = true
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      albumService.fetch().catch(() => {})
-    }, [])
+      // 로그인한 상태에서만 앨범 정보를 가져옴
+      if (isLoggedIn) {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        albumService.fetch().catch(() => {})
+      }
+    }, [isLoggedIn])
 
   return (
     <div className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
       <div className="w-full max-w-[237px] min-h-[80px] flex flex-col items-center justify-center gap-2.5 opacity-100 mt-[5vh] relative z-10">
         <div className="font-ydestreet font-bold text-[36px] leading-[150%] tracking-[0] text-white text-center">
-          {albumName ?? '이름'}의<br/>{albumType ?? '앨범 타입'}
+          {isLoggedIn ? (albumName ?? '이름') : '포토리'}의<br/>{isLoggedIn ? (albumType ?? '앨범 타입') : '나의 앨범'}
         </div>
       </div>
       
