@@ -1,16 +1,16 @@
 import axios from 'axios'
 
-
 const BASE = (process.env.REACT_APP_BASE_URL ?? '').replace(/\/+$/, '')
 const withBearer = (t: string) => (t.startsWith('Bearer ') ? t : `Bearer ${t}`)
 
 export interface AlbumLetterDTO {
-  id: number
-  writer_name: string | null
-  pic_url: string | null
+  letterId: number
+  writerName: string | null
+  picUrl: string | null
   message: string
   createdAt?: string
   updatedAt?: string
+  isPublic: boolean
 }
 
 export interface GetAlbumLettersQuery {
@@ -42,6 +42,7 @@ export async function getAlbumLetters(
   if (status >= 200 && status < 300) {
     const result = data?.result ?? data
     if (Array.isArray(result)) return result
+    if (Array.isArray(result?.letters)) return result.letters
     if (Array.isArray(result?.items)) return result.items
     if (Array.isArray(result?.content)) return result.content
     return []

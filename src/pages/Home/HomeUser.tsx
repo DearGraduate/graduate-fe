@@ -4,10 +4,12 @@ import AlbumSection from "../../components/home/AlbumSection";
 import EmptyAlbumMessage from "../../components/home/EmptyAlbumMessage";
 import DownloadPDF from "../../components/modals/DownloadPDF";
 import DownloadModal from "../../components/modals/DownloadModal";
+import LoginModal from "../../components/modals/LoginModal";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import { useAlbumStore } from '../../store/albumStore';
+import { useAuthStore } from '../../store/authStore';
 import { albumService } from '../../services/albumService';
 import { useShallow } from 'zustand/react/shallow'
 
@@ -21,7 +23,9 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
   const isRollingPaperExpired = false; 
   const [isDownloadModalOpen, setDownloadModalOpen] = useState(false);
   const [isDownloadCharacterModalOpen, setDownloadCharacterModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuthStore();
 
   const handleOpenDownloadModal = () => setDownloadModalOpen(true);
   const handleCloseDownloadModal = () => setDownloadModalOpen(false);
@@ -89,8 +93,22 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
     navigate('/setting');
   };
 
+  const handleLoginModalClose = () => {
+    setIsLoginModalOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    setIsLoginModalOpen(false);
+    navigate('/login');
+  };
+
   // 축하글 작성 핸들러 - 앨범 ID가 있으면 해당 앨범에 작성
   const handleWriteCongratulatoryMessage = () => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    
     if (albumId) {
       navigate(`/writing?albumId=${albumId}`);
     } else {
@@ -100,9 +118,14 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
 
   // 내 앨범 보기/앨범 만들기 핸들러
   const handleViewMyAlbum = () => {
-    if (isMyAlbum) {
-      // 내 앨범인 경우 현재 페이지 유지
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
       return;
+    }
+    
+    if (isMyAlbum) {
+      // 내 앨범인 경우 공유 페이지로 이동
+      navigate('/sharing');
     } else {
       // 남의 앨범인 경우 내 앨범으로 이동
       navigate('/');
@@ -214,6 +237,12 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
       <DownloadModal 
         isOpen={isDownloadCharacterModalOpen}
         onRequestClose={handleCloseDownloadCharacterModal}
+      />
+      
+      <LoginModal 
+        isOpen={isLoginModalOpen}
+        onRequestClose={handleLoginModalClose}
+        onLoginClick={handleLoginClick}
       />
     </div>
   )
