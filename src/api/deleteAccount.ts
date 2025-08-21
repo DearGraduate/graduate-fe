@@ -8,13 +8,6 @@ interface DeleteAccountResponse {
   message: string;
 }
 
-// axios 인스턴스 생성 (다른 API와 동일)
-const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
-  timeout: 10000,
-  withCredentials: true, // HttpOnly 쿠키 자동 전송을 위해 필요
-});
-
 // 회원 탈퇴 API 함수
 export const deleteAccountAPI = {
   // 회원 탈퇴 처리
@@ -43,11 +36,13 @@ export const deleteAccountAPI = {
         headers['Authorization'] = `Bearer ${cleanToken}`;
       }
       
-      const response = await apiClient.post<DeleteAccountResponse>(
-        '/api/auth/delete',
+      const response = await axios.post<DeleteAccountResponse>(
+        `${process.env.REACT_APP_BASE_URL}/api/auth/delete`,
         null,
         {
           headers,
+          timeout: 10000,
+          withCredentials: true,
         }
       );
       

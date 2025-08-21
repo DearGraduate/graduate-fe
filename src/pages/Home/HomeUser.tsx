@@ -4,19 +4,28 @@ import AlbumSection from "../../components/home/AlbumSection";
 import EmptyAlbumMessage from "../../components/home/EmptyAlbumMessage";
 import DownloadPDF from "../../components/modals/DownloadPDF";
 import DownloadModal from "../../components/modals/DownloadModal";
+import LoginModal from "../../components/modals/LoginModal";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import { useAlbumStore } from '../../store/albumStore';
+import { useAuthStore } from '../../store/authStore';
 import { albumService } from '../../services/albumService';
 import { useShallow } from 'zustand/react/shallow'
 
-const HomeUser = () => {
+interface HomeUserProps {
+  albumId?: number;
+  isMyAlbum?: boolean;
+}
+
+const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
   const albumExists = true;
   const isRollingPaperExpired = false; 
   const [isDownloadModalOpen, setDownloadModalOpen] = useState(false);
   const [isDownloadCharacterModalOpen, setDownloadCharacterModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuthStore();
 
   const handleOpenDownloadModal = () => setDownloadModalOpen(true);
   const handleCloseDownloadModal = () => setDownloadModalOpen(false);
@@ -84,6 +93,45 @@ const HomeUser = () => {
     navigate('/setting');
   };
 
+  const handleLoginModalClose = () => {
+    setIsLoginModalOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    setIsLoginModalOpen(false);
+    navigate('/login');
+  };
+
+  // 축하글 작성 핸들러 - 앨범 ID가 있으면 해당 앨범에 작성
+  const handleWriteCongratulatoryMessage = () => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    
+    if (albumId) {
+      navigate(`/writing?albumId=${albumId}`);
+    } else {
+      navigate('/writing');
+    }
+  };
+
+  // 내 앨범 보기/앨범 만들기 핸들러
+  const handleViewMyAlbum = () => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    
+    if (isMyAlbum) {
+      // 내 앨범인 경우 공유 페이지로 이동
+      navigate('/sharing');
+    } else {
+      // 남의 앨범인 경우 내 앨범으로 이동
+      navigate('/');
+    }
+  };
+
       const { albumName, albumType } = useAlbumStore(
         useShallow((s) => ({
           albumName: s.albumName,
@@ -112,13 +160,15 @@ const HomeUser = () => {
               D-23
             </span>
           </div>
-          <img 
-            src={SetIcon} 
-            alt="설정" 
-            className="w-[23px] h-[23px] cursor-pointer hover:opacity-70 transition-opacity duration-200" 
-            onClick={handleSettingClick}
-            title="설정정"
-          />
+          {isMyAlbum && (
+            <img 
+              src={SetIcon} 
+              alt="설정" 
+              className="w-[23px] h-[23px] cursor-pointer hover:opacity-70 transition-opacity duration-200" 
+              onClick={handleSettingClick}
+              title="설정"
+            />
+          )}
         </div>
         
         <div className="w-full max-w-[237px] min-h-[80px] flex flex-col items-center justify-center gap-[5px] opacity-100 mt-[30px]">
@@ -135,7 +185,7 @@ const HomeUser = () => {
 
       <div className="flex-1 flex flex-col items-center justify-center min-h-0 mb-4">
         {albumExists ? (
-          <AlbumSection />
+          <AlbumSection albumId={albumId} />
         ) : (
           <EmptyAlbumMessage />
         )}
@@ -147,19 +197,19 @@ const HomeUser = () => {
             <CustomButton
               bgColor="bg-button-default"
               className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
-              onClick={() => navigate('/writing')}
+              onClick={handleWriteCongratulatoryMessage}
             >
               <span className="font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center">
-                나에게 축하글 작성하기
+                {isMyAlbum ? '나에게 축하글 작성하기' : '축하글 작성하기'}
               </span>
             </CustomButton>
             <CustomButton
               bgColor="bg-button-default"
               className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
-              onClick={() => navigate('/sharing')}
+              onClick={handleViewMyAlbum}
             >
               <span className="font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center">
-                나의 졸업 앨범 공유하기
+                {isMyAlbum ? '나의 졸업 앨범 공유하기' : '내 앨범 보기/앨범 만들기'}
               </span>
             </CustomButton>
           </>
@@ -187,6 +237,12 @@ const HomeUser = () => {
       <DownloadModal 
         isOpen={isDownloadCharacterModalOpen}
         onRequestClose={handleCloseDownloadCharacterModal}
+      />
+      
+      <LoginModal 
+        isOpen={isLoginModalOpen}
+        onRequestClose={handleLoginModalClose}
+        onLoginClick={handleLoginClick}
       />
     </div>
   )

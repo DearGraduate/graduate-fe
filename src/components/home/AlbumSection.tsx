@@ -2,14 +2,16 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import MessageCard from '../common/MessageCard'
 import testImage from '../../assets/icons/img_default.png'
 import { getAlbumLetters, type AlbumLetterDTO } from '../../api/albumLetters'
-import { useAlbumStore } from '../../store/albumStore'
 import { useAuthStore } from '../../store/authStore'
 
 const LIMIT = 10
 
-export default function AlbumSection() {
-  const albumId = useAlbumStore(s => s.albumId)
-  const token   = useAuthStore(s => s.accessToken)
+interface AlbumSectionProps {
+  albumId?: number;
+}
+
+export default function AlbumSection({ albumId }: AlbumSectionProps) {
+  const token = useAuthStore(s => s.accessToken)
 
   const [letters, setLetters] = useState<AlbumLetterDTO[]>([])
   const [loading, setLoading] = useState(false)
@@ -22,7 +24,7 @@ export default function AlbumSection() {
     if (list.length === 0) return {}
     const last = list[list.length - 1]
     const ts = last.updatedAt ?? last.createdAt
-    return ts ? { lastUpdatedAt: ts, lastLetterId: last.id } : { lastLetterId: last.id }
+    return ts ? { lastUpdatedAt: ts, lastLetterId: last.letterId } : { lastLetterId: last.letterId }
   }
 
   const load = async (append = false) => {
@@ -36,7 +38,12 @@ export default function AlbumSection() {
     try {
       const cursor = append ? makeCursor(letters) : {}
       const data = await getAlbumLetters(albumId, token ?? undefined, { limit: LIMIT, ...cursor })
-      setLetters(prev => (append ? [...prev, ...data] : data))
+      setLetters(prev => {
+        if (!append) return data
+        const prevIds = new Set(prev.map(l => l.letterId))
+        const newData = data.filter(l => !prevIds.has(l.letterId))
+        return [...prev, ...newData]
+      })
       setHasMore(data.length === LIMIT)
     } catch (e) {
       setError(e)
@@ -54,9 +61,10 @@ export default function AlbumSection() {
   const messages = useMemo(
     () =>
       letters.map(l => ({
-        key: l.id,
-        name: l.writer_name ?? '익명',
-        imageUrl: l.pic_url ?? (testImage as unknown as string),
+        key: l.letterId,
+        letterId: l.letterId,
+        name: l.isPublic ? (l.writerName ?? '익명') : '익명',
+        imageUrl: l.picUrl ?? (testImage as unknown as string),
         message: l.message,
       })),
     [letters]
@@ -73,7 +81,7 @@ export default function AlbumSection() {
       <div className="grid grid-cols-2 gap-x-[37px] gap-y-2.5">
         {messages.map(m => (
           <div key={m.key} className="w-[130px]">
-            <MessageCard name={m.name} imageUrl={m.imageUrl} message={m.message} />
+            <MessageCard name={m.name} imageUrl={m.imageUrl} message={m.message} letterId={m.letterId} />
           </div>
         ))}
       </div>

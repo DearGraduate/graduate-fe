@@ -1,110 +1,55 @@
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom"; 
-import backButton from "../icons/chevron-back.png";
-import "../style/colors.css";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CustomCheckbox from "../style/CustomCheckbox";
 import CustomButton from "./common/button";
-import PhotoAttachStrip from "../components/PhotoAttach";
+import { useLetterStore } from "../store/letterStore";
+import { useAuthStore } from "../store/authStore";
+import { editLetter } from "../api/editLetter";
 import axios from "axios";
-import { useAlbumStore } from '../store/albumStore'
-import { useAuthStore } from '../store/authStore'; 
+import backButton from "../icons/chevron-back.png";
 
-
-export default function GraduationMessageForm() {
+export default function EditGraduationMessageForm() {
   const navigate = useNavigate();
-  //const { albumId = "1" } = { albumId: "1" };
-  //기존에 하드 코딩 되어있던 부분 앨범 ID 로 변경
-  const albumId = useAlbumStore(s => s.albumId)
-  const [author, setAuthor] = useState("");
-  const [letter, setLetter] = useState("");
-  const [isPublic, setIsPublic] = useState<null | boolean>(null);
-  const [previewUrl, setPreviewUrl] = useState<string>("");
-  const [defaultPicKey, setDefaultPicKey] = useState<string>("");
-  const fileRef = useRef<File | null>(null);
-  const accessToken = useAuthStore.getState().accessToken; 
+  const selectedLetterData = useLetterStore((s) => s.selectedLetterData);
+  const accessToken = useAuthStore.getState().accessToken;
+  const [author, setAuthor] = useState(selectedLetterData?.writerName ?? "");
+  const [letter, setLetter] = useState(selectedLetterData?.message ?? "");
+  const [isPublic, setIsPublic] = useState<boolean>(
+    selectedLetterData?.isPublic ?? true
+  );
+  const [loading, setLoading] = useState(false);
+  const [picUrl, setPicUrl] = useState<string>(
+    selectedLetterData?.picUrl ?? ""
+  );
 
-  function onDefaultPick(url: string) {
-    setDefaultPicKey(url);
-    setPreviewUrl("");
-    fileRef.current = null;
-  }
+  useEffect(() => {
+    console.log("selectedLetterData:", selectedLetterData);
+    setAuthor(selectedLetterData?.writerName ?? "");
+    setLetter(selectedLetterData?.message ?? "");
+    setIsPublic(selectedLetterData?.isPublic ?? true);
+    setPicUrl(selectedLetterData?.picUrl ?? "");
+  }, [selectedLetterData]);
 
-  function onFileSelected(selectedFile: File) {
-    console.log('onFileSelected called, selectedFile:', selectedFile);
-    setDefaultPicKey("");
-    fileRef.current = selectedFile;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const url = typeof ev.target?.result === "string" ? ev.target.result : "";
-      setPreviewUrl(url);
-    };
-    reader.readAsDataURL(selectedFile);
-    setTimeout(() => {
-      console.log('fileRef.current after set:', fileRef.current);
-    }, 100);
-  }
-
-  async function saveMessage(file: File | null) {
-    console.log('saveMessage called, file:', file);
-    if (!letter.trim() || isPublic === null) {
-      alert("편지, 공개여부를 모두 입력해 주세요.");
+  async function handleEdit() {
+    if (!selectedLetterData?.id || !accessToken) return;
+    if (!letter.trim()) {
+      alert("편지를 입력해 주세요.");
       return;
     }
-    if (!author.trim()) {
-      alert("작성자 이름을 입력해 주세요.");
-      return;
-    }
-    const formData = new FormData();
-
-    const jsonData = new Blob(
-      [JSON.stringify({ writerName: author, message: letter, isPublic })],
-      { type: "application/json" }
-    );
-    formData.append("data", jsonData);
-    if (file) {
-      formData.append("file", file, file.name);
-      console.log("업로드 파일 정보:", file);
-      console.log("파일명:", file.name);
-      const fileUrl = URL.createObjectURL(file);
-      console.log("이미지 파일 브라우저 미리보기 URL:", fileUrl);
-    }
-
-    Array.from(formData.entries()).forEach(pair => {
-      console.log("id", albumId)
-      console.log("FormData:", pair[0], pair[1]);
-    });
-
-    console.log("사진 첨부 상태 - file:", file);
-    console.log("사진 첨부 상태 - previewUrl:", previewUrl);
-    console.log("사진 첨부 상태 - defaultPicKey:", defaultPicKey);
-
     try {
-      const response = await axios.post(
-        `https://api.photory.site/api/albums/${albumId}/letter`,
-        formData,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+      await editLetter(
+        String(selectedLetterData.id),
+        accessToken,
+        author,
+        letter,
+        isPublic
       );
-      console.log("서버 응답:", response.data);
-      alert("축하 메시지가 성공적으로 등록되었습니다.");
-      setAuthor("");
-      setLetter("");
-      setIsPublic(null);
-      setPreviewUrl("");
-      setDefaultPicKey("");
-      fileRef.current = null;
-      navigate("/"); 
-    } catch (e: any) {
-      console.error("업로드 실패:", e.response?.data || e);
-      alert("네트워크 오류가 발생했습니다.");
+      alert("축하 메시지가 성공적으로 수정되었습니다.");
+      navigate("/");
+    } catch (e) {
+      alert("수정에 실패했습니다.");
     }
   }
-
-  const isAuthorOverLimit = author.length > 5;
 
   return (
     <div
@@ -143,7 +88,7 @@ export default function GraduationMessageForm() {
               left: "25px",
               cursor: "pointer",
             }}
-            onClick={() => navigate(-1)} 
+            onClick={() => navigate(-1)}
           />
         </div>
         <div style={{ paddingLeft: "52px" }}>
@@ -169,15 +114,15 @@ export default function GraduationMessageForm() {
           <input
             type="text"
             placeholder="본명으로 작성해 주세요!"
-            value={author}
             maxLength={5}
+            value={author}
             onChange={(e) => setAuthor(e.target.value)}
             style={{
               width: "288px",
               height: "26px",
               borderRadius: "5px",
               paddingLeft: "10px",
-              border: isAuthorOverLimit ? "2px solid #FF5A5A" : "0.5px solid var(--color-line)",
+              border: "0.5px solid var(--color-line)",
               marginBottom: "5px",
               fontSize: "10px",
               color: "var(--color-text-white)",
@@ -198,13 +143,37 @@ export default function GraduationMessageForm() {
           <div
             style={{
               marginBottom: "25px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
-            <PhotoAttachStrip
-              value={previewUrl || defaultPicKey}
-              onChange={onDefaultPick}
-              onFileSelected={onFileSelected}
-            />
+            {picUrl ? (
+              <img
+                src={picUrl}
+                alt="첨부사진"
+                style={{
+                  width: "126px",
+                  height: "104px",
+                  borderRadius: "8px",
+                  display: "block",
+                  marginLeft: "0", // 왼쪽 정렬
+                  alignSelf: "flex-start"
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: "126px",
+                  height: "104px",
+                  background: "#eee",
+                  borderRadius: "8px",
+                  display: "block",
+                  marginLeft: "0", // 왼쪽 정렬
+                  alignSelf: "flex-start"
+                }}
+              />
+            )}
           </div>
           <label
             style={{
@@ -288,9 +257,7 @@ export default function GraduationMessageForm() {
               cursor: "pointer",
             }}
           >
-            <CustomButton onClick={() => saveMessage(fileRef.current)}>
-              {"축하글 작성 완료하기"}
-            </CustomButton>
+            <CustomButton onClick={handleEdit}>{"축하글 수정 완료하기"}</CustomButton>
           </div>
         </div>
       </div>

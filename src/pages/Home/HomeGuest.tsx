@@ -1,16 +1,15 @@
-import React, { useState, useEffect , useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CharacterImg from '../../assets/images/Character.png';  
 import CustomButton from '../../components/common/button';
 import LoginModal from '../../components/modals/LoginModal';
-import { useAlbumStore } from '../../store/albumStore';
-import { albumService } from '../../services/albumService';
-import { useShallow } from 'zustand/react/shallow'
+import { useAuthStore } from '../../store/authStore';
 import AlbumInfo from '../../components/common/AlbumInfo';
 
 const HomeGuest = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuthStore();
 
   const handleButtonClick = () => {
     setIsLoginModalOpen(true);
@@ -25,27 +24,29 @@ const HomeGuest = () => {
     navigate('/login');
   };
 
+  const handleCreateAlbum = () => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    // 로그인된 경우 앨범 생성 페이지로 이동
+    navigate('/making');
+  };
 
-    const { albumName, albumType } = useAlbumStore(
-      useShallow((s) => ({
-        albumName: s.albumName,
-        albumType: s.albumType,
-      }))
-    )
-  
-    const didFetch = useRef(false)
-    useEffect(() => {
-      if (didFetch.current) return
-      didFetch.current = true
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      albumService.fetch().catch(() => {})
-    }, [])
+  const handleViewMyAlbum = () => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    // 로그인된 경우 홈으로 이동 (앨범 유무에 따라 자동 처리)
+    navigate('/');
+  };
 
   return (
     <div className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
       <div className="w-full max-w-[237px] min-h-[80px] flex flex-col items-center justify-center gap-2.5 opacity-100 mt-[5vh] relative z-10">
         <div className="font-ydestreet font-bold text-[36px] leading-[150%] tracking-[0] text-white text-center">
-          {albumName ?? '이름'}의<br/>{albumType ?? '앨범 타입'}
+          포토리의<br/>나의 앨범
         </div>
       </div>
       
@@ -65,7 +66,7 @@ const HomeGuest = () => {
         <CustomButton
           bgColor="bg-button-default"
           className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
-          onClick={handleButtonClick}
+          onClick={handleCreateAlbum}
         >
           <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
             나의 졸업 앨범 만들기
@@ -74,7 +75,7 @@ const HomeGuest = () => {
         <CustomButton
           bgColor="bg-button-default"
           className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
-          onClick={handleButtonClick}
+          onClick={handleViewMyAlbum}
         >
           <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
             나의 졸업 앨범 보기

@@ -26,7 +26,7 @@ const KakaoCallback = () => {
 
   const handleKakaoLogin = async (code: string) => {
     try {
-    const { data, tokens, hasAlbum } = await kakaoLoginAPI.loginWithCode(code);
+    const { data, tokens, hasAlbum, albumId } = await kakaoLoginAPI.loginWithCode(code);
       console.log('카카오 로그인 응답:', data);
       
       if (data.isSuccess) {
@@ -52,7 +52,12 @@ const KakaoCallback = () => {
         }
         
         setTimeout(() => {
-        navigate(hasAlbum ? '/home' : '/making', { replace: true });
+          // albumId가 있으면 /home/:albumId로, 없으면 /making으로 이동
+          if (hasAlbum && albumId) {
+            navigate(`/home/${albumId}`, { replace: true });
+          } else {
+            navigate('/making', { replace: true });
+          }
         }, 2000);
       } else {
         console.error('로그인 실패:', data.message);
