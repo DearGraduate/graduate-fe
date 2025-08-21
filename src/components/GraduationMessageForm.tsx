@@ -21,7 +21,7 @@ export default function GraduationMessageForm() {
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [defaultPicKey, setDefaultPicKey] = useState<string>("");
   const fileRef = useRef<File | null>(null);
-  const accessToken = useAuthStore.getState().accessToken; // 토큰 가져오기
+  const accessToken = useAuthStore.getState().accessToken; 
 
   function onDefaultPick(url: string) {
     setDefaultPicKey(url);

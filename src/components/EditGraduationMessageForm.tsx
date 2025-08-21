@@ -10,45 +10,40 @@ import backButton from "../icons/chevron-back.png";
 
 export default function EditGraduationMessageForm() {
   const navigate = useNavigate();
-  const selectedLetterId = useLetterStore((s) => s.selectedLetterId);
+  const selectedLetterData = useLetterStore((s) => s.selectedLetterData);
   const accessToken = useAuthStore.getState().accessToken;
-  const [letter, setLetter] = useState("");
-  const [isPublic, setIsPublic] = useState<boolean>(true);
+  const [author, setAuthor] = useState(selectedLetterData?.writerName ?? "");
+  const [letter, setLetter] = useState(selectedLetterData?.message ?? "");
+  const [isPublic, setIsPublic] = useState<boolean>(
+    selectedLetterData?.isPublic ?? true
+  );
   const [loading, setLoading] = useState(false);
-  const [picUrl, setPicUrl] = useState<string>("");
+  const [picUrl, setPicUrl] = useState<string>(
+    selectedLetterData?.picUrl ?? ""
+  );
 
   useEffect(() => {
-    async function fetchLetter() {
-      if (!selectedLetterId || !accessToken) return;
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `https://api.photory.site/api/letters/${selectedLetterId}`,
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        );
-        const data = response.data as any;
-        setLetter(data.message ?? "");
-        setIsPublic(data.isPublic ?? true);
-        setPicUrl(data.picUrl ?? "");
-      } catch (e) {
-        alert("축하글 정보를 불러오지 못했습니다.");
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchLetter();
-  }, [selectedLetterId, accessToken]);
+    console.log("selectedLetterData:", selectedLetterData);
+    setAuthor(selectedLetterData?.writerName ?? "");
+    setLetter(selectedLetterData?.message ?? "");
+    setIsPublic(selectedLetterData?.isPublic ?? true);
+    setPicUrl(selectedLetterData?.picUrl ?? "");
+  }, [selectedLetterData]);
 
   async function handleEdit() {
-    if (!selectedLetterId || !accessToken) return;
+    if (!selectedLetterData?.id || !accessToken) return;
     if (!letter.trim()) {
       alert("편지를 입력해 주세요.");
       return;
     }
     try {
-      await editLetter(String(selectedLetterId), accessToken, letter, isPublic);
+      await editLetter(
+        String(selectedLetterData.id),
+        accessToken,
+        author,
+        letter,
+        isPublic
+      );
       alert("축하 메시지가 성공적으로 수정되었습니다.");
       navigate("/");
     } catch (e) {
@@ -93,7 +88,7 @@ export default function EditGraduationMessageForm() {
               left: "25px",
               cursor: "pointer",
             }}
-            onClick={() => navigate(-1)} 
+            onClick={() => navigate(-1)}
           />
         </div>
         <div style={{ paddingLeft: "52px" }}>
@@ -120,12 +115,14 @@ export default function EditGraduationMessageForm() {
             type="text"
             placeholder="본명으로 작성해 주세요!"
             maxLength={5}
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
             style={{
               width: "288px",
               height: "26px",
               borderRadius: "5px",
               paddingLeft: "10px",
-              border:"0.5px solid var(--color-line)",
+              border: "0.5px solid var(--color-line)",
               marginBottom: "5px",
               fontSize: "10px",
               color: "var(--color-text-white)",
@@ -146,8 +143,37 @@ export default function EditGraduationMessageForm() {
           <div
             style={{
               marginBottom: "25px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
+            {picUrl ? (
+              <img
+                src={picUrl}
+                alt="첨부사진"
+                style={{
+                  width: "126px",
+                  height: "104px",
+                  borderRadius: "8px",
+                  display: "block",
+                  marginLeft: "0", // 왼쪽 정렬
+                  alignSelf: "flex-start"
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: "126px",
+                  height: "104px",
+                  background: "#eee",
+                  borderRadius: "8px",
+                  display: "block",
+                  marginLeft: "0", // 왼쪽 정렬
+                  alignSelf: "flex-start"
+                }}
+              />
+            )}
           </div>
           <label
             style={{
@@ -231,9 +257,7 @@ export default function EditGraduationMessageForm() {
               cursor: "pointer",
             }}
           >
-            <CustomButton>
-              {"축하글 수정 완료하기"}
-            </CustomButton>
+            <CustomButton onClick={handleEdit}>{"축하글 수정 완료하기"}</CustomButton>
           </div>
         </div>
       </div>

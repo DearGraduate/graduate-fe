@@ -26,6 +26,14 @@ const MessageCard: React.FC<MessageProps> = ({ name, imageUrl, message, detailCl
         setModalOpen(false);
     }   
 
+  const letterData = {
+    id: String(letterId),
+    writerName: name,
+    message,
+    isPublic: true, 
+    picUrl: imageUrl ?? undefined
+  };
+
   return (
     <div className="bg-letterBox rounded-2xl p-4 shadow-md w-full max-w-[200px] text-center">
       {/* 상단 이름 + 더보기 아이콘 */}
@@ -36,7 +44,7 @@ const MessageCard: React.FC<MessageProps> = ({ name, imageUrl, message, detailCl
         </button>
       </div>
       
-      <EditDeleteBottomSheet isOpen={modalOpen} onRequestClose={closeModal} />
+      <EditDeleteBottomSheet isOpen={modalOpen} onRequestClose={closeModal} letterData={letterData} />
 
       <img
         src={src}

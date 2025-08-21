@@ -11,10 +11,16 @@ import { useAuthStore } from '../../store/authStore';
 import { useLetterStore } from '../../store/letterStore';
 
 interface EditDeleteBottomSheetProps extends ModalProps {
-    letterId: string | number;
+    letterData?: {
+        id: string;
+        writerName: string;
+        message: string;
+        isPublic: boolean;
+        picUrl?: string;
+    };
 }
 
-const EditDeleteBottomSheet = ({ isOpen, onRequestClose }: ModalProps) => {
+const EditDeleteBottomSheet = ({ isOpen, onRequestClose, letterData }: EditDeleteBottomSheetProps) => {
     const isWindow = useMediaQuery({ query: "(min-width: 1025px)" });
     const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
     const isTablet = useMediaQuery({ query: "(min-width: 768px) and (max-width: 1024px), (max-height:1024px)" });
@@ -23,6 +29,7 @@ const EditDeleteBottomSheet = ({ isOpen, onRequestClose }: ModalProps) => {
     const [, setSnapPoint] = useState<number>(SHEET_INITIAL_SNAP);
     const accessToken = useAuthStore(s => s.accessToken);
     const selectedLetterId = useLetterStore(s => s.selectedLetterId);
+    const setSelectedLetterData = useLetterStore(s => s.setSelectedLetterData);
 
     const handleDelete = async () => {
         console.log('Delete button clicked');
@@ -51,7 +58,6 @@ const EditDeleteBottomSheet = ({ isOpen, onRequestClose }: ModalProps) => {
             onSnap={setSnapPoint}
             snapPoints={SHEET_SNAP_POINTS}
             initialSnap={SHEET_INITIAL_SNAP}
-
         >
             <Sheet.Backdrop onTap={onRequestClose} />
             <Sheet.Container
@@ -73,7 +79,10 @@ const EditDeleteBottomSheet = ({ isOpen, onRequestClose }: ModalProps) => {
 
                         <div className="flex flex-row justify-center gap-[12px]">
                             <CustomButton
-                                onClick={() => navigate('/editing')}
+                                onClick={() => {
+                                    if (letterData) setSelectedLetterData(letterData);
+                                    navigate('/editing');
+                                }}
                                 className="px-[15px] py-[15px] w-fit whitespace-nowrap text-center"
                             >축하글 수정하기</CustomButton>
                             <CustomButton
