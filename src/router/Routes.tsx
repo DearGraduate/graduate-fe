@@ -27,8 +27,8 @@ const router = createBrowserRouter([
 
             },
             {
-                //홈페이지
-                path: '/home',
+                //홈페이지 (albumId 포함)
+                path: '/home/:albumId',
                 element: <Home />
             },
             {

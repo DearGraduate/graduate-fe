@@ -2,14 +2,16 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import MessageCard from '../common/MessageCard'
 import testImage from '../../assets/icons/img_default.png'
 import { getAlbumLetters, type AlbumLetterDTO } from '../../api/albumLetters'
-import { useAlbumStore } from '../../store/albumStore'
 import { useAuthStore } from '../../store/authStore'
 
 const LIMIT = 10
 
-export default function AlbumSection() {
-  const albumId = useAlbumStore(s => s.albumId)
-  const token   = useAuthStore(s => s.accessToken)
+interface AlbumSectionProps {
+  albumId?: number;
+}
+
+export default function AlbumSection({ albumId }: AlbumSectionProps) {
+  const token = useAuthStore(s => s.accessToken)
 
   const [letters, setLetters] = useState<AlbumLetterDTO[]>([])
   const [loading, setLoading] = useState(false)
