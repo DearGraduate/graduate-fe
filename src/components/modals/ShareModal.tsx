@@ -6,6 +6,7 @@ import KaKao from "../../assets/icons/KAKAOMini.png";
 import Link from "../../assets/icons/Link.png";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useAlbumStore } from "../../store/albumStore";
 
 // interface LoginModalProps extends ModalProps {
 
@@ -13,12 +14,18 @@ import { useState } from "react";
 
 const ShareModal = ({ isOpen, onRequestClose }: ModalProps) => {
 
+    const albumId = useAlbumStore((state) => state.albumId);
+    if (!albumId) {
+        console.error("앨범 ID가 없습니다. ShareModal을 사용하기 전에 앨범 ID를 설정해야 합니다.");
+        return null;
+    }
     const [step, setStep] = useState<'default' | 'kakao'>('default');
     const location = useLocation();
     console.log(location);
 
-    const baseURL = 'https://graduate-web-coral.vercel.app/'
-    const pathUrl = location.pathname;
+    //const baseURL = 'http://localhost:3000/'
+    const baseURL = 'https://www.photory.site/'
+    const pathUrl = `home/${albumId}`;
 
     console.log(`${baseURL}${pathUrl}`);
 
