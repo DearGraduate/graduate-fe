@@ -1,19 +1,12 @@
-import React, { useState, useEffect , useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CharacterImg from '../../assets/images/Character.png';  
 import CustomButton from '../../components/common/button';
 import LoginModal from '../../components/modals/LoginModal';
-import { useAlbumStore } from '../../store/albumStore';
 import { useAuthStore } from '../../store/authStore';
-import { albumService } from '../../services/albumService';
-import { useShallow } from 'zustand/react/shallow'
 import AlbumInfo from '../../components/common/AlbumInfo';
 
-interface HomeGuestProps {
-  albumId?: number;
-}
-
-const HomeGuest = ({ albumId }: HomeGuestProps) => {
+const HomeGuest = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
@@ -31,42 +24,29 @@ const HomeGuest = ({ albumId }: HomeGuestProps) => {
     navigate('/login');
   };
 
-  // URL에 albumId가 있는 경우 축하글 작성 버튼 표시
-  const handleWriteCongratulatoryMessage = () => {
-    if (albumId) {
-      navigate(`/writing?albumId=${albumId}`);
-    } else {
-      handleButtonClick(); // 로그인 모달 표시
+  const handleCreateAlbum = () => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
     }
+    // 로그인된 경우 앨범 생성 페이지로 이동
+    navigate('/making');
   };
 
   const handleViewMyAlbum = () => {
-    handleButtonClick(); // 로그인 모달 표시
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    // 로그인된 경우 홈으로 이동 (앨범 유무에 따라 자동 처리)
+    navigate('/');
   };
-
-    const { albumName, albumType } = useAlbumStore(
-      useShallow((s) => ({
-        albumName: s.albumName,
-        albumType: s.albumType,
-      }))
-    )
-  
-    const didFetch = useRef(false)
-    useEffect(() => {
-      if (didFetch.current) return
-      didFetch.current = true
-      // 로그인한 상태에서만 앨범 정보를 가져옴
-      if (isLoggedIn) {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        albumService.fetch().catch(() => {})
-      }
-    }, [isLoggedIn])
 
   return (
     <div className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
       <div className="w-full max-w-[237px] min-h-[80px] flex flex-col items-center justify-center gap-2.5 opacity-100 mt-[5vh] relative z-10">
         <div className="font-ydestreet font-bold text-[36px] leading-[150%] tracking-[0] text-white text-center">
-          {isLoggedIn ? (albumName ?? '이름') : '포토리'}의<br/>{isLoggedIn ? (albumType ?? '앨범 타입') : '나의 앨범'}
+          포토리의<br/>나의 앨범
         </div>
       </div>
       
@@ -83,51 +63,24 @@ const HomeGuest = ({ albumId }: HomeGuestProps) => {
       </div>
       
       <div className="w-full max-w-[290px] min-h-[95px] flex flex-col gap-[15px] opacity-100 mt-[4vh]">
-        {albumId ? (
-          // URL에 albumId가 있는 경우 (공개 앨범 조회)
-          <>
-            <CustomButton
-              bgColor="bg-button-default"
-              className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
-              onClick={handleWriteCongratulatoryMessage}
-            >
-              <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
-                축하글 작성하기
-              </span>
-            </CustomButton>
-            <CustomButton
-              bgColor="bg-button-default"
-              className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
-              onClick={handleViewMyAlbum}
-            >
-              <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
-                내 앨범 보기/앨범 만들기
-              </span>
-            </CustomButton>
-          </>
-        ) : (
-          // URL에 albumId가 없는 경우 (랜딩 페이지)
-          <>
-            <CustomButton
-              bgColor="bg-button-default"
-              className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
-              onClick={handleButtonClick}
-            >
-              <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
-                나의 졸업 앨범 만들기
-              </span>
-            </CustomButton>
-            <CustomButton
-              bgColor="bg-button-default"
-              className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
-              onClick={handleButtonClick}
-            >
-              <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
-                나의 졸업 앨범 보기
-              </span>
-            </CustomButton>
-          </>
-        )}
+        <CustomButton
+          bgColor="bg-button-default"
+          className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
+          onClick={handleCreateAlbum}
+        >
+          <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
+            나의 졸업 앨범 만들기
+          </span>
+        </CustomButton>
+        <CustomButton
+          bgColor="bg-button-default"
+          className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
+          onClick={handleViewMyAlbum}
+        >
+          <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
+            나의 졸업 앨범 보기
+          </span>
+        </CustomButton>
       </div>
       
       <LoginModal 

@@ -61,15 +61,8 @@ const Home = () => {
       />
     );
   } else {
-    // URL에 albumId가 없는 경우: 로그인 여부에 따라 분기
-    return isLoggedIn ? (
-      <HomeUser 
-        albumId={undefined} 
-        isMyAlbum={true}
-      />
-    ) : (
-      <HomeGuest albumId={undefined} />
-    );
+    // URL에 albumId가 없는 경우: 로그인 여부와 관계없이 HomeGuest 컴포넌트 사용 (기본 랜딩 페이지)
+    return <HomeGuest />;
   }
 };
 
