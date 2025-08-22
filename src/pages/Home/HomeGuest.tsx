@@ -4,19 +4,22 @@ import CharacterImg from '../../assets/images/Character.png';
 import CustomButton from '../../components/common/button';
 import LoginModal from '../../components/modals/LoginModal';
 import { useAuthStore } from '../../store/authStore';
-import { albumService } from '../../services/albumService';
+import { getAlbum } from '../../api/album'; 
 import AlbumInfo from '../../components/common/AlbumInfo';
 
 const HomeGuest = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // 초기값은 비워두고, 화면에 뿌릴 때만 기본값 처리(아래 render에서 || 로 처리)
   const [albumName, setAlbumName] = useState('');
   const [albumType, setAlbumType] = useState('');
   const [description, setDescription] = useState('');
 
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuthStore();
+  // ✅ zustand는 selector로 필요한 값만 구독하는 게 안전합니다
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+  const accessToken = useAuthStore((s) => s.accessToken);
 
   const handleLoginModalClose = () => setIsLoginModalOpen(false);
   const handleLoginClick = () => {
@@ -39,10 +42,10 @@ const HomeGuest = () => {
     }
     setIsLoading(true);
     try {
-      const mine = await albumService.fetch();
-      const a: any = (mine as any)?.data?.result ?? (mine as any)?.result ?? mine;
-      if (a?.id) {
-        navigate(`/home/${a.id}`);
+      // 내 앨범으로 이동: getAlbum()이 Album | null을 주므로 그대로 사용
+      const mine = await getAlbum();
+      if (mine?.id) {
+        navigate(`/home/${mine.id}`);
       } else {
         navigate('/making');
       }
@@ -54,26 +57,28 @@ const HomeGuest = () => {
     }
   };
 
+  // 로그인되어 있고 accessToken이 준비되면 내 앨범 메타를 바로 state에
   useEffect(() => {
-    if (!isLoggedIn) return; // 비로그인 시 기본값 유지
-    let cancelled = false;
+    if (!isLoggedIn || !accessToken) return;
 
+    let alive = true;
     (async () => {
       try {
-        const res = await albumService.fetch(); // 토큰 필요
-        const a: any = (res as any)?.data?.result ?? (res as any)?.result ?? res;
-        if (cancelled || !a) return;
+        const a = await getAlbum(); // Album | null
+        if (!alive || !a) return;
 
-        setAlbumName(a.albumName ?? '포토리');
-        setAlbumType(a.albumType ?? '나의 앨범');
+        setAlbumName(a.albumName ?? '');
+        setAlbumType(a.albumType ?? '');
         setDescription(a.description ?? '');
       } catch (e) {
         console.error('내 앨범 메타 조회 실패:', e);
       }
     })();
 
-    return () => { cancelled = true; };
-  }, [isLoggedIn]);
+    return () => {
+      alive = false;
+    };
+  }, [isLoggedIn, accessToken]);
 
   return (
     <div className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
@@ -84,7 +89,7 @@ const HomeGuest = () => {
         </div>
         <div className="w-full max-w-[103px] min-h-[16px] flex items-center justify-center opacity-100">
           <div className="w-full font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center text-white">
-            {(description?.trim() || '')}
+            {description?.trim() || ''}
           </div>
         </div>
       </div>
