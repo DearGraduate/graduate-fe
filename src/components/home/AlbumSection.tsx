@@ -37,7 +37,7 @@ export default function AlbumSection({ albumId }: AlbumSectionProps) {
     setError(null)
     try {
       const cursor = append ? makeCursor(letters) : {}
-      const data = await getAlbumLetters(albumId, token ?? undefined, { limit: LIMIT, ...cursor })
+      const data = await getAlbumLetters(albumId, { limit: LIMIT, ...cursor })
       setLetters(prev => {
         if (!append) return data
         const prevIds = new Set(prev.map(l => l.letterId))
