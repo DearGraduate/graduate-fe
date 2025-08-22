@@ -81,7 +81,7 @@ export const kakaoLoginAPI = {
       console.log('카카오 로그인 성공:', response.data);
       console.log('Access Token:', cleanToken);
 
-      // ✅ 추가 조회 없이 서버 응답 그대로 전달
+      // 추가 조회 없이 서버 응답 그대로 전달
       const hasAlbum = Boolean(response.data?.result?.albumExists);
       const albumId = response.data?.result?.albumId;
 

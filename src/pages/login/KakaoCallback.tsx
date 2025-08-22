@@ -51,7 +51,7 @@ const KakaoCallback = () => {
             navigate('/', { replace: true });
           }
         } else {
-          navigate('/making', { replace: true }); // ✅ 최초 로그인 경로
+          navigate('/making', { replace: true }); // 최초 로그인 경로 
         }
       } catch (err: any) {
         console.error('로그인 처리 중 오류:', err);

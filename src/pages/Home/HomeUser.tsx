@@ -173,12 +173,13 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
       setIsLoginModalOpen(true);
       return;
     }
-    
-    if (isMyAlbum) {
-      navigate('/sharing');
-    } else {
-      navigate('/');
-    }
+    try {
+    const g = useGuestAlbumStore.getState();
+    if ((g as any).clearPending) (g as any).clearPending();
+    else if (g.setPendingRedirect) g.setPendingRedirect(undefined as any);
+  // eslint-disable-next-line no-empty
+  } catch {}
+  navigate('/login');
   };
 
   // 링크 진입: 앨범 메타 조회 + 비로그인 시 게스트 스토어에 보관
