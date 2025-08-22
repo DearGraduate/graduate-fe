@@ -43,7 +43,7 @@ const HomeGuest = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen items-center bg-[var(--color-main)] relative px-5 box-border py-[6vh] pt-6">
+    <div className="flex flex-col min-h-screen items-center bg-[var(--color-main)] relative px-5 box-border py-[6vh] pt-6 overflow-x-hidden">
       <div className="w-full  min-h-[80px] flex flex-col items-center justify-center gap-2.5 opacity-100 mt-[5vh] relative z-10">
         <div className="absolute top-[50px] font-ydestreet font-bold text-[36px] leading-[150%] tracking-[0] text-white text-center">
           포토리의<br/>나의 앨범
@@ -69,7 +69,7 @@ const HomeGuest = () => {
           onClick={handleCreateAlbum}
         >
           <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
-            나의 졸업 앨범 만들기
+            나의 앨범 만들기
           </span>
         </CustomButton>
         <CustomButton
@@ -78,7 +78,7 @@ const HomeGuest = () => {
           onClick={handleViewMyAlbum}
         >
           <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
-            나의 졸업 앨범 보기
+            나의 앨범 보기
           </span>
         </CustomButton>
       </div>
