@@ -175,7 +175,7 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
               D-23
             </span>
           </div>
-          {isMyAlbum && (
+          {isLoggedIn && (
             <img 
               src={SetIcon} 
               alt="설정" 
