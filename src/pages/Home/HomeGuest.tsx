@@ -4,12 +4,16 @@ import CharacterImg from '../../assets/images/Character.png';
 import CustomButton from '../../components/common/button';
 import LoginModal from '../../components/modals/LoginModal';
 import { useAuthStore } from '../../store/authStore';
+import { useAlbumStore } from '../../store/albumStore';
+import { albumService } from '../../services/albumService';
 import AlbumInfo from '../../components/common/AlbumInfo';
 
 const HomeGuest = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
+  const { setFromAlbum } = useAlbumStore();
 
   const handleButtonClick = () => {
     setIsLoginModalOpen(true);
@@ -33,13 +37,30 @@ const HomeGuest = () => {
     navigate('/making');
   };
 
-  const handleViewMyAlbum = () => {
+  const handleViewMyAlbum = async () => {
     if (!isLoggedIn) {
       setIsLoginModalOpen(true);
       return;
     }
-    // 로그인된 경우 홈으로 이동 (앨범 유무에 따라 자동 처리)
-    navigate('/');
+    
+    // 로그인된 경우 사용자의 앨범 정보를 가져와서 처리
+    setIsLoading(true);
+    try {
+      const album = await albumService.fetch();
+      if (album) {
+        // 앨범이 있는 경우 해당 앨범 페이지로 이동
+        navigate(`/home/${album.id}`);
+      } else {
+        // 앨범이 없는 경우 앨범 생성 페이지로 이동
+        navigate('/making');
+      }
+    } catch (error) {
+      console.error('앨범 조회 실패:', error);
+      // 에러 발생 시 앨범 생성 페이지로 이동
+      navigate('/making');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -76,9 +97,10 @@ const HomeGuest = () => {
           bgColor="bg-button-default"
           className="w-full h-10 rounded-[25px] px-4 font-ydestreet font-light text-xs"
           onClick={handleViewMyAlbum}
+          disabled={isLoading}
         >
           <span className="font-ydestreet font-light text-xs leading-[100%] tracking-[0] text-center">
-            나의 앨범 보기
+            {isLoading ? '로딩 중...' : '나의 앨범 보기'}
           </span>
         </CustomButton>
       </div>
