@@ -5,7 +5,6 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const api = axios.create({
     baseURL: BASE_URL,
-    withCredentials: true,
 });
 
 // 앨범 갯수 세기 
