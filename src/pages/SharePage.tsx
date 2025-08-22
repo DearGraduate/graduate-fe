@@ -23,11 +23,12 @@ const SharePage = () => {
 
   const navigate = useNavigate();
 
-  const { albumName, albumType, albumId } = useAlbumStore(
+  const { albumName, albumType, albumId, description } = useAlbumStore(
     useShallow((s) => ({
       albumName: s.albumName,
       albumType: s.albumType,
       albumId: s.albumId,
+      description: s.description,
     }))
   )
 
@@ -66,7 +67,13 @@ const SharePage = () => {
           <br />
           {albumType ?? '앨범 타입'}
         </h1>
-        <p className="font-light text-[12px] font-ydestreet text-white mt-2">나는 졸업을 한다!!</p>
+        {description ? (
+    <p className="font-light text-[12px] font-ydestreet text-white mt-2">
+      {description}
+    </p>
+  ) : (
+    <p className="h-[14px] mt-2" /> // 높이만 맞춰서 레이아웃 유지
+  )}
       </div>
 
       {/* 이미지 */}

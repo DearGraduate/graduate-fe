@@ -11,6 +11,10 @@ const HomeGuest = () => {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
 
+  const [albumName, setAlbumName] = useState('');
+  const [albumType, setAlbumType] = useState('');
+  const [description, setDescription] = useState('');
+
   const handleButtonClick = () => {
     setIsLoginModalOpen(true);
   };
@@ -41,6 +45,8 @@ const HomeGuest = () => {
     // 로그인된 경우 홈으로 이동 (앨범 유무에 따라 자동 처리)
     navigate('/');
   };
+
+  
 
   return (
     <div className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">

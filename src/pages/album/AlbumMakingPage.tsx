@@ -115,27 +115,30 @@ const AlbumMakingPage = () => {
         앨범 이름<span className="text-[#FF8F8F]"> *</span>
       </label>
       <div className="flex flex-row items-center gap-2 pt-2 mb-4">
-  <div className="w-1/2 flex flex-col">
-    <input
-      type="text"
-      placeholder="본인 이름을 입력하세요"
-      className={[
-        "px-3 py-3 rounded-md bg-transparent border border-[0.5px] border-line",
-        "text-white placeholder-gray text-[10px] font-light focus:outline-none focus:border-white",
-        isLimitReached ? "border-[#FF2626] focus:border-[#FF2626]" : "",
-      ].join(" ")}
-      value={albumName}
-      onChange={(e) => setAlbumName(e.target.value)}
-    />
+    <div className="w-1/2 flex flex-col">
+      <input
+        type="text"
+        placeholder="본인 이름을 입력하세요"
+        className={[
+          "px-3 py-3 rounded-md bg-transparent border border-[0.5px]",
+          "text-white placeholder-gray text-[12px] font-light focus:outline-none",
+          isLimitReached
+            ? "border-[#FF2626] focus:border-[#FF2626]"
+            : "border-line focus:border-white",
+        ].join(" ")}
+        value={albumName}
+        onChange={(e) => setAlbumName(e.target.value)}
+      />
 
-    <p
-      className={`mt-1 h-4 text-[10px] transition-opacity duration-150
-                  ${isLimitReached ? "opacity-100 text-[#FF2626]" : "opacity-0"}`}
-      role={isLimitReached ? "alert" : undefined}
-    >
-      글자수는 최대 {LIMIT}자까지 가능합니다
-    </p>
-  </div>
+  <p
+    className={`mt-1 h-4 text-[10px] transition-opacity duration-150
+                ${isLimitReached ? "opacity-100 text-[#FF2626]" : "opacity-0"}`}
+    role={isLimitReached ? "alert" : undefined}
+  >
+    글자수는 최대 {LIMIT}자까지 가능합니다
+  </p>
+</div>
+
 
   <span className="text-white text-[14px] -mt-5">의</span>
 
@@ -146,10 +149,10 @@ const AlbumMakingPage = () => {
           value={customAlbumType}
           onChange={(e) => setCustomAlbumType(e.target.value)}
           placeholder="직접 입력"
-          className="flex-1 bg-transparent outline-none placeholder-white text-gray text-[10px] font-light"
+          className="flex-1 bg-transparent outline-none placeholder-white text-gray text-[12px] font-light"
         />
       ) : (
-        <div className="flex-1 text-[10px] text-gray font-light">
+        <div className="flex-1 text-[12px] text-gray font-light">
           {effectiveLabel}
         </div>
       )}
@@ -157,15 +160,14 @@ const AlbumMakingPage = () => {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="shrink-0 p-1 -ml-4 rounded hover:bg-white/10 active:bg-white/20"
+        className="shrink-0 p-1 -ml-8 rounded hover:bg-white/10 active:bg-white/20"
         aria-haspopup="listbox"
         aria-expanded={open}
       >
         <img
           src={toggleIcon}
           alt="옵션 열기"
-          className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
-        />
+          className={`w-4 h-4 object-contain transition-transform ${open ? "rotate-180" : ""} -ml-1`} />
       </button>
     </div>
 
@@ -179,7 +181,7 @@ const AlbumMakingPage = () => {
             key={label}
             role="option"
             onClick={() => pick(label)}
-            className={`cursor-pointer px-3 py-2 text-[10px] font-light hover:bg-white/10 ${
+            className={`cursor-pointer px-3 py-2 text-[12px] font-light hover:bg-white/10 ${
               (albumType === DIRECT && label === DIRECT) ||
               (albumType === label && label !== DIRECT)
                 ? "bg-white/10"
@@ -198,13 +200,13 @@ const AlbumMakingPage = () => {
       <label className="block text-sm font-medium mb-2 mt-5">설명 (선택)</label>
       <textarea
         placeholder="이 앨범에 대한 간단한 설명을 적어 주세요."
-        className="w-full h-28 px-3 py-2 rounded-md bg-transparent border border-[0.5px] border-white text-white placeholder-gray text-[10px] font-light resize-none mb-10"
+        className="w-full h-28 px-3 py-2 rounded-md bg-transparent border border-[0.5px] border-white text-white placeholder-gray text-[12px] font-light resize-none mb-10"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
 
       <CustomButton
-          className="w-full font-semibold text-black
+          className="w-full mt-20 font-semibold text-black
                     disabled:bg-gray-300 disabled:text-gray-600
                     disabled:cursor-not-allowed disabled:opacity-100"
           onClick={handleSubmit}
