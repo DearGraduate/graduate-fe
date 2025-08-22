@@ -24,6 +24,7 @@ export default function GraduationMessageForm() {
   const accessToken = useAuthStore.getState().accessToken; 
 
   function onDefaultPick(url: string) {
+    console.log('onDefaultPick called, url:', url);
     setDefaultPicKey(url);
     setPreviewUrl("");
     fileRef.current = null;
@@ -46,6 +47,7 @@ export default function GraduationMessageForm() {
 
   async function saveMessage(file: File | null) {
     console.log('saveMessage called, file:', file);
+    console.log('saveMessage defaultPicKey:', defaultPicKey);
     if (!letter.trim() || isPublic === null) {
       alert("편지, 공개여부를 모두 입력해 주세요.");
       return;
@@ -68,11 +70,19 @@ export default function GraduationMessageForm() {
       const fileUrl = URL.createObjectURL(file);
       console.log("이미지 파일 브라우저 미리보기 URL:", fileUrl);
     } else if (defaultPicKey) {
-      formData.append("defaultPicKey", defaultPicKey);
-      console.log("서버로 전송되는 defaultPicKey:", defaultPicKey);
+      let key = "";
+      if (defaultPicKey.includes("default1")) key = "defaultImage1";
+      else if (defaultPicKey.includes("default2")) key = "defaultImage2";
+      else if (defaultPicKey.includes("default3")) key = "defaultImage3";
+      console.log('FormData에 append되는 picUrl:', key);
+      formData.append("picUrl", key);
+      console.log("formData.get('picUrl') 직후:", formData.get('picUrl'));
     }
 
     Array.from(formData.entries()).forEach(pair => {
+      if (pair[0] === 'picUrl') {
+        console.log("FormData picUrl 값:", pair[1]);
+      }
       console.log("id", albumId)
       console.log("FormData:", pair[0], pair[1]);
     });
@@ -80,6 +90,7 @@ export default function GraduationMessageForm() {
     console.log("사진 첨부 상태 - file:", file);
     console.log("사진 첨부 상태 - previewUrl:", previewUrl);
     console.log("사진 첨부 상태 - defaultPicKey:", defaultPicKey);
+    console.log("axios.post 직전 formData.get('picUrl'):", formData.get('picUrl'));
 
     try {
       const response = await axios.post(
@@ -93,6 +104,7 @@ export default function GraduationMessageForm() {
         }
       );
       console.log("서버 응답:", response.data);
+      console.log("서버 응답 후 formData.get('picUrl'):", formData.get('picUrl'));
       alert("축하 메시지가 성공적으로 등록되었습니다.");
       navigate(`/home/${albumId}`);
       setAuthor("");
@@ -291,7 +303,7 @@ export default function GraduationMessageForm() {
               cursor: "pointer",
             }}
           >
-            <CustomButton onClick={() => saveMessage(fileRef.current)}>
+            <CustomButton onClick={() => saveMessage(fileRef.current)} className="w-[290px]">
               {"축하글 작성 완료하기"}
             </CustomButton>
           </div>

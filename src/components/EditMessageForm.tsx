@@ -275,7 +275,7 @@ export default function EditGraduationMessageForm({
               cursor: "pointer",
             }}
           >
-            <CustomButton onClick={updateMessage}>
+            <CustomButton onClick={updateMessage} className="w-[290px]">
               {"축하글 수정 완료하기"}
             </CustomButton>
           </div>
