@@ -122,9 +122,11 @@ export default function GraduationMessageForm() {
   const isAuthorOverLimit = author.length > 5;
 
   return (
+
     <div className="min-h-screen w-full bg-[var(--color-main)] flex justify-center items-start">
       <div className="w-full max-w-[393px] min-h-screen box-border mx-auto flex flex-col relative rounded-xl text-white">
         <div className="relative w-full">
+
           <img
             src={backButton}
             alt="뒤로가기"
@@ -185,7 +187,7 @@ export default function GraduationMessageForm() {
           </div>
 
           <div className="w-full max-w-[288px] mx-auto mb-8">
-            <CustomButton onClick={() => saveMessage(fileRef.current)} className="w-full">
+            <CustomButton onClick={() => saveMessage(fileRef.current)}>
               {"축하글 작성 완료하기"}
             </CustomButton>
           </div>

@@ -132,10 +132,11 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
     }
   };
 
-      const { albumName, albumType } = useAlbumStore(
+      const { albumName, albumType , discription } = useAlbumStore(
         useShallow((s) => ({
           albumName: s.albumName,
           albumType: s.albumType,
+          discription: s.description
         }))
       )
     
@@ -177,8 +178,8 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
           </div>
           <div className="w-full max-w-[103px] min-h-[16px] flex items-center justify-center opacity-100">
             <div className="w-full font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center text-white">
-              드디어...졸업한다..!
-            </div>
+            {discription || ""}
+          </div>
           </div>
         </div>
       </div>
@@ -209,7 +210,7 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
               onClick={handleViewMyAlbum}
             >
               <span className="font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center">
-                {isMyAlbum ? '나의 졸업 앨범 공유하기' : '내 앨범 보기/앨범 만들기'}
+                {isMyAlbum ? '나의 앨범 공유하기' : '내 앨범 보기/앨범 만들기'}
               </span>
             </CustomButton>
           </>
@@ -221,7 +222,7 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
               onClick={handleOpenDownloadModal}
             >
               <span className="font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center">
-                나의 졸업 앨범 다운로드
+                나의 앨범 다운로드
               </span>
             </CustomButton>
             <DownloadPDF data-print-hide="true"
