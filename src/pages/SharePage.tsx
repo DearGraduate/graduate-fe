@@ -51,7 +51,7 @@ const SharePage = () => {
 
 
   return (
-    <div className="min-h-screen bg-main text-white px-6 pt-5 pb-10 flex flex-col items-center justify-between ">
+    <div className="min-h-screen bg-main text-white px-6 pt-10 pb-10 flex flex-col items-center justify-between ">
       {/* 상단 홈 아이콘 */}
       <div className="w-full flex justify-start">
         <button onClick={handleHomeClick}>
@@ -60,7 +60,7 @@ const SharePage = () => {
       </div>
 
       {/* 중앙 텍스트 */}
-      <div className="text-center mt-2">
+      <div className="text-center box-border -mt-[30px]">
         <h1 className="font-bold text-[36px] font-ydestreet leading-tight">
           {albumName ?? '이름'}
           <span className="whitespace-nowrap">의</span>
@@ -74,20 +74,16 @@ const SharePage = () => {
   ) : (
     <p className="h-[14px] mt-2" />
   )}
-      </div>
 
       {/* 이미지 */}
       <div className="mt-[20px]">
-      <img src={imgShare} alt="졸업 이미지" className="w-60 h-auto" />
+      <img src={imgShare} alt="졸업 이미지" className="w-[283px] h-auto" />
       </div>
       
-      <div>
-        {/* <p>광고 표시</p>
-        <DisplayAds client="ca-pub-2792815043332792" slot="1234567890" /> */}
-      </div>
+      
 
       {/* 설명 */}
-      <div className="text-center text-sm px-4 mt-20 w-full">
+      <div className="text-center text-sm px-4 mt-[66px] w-full">
         <p className='font-bold text-[14px] font-ydestreet'>앨범이 완성 되었어요!</p>
         <p className='font-bold text-[14px] font-ydestreet'>친구들에게 공유해 축하글을 모아보세요!</p>
       </div>
@@ -95,20 +91,20 @@ const SharePage = () => {
       {/* 하단 버튼 */}
       <div className="w-full mt-8 flex flex-col gap-4">
         <CustomButton
-          bgColor="bg-[#D9ECD2]"
+          
           className="w-full font-semibold text-black"
           onClick={() => navigate('/writing')}
 
         >
-          나에게 축하글 작성하기
+          나에게 편지쓰기
         </CustomButton>
 
         <CustomButton
-          bgColor="bg-[#D9ECD2]"
+          
           className="w-full font-semibold text-black"
           onClick={openModal}
         >
-          나의 졸업 앨범 공유하기
+          나의 앨범 공유하기
         </CustomButton>
 
         <ShareModal isOpen={modalOpen} onRequestClose={closeModal} />

@@ -59,15 +59,28 @@ const ShareModal = ({ isOpen, onRequestClose }: ModalProps) => {
             onRequestClose={onRequestClose}
             contentLabel="공유하기 모달"
             className="flex justify-center "
-            style={customModalStyles}
+            style={{
+                ...customModalStyles,
+                content: {
+                    ...customModalStyles.content,
+                    width: '320px',
+                    height: '170px',
+                    minWidth: '280px',
+                    minHeight: '140px',
+                    maxWidth: '280px',
+                    padding: '20px',
+                    borderRadius: '20px',
+                },
+            }}
+            parentSelector={() => document.querySelector('main') as HTMLElement}
         >
             <button className="absolute top-[11px] right-[20px] w-[24px] h-[24px]" onClick={onRequestClose}>
                 <img src={Xcross} alt="나가기 버튼" />
             </button>
-            <div className="flex flex-col justify-center items-center pt-6 pb-9 w-[87%] text-center">
+            <div className="flex flex-col justify-center items-center pt-[50px] pb-9 w-[87%] text-center">
                 <h3
                     style={{ fontFamily: 'Ydestreet', fontWeight: '700' }}
-                    className="text-lg font-semibold mb-3 w-full whitespace-nowrap text-center">
+                    className="text-[15px] font-semibold mb-2 w-full whitespace-nowrap text-center">
                     {step === 'default' ? ('공유하기')
                         : step === 'kakao' ? '카카오톡 공유하기'
                             : ''}</h3>
@@ -75,7 +88,7 @@ const ShareModal = ({ isOpen, onRequestClose }: ModalProps) => {
 
                 {step === 'default' && (
                     <div
-                        style={{ fontFamily: 'Ydestreet', fontWeight: '300' }}
+                        style={{ fontFamily: 'Ydestreet', fontWeight: '300', fontSize: '10px' }}
                         className="flex flex-row justify-center gap-[10px]">
                         <button
                             onClick={

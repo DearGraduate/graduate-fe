@@ -1,6 +1,7 @@
 export const customModalStyles = {
     content: { //내부 부분
         position: 'absolute',
+        display: 'flex', 
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
@@ -15,13 +16,16 @@ export const customModalStyles = {
         padding: '20px',
         justifyContent: 'center',
         alignItems: 'center',
+        margin: 'auto',
     },
     overlay: { //바깥 부분 
+        position: 'absolute',
+        inset: 0,
         backgroundColor: 'rgba(0, 0, 0, 0.25)',
+        display: 'flex',
         zIndex: 1000,
-        width: '100%',
-        height: '100%',
-        top: '0',
-        left: '0',
+        // width: '100%',
+        // height: '100%',
+        
     },
 } as const;
