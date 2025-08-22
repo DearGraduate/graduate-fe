@@ -35,7 +35,7 @@ export const kakaoLoginAPI = {
   getAuthUrl: (): string => {
     const KAKAO_REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
     // 환경에 따라 리다이렉트 URI 설정
-    const REDIRECT_URI = 'https://www.photory.site/login/kakao/callback'
+    const REDIRECT_URI = 'http://localhost:3000/login/kakao/callback'
  
     
     if (!KAKAO_REST_API_KEY) {
