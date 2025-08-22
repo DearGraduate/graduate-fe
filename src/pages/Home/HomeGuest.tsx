@@ -7,8 +7,6 @@ import { useAuthStore } from '../../store/authStore';
 import { useAlbumStore } from '../../store/albumStore';
 import { albumService } from '../../services/albumService';
 import AlbumInfo from '../../components/common/AlbumInfo';
-import { useAlbumStore } from '../../store/albumStore';
-import { albumService } from '../../services/albumService';
 import { useShallow } from 'zustand/react/shallow'
 
 
