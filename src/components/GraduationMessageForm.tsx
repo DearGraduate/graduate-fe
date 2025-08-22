@@ -134,7 +134,7 @@ export default function GraduationMessageForm() {
         </div>
         <div className="px-6 w-full">
           <div className="mb-2 mt-[110px]">
-            <h2 className="text-2xl font-bold">졸업 축하 작성하기</h2>
+            <h2 className="text-2xl font-bold">축하글 작성하기</h2>
           </div>
           <label className="text-sm block mb-2">작성자 이름 <span className="text-[#FF8F8F]">*</span></label>
             <input
