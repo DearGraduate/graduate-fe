@@ -67,6 +67,9 @@ export default function GraduationMessageForm() {
       console.log("파일명:", file.name);
       const fileUrl = URL.createObjectURL(file);
       console.log("이미지 파일 브라우저 미리보기 URL:", fileUrl);
+    } else if (defaultPicKey) {
+      formData.append("defaultPicKey", defaultPicKey);
+      console.log("서버로 전송되는 defaultPicKey:", defaultPicKey);
     }
 
     Array.from(formData.entries()).forEach(pair => {
@@ -91,13 +94,13 @@ export default function GraduationMessageForm() {
       );
       console.log("서버 응답:", response.data);
       alert("축하 메시지가 성공적으로 등록되었습니다.");
+      navigate(`/home/${albumId}`);
       setAuthor("");
       setLetter("");
       setIsPublic(null);
       setPreviewUrl("");
       setDefaultPicKey("");
       fileRef.current = null;
-      navigate("/"); 
     } catch (e: any) {
       console.error("업로드 실패:", e.response?.data || e);
       alert("네트워크 오류가 발생했습니다.");
