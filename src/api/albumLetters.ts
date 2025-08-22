@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useAuthStore } from '../store/authStore'
 
 const BASE = (process.env.REACT_APP_BASE_URL ?? '').replace(/\/+$/, '')
 const withBearer = (t: string) => (t.startsWith('Bearer ') ? t : `Bearer ${t}`)
@@ -21,12 +22,20 @@ export interface GetAlbumLettersQuery {
 
 export async function getAlbumLetters(
   albumId: number | string,
-  accessToken: string | undefined,
   query: GetAlbumLettersQuery
 ): Promise<AlbumLetterDTO[]> {
-  const url = `${BASE}/api/albums/${albumId}/letters`
+  // 로그인 여부
+  const { isLoggedIn, accessToken } = useAuthStore.getState()
+
+  // 로그인 여부에 따라 API 분기
+  const url = isLoggedIn
+    ? `${BASE}/api/albums/${albumId}/letters`
+    : `${BASE}/api/home/albums/${albumId}/letters`
+
   const res = await axios.get<any>(url, {
-    headers: accessToken ? { Authorization: withBearer(accessToken) } : undefined,
+    headers: isLoggedIn && accessToken 
+      ? { Authorization: withBearer(accessToken) }
+      : undefined,
     withCredentials: true,
     params: {
       limit: String(query.limit),
@@ -52,7 +61,3 @@ export async function getAlbumLetters(
 
   throw new Error(`letters fetch failed: ${status}`)
 }
-
-
-
-
