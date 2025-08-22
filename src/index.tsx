@@ -13,6 +13,16 @@ declare global {
 // 카카오 JavaScript SDK 초기화
 const JAVASCRIPT_KEY =  process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY;
 
+window.addEventListener('DOMContentLoaded', () => {
+  if (!JAVASCRIPT_KEY) {
+    console.error('Kakao JavaScript Key is missing.');
+    return;
+  }
+  if (window.Kakao && !window.Kakao.isInitialized()) {
+    window.Kakao.init(JAVASCRIPT_KEY);
+  }
+});
+
 if (window.Kakao && !window.Kakao.isInitialized()) {
   if (!JAVASCRIPT_KEY) {
     console.error('Kakao JavaScript Key is missing.');

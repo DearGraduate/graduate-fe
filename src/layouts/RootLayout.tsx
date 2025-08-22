@@ -6,11 +6,13 @@ const RootLayout = () => {
     const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
     const isTablet = useMediaQuery({ query: "(min-width: 768px) and (max-width: 1024px) , (max-height:1024px)" });
     return (
-        <main className={`
+        <main 
+        id="app-frame"
+        className={` relative min-h-screen transform-gpu
         ${isWindow 
         ? 'max-w-[360px] mx-auto' 
         : isTablet
-        ? 'width-screen' : 
+        ? 'w-screen' : 
         isMobile
         ? 'w-screen' : ''}`}>
         <Outlet/>

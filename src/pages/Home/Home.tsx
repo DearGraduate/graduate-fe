@@ -42,7 +42,7 @@ const Home = () => {
     };
 
     fetchAlbumData();
-  }, [albumId, isLoggedIn, userAlbumId, setFromAlbum]);
+  }, []);
 
   if (isLoading) {
     return (
