@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect , useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import CharacterImg from '../../assets/images/Character.png';  
 import CustomButton from '../../components/common/button';
 import LoginModal from '../../components/modals/LoginModal';
 import { useAuthStore } from '../../store/authStore';
 import AlbumInfo from '../../components/common/AlbumInfo';
+import { useAlbumStore } from '../../store/albumStore';
+import { albumService } from '../../services/albumService';
+import { useShallow } from 'zustand/react/shallow'
+
+
 
 const HomeGuest = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
-
-  const [albumName, setAlbumName] = useState('');
-  const [albumType, setAlbumType] = useState('');
-  const [description, setDescription] = useState('');
 
   const handleButtonClick = () => {
     setIsLoginModalOpen(true);
@@ -46,14 +47,36 @@ const HomeGuest = () => {
     navigate('/');
   };
 
+  const { albumName, albumType , discription } = useAlbumStore(
+          useShallow((s) => ({
+            albumName: s.albumName,
+            albumType: s.albumType,
+            discription: s.description
+          }))
+        )
+      
+        const didFetch = useRef(false)
+        useEffect(() => {
+          if (didFetch.current) return
+          didFetch.current = true
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          albumService.fetch().catch(() => {})
+        }, [])
+  
+
   
 
   return (
     <div className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border">
       <div className="w-full max-w-[237px] min-h-[80px] flex flex-col items-center justify-center gap-2.5 opacity-100 mt-[5vh] relative z-10">
         <div className="font-ydestreet font-bold text-[36px] leading-[150%] tracking-[0] text-white text-center">
-          포토리의<br/>나의 앨범
-        </div>
+            {albumName ?? '이름'}의<br/>{albumType ?? '앨범 타입'}
+          </div>
+          <div className="w-full max-w-[103px] min-h-[16px] flex items-center justify-center opacity-100">
+            <div className="w-full font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center text-white">
+            {discription || ""}
+          </div>
+          </div>
       </div>
       
       <div className="w-full max-w-[377.86px] max-h-[400px] flex items-center justify-center -mt-[6vh] -rotate-[18deg] relative z-0 short:hidden">

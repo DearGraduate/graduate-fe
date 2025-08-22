@@ -72,7 +72,7 @@ const SharePage = () => {
       {description}
     </p>
   ) : (
-    <p className="h-[14px] mt-2" /> // 높이만 맞춰서 레이아웃 유지
+    <p className="h-[14px] mt-2" />
   )}
       </div>
 
