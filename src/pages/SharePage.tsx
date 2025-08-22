@@ -1,6 +1,6 @@
-import React, { useState, useEffect , useRef } from 'react';
-import CustomButton from '../components/common/button'; 
-import imgShare from '../assets/icons/img_share.png'; 
+import React, { useState, useEffect, useRef } from 'react';
+import CustomButton from '../components/common/button';
+import imgShare from '../assets/icons/img_share.png';
 import imgHome from '../assets/icons/icon_home.png';
 import ShareModal from '../components/modals/ShareModal';
 import { useNavigate } from 'react-router-dom';
@@ -12,13 +12,13 @@ import { useShallow } from 'zustand/react/shallow'
 
 const SharePage = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  
-      const openModal = () => {
-          setModalOpen(true);     
-      }
-          const closeModal = () => {
-          setModalOpen(false);
-      }   
+
+  const openModal = () => {
+    setModalOpen(true);
+  }
+  const closeModal = () => {
+    setModalOpen(false);
+  }
 
 
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const SharePage = () => {
     if (didFetch.current) return
     didFetch.current = true
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    albumService.fetch().catch(() => {})
+    albumService.fetch().catch(() => { })
   }, [])
 
   // 홈 아이콘 클릭 핸들러 - 앨범 ID가 있으면 /home/{albumId}로, 없으면 /home으로 이동
@@ -55,8 +55,8 @@ const SharePage = () => {
       {/* 상단 홈 아이콘 */}
       <div className="w-full flex justify-start">
         <button onClick={handleHomeClick}>
-        <img src={imgHome} alt="home" className="w-6 h-6" />
-      </button>
+          <img src={imgHome} alt="home" className="w-6 h-6" />
+        </button>
       </div>
 
       {/* 중앙 텍스트 */}
@@ -68,49 +68,50 @@ const SharePage = () => {
           {albumType ?? '앨범 타입'}
         </h1>
         {description ? (
-    <p className="font-light text-[12px] font-ydestreet text-white mt-2">
-      {description}
-    </p>
-  ) : (
-    <p className="h-[14px] mt-2" />
-  )}
-
-      {/* 이미지 */}
-      <div className="mt-[20px]">
-      <img src={imgShare} alt="졸업 이미지" className="w-[283px] h-auto" />
-      </div>
-      
-      
-
-      {/* 설명 */}
-      <div className="text-center text-sm px-4 mt-[66px] w-full">
-        <p className='font-bold text-[14px] font-ydestreet'>앨범이 완성 되었어요!</p>
-        <p className='font-bold text-[14px] font-ydestreet'>친구들에게 공유해 축하글을 모아보세요!</p>
+          <p className="font-light text-[12px] font-ydestreet text-white mt-2">
+            {description}
+          </p>
+        ) : (
+          <p className="h-[14px] mt-2" />
+        )}
       </div>
 
-      {/* 하단 버튼 */}
-      <div className="w-full mt-8 flex flex-col gap-4">
-        <CustomButton
-          
-          className="w-full font-semibold text-black"
-          onClick={() => navigate('/writing')}
+        {/* 이미지 */}
+        <div className="mt-[20px]">
+          <img src={imgShare} alt="졸업 이미지" className="w-[283px] h-auto" />
+        </div>
 
-        >
-          나에게 편지쓰기
-        </CustomButton>
 
-        <CustomButton
-          
-          className="w-full font-semibold text-black"
-          onClick={openModal}
-        >
-          나의 앨범 공유하기
-        </CustomButton>
 
-        <ShareModal isOpen={modalOpen} onRequestClose={closeModal} />
+        {/* 설명 */}
+        <div className="text-center text-sm px-4 mt-[66px] w-full">
+          <p className='font-bold text-[14px] font-ydestreet'>앨범이 완성 되었어요!</p>
+          <p className='font-bold text-[14px] font-ydestreet'>친구들에게 공유해 축하글을 모아보세요!</p>
+        </div>
+
+        {/* 하단 버튼 */}
+        <div className="w-full mt-8 flex flex-col gap-4">
+          <CustomButton
+
+            className="w-full font-semibold text-black"
+            onClick={() => navigate('/writing')}
+
+          >
+            나에게 편지쓰기
+          </CustomButton>
+
+          <CustomButton
+
+            className="w-full font-semibold text-black"
+            onClick={openModal}
+          >
+            나의 앨범 공유하기
+          </CustomButton>
+
+          <ShareModal isOpen={modalOpen} onRequestClose={closeModal} />
+        </div>
       </div>
-    </div>
-  );
+      );
 };
 
-export default SharePage;
+      export default SharePage;
