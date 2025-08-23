@@ -69,22 +69,12 @@ export default function GraduationMessageForm() {
       console.log("파일명:", file.name);
       const fileUrl = URL.createObjectURL(file);
       console.log("이미지 파일 브라우저 미리보기 URL:", fileUrl);
-    } else if (defaultPicKey) {
-      let key = "";
-      if (defaultPicKey.includes("default1")) key = "defaultImage1";
-      else if (defaultPicKey.includes("default2")) key = "defaultImage2";
-      else if (defaultPicKey.includes("default3")) key = "defaultImage3";
-      console.log('FormData에 append되는 picUrl:', key);
-      formData.append("picUrl", key);
-      console.log("formData.get('picUrl') 직후:", formData.get('picUrl'));
+    } else {
+      console.log("파일 첨부 안 함 : 기본이미지 처리");
     }
-
-    Array.from(formData.entries()).forEach(pair => {
-      if (pair[0] === 'picUrl') {
-        console.log("FormData picUrl 값:", pair[1]);
-      }
-      console.log("id", albumId)
-      console.log("FormData:", pair[0], pair[1]);
+    // FormData 전체 key/value 출력
+    formData.forEach((value, key) => {
+      console.log("FormData entry:", key, value);
     });
 
     console.log("사진 첨부 상태 - file:", file);
@@ -122,9 +112,11 @@ export default function GraduationMessageForm() {
   const isAuthorOverLimit = author.length > 5;
 
   return (
+
     <div className="min-h-screen w-full bg-[var(--color-main)] flex justify-center items-start">
       <div className="w-full max-w-[393px] min-h-screen box-border mx-auto flex flex-col relative rounded-xl text-white">
         <div className="relative w-full">
+
           <img
             src={backButton}
             alt="뒤로가기"
@@ -185,7 +177,7 @@ export default function GraduationMessageForm() {
           </div>
 
           <div className="w-full max-w-[288px] mx-auto mb-8">
-            <CustomButton onClick={() => saveMessage(fileRef.current)} className="w-full">
+            <CustomButton onClick={() => saveMessage(fileRef.current)}>
               {"축하글 작성 완료하기"}
             </CustomButton>
           </div>

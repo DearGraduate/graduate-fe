@@ -12,6 +12,7 @@ import { useAlbumStore } from '../../store/albumStore';
 import { useAuthStore } from '../../store/authStore';
 import { albumService } from '../../services/albumService';
 import { useShallow } from 'zustand/react/shallow'
+import { AlbumIDCheck } from "../../api/albumId";
 
 interface HomeUserProps {
   albumId?: number;
@@ -30,6 +31,11 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
   const handleOpenDownloadModal = () => setDownloadModalOpen(true);
   const handleCloseDownloadModal = () => setDownloadModalOpen(false);
   const handleCloseDownloadCharacterModal = () => setDownloadCharacterModalOpen(false);
+
+  const [albumName, setAlbumName] = useState<string>('이름');
+  const [albumType, setAlbumType] = useState<string>('앨범 타입');
+  const [description, setDescription] = useState<string>('');
+
 
   // isRollingPaperExpired가 true일 때 자동으로 다운로드 캐릭터 모달 열기
   useEffect(() => {
@@ -132,21 +138,30 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
     }
   };
 
-      const { albumName, albumType } = useAlbumStore(
-        useShallow((s) => ({
-          albumName: s.albumName,
-          albumType: s.albumType,
-        }))
-      )
-    
-      const didFetch = useRef(false)
-      useEffect(() => {
-        if (didFetch.current) return
-        didFetch.current = true
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        albumService.fetch().catch(() => {})
-      }, [])
+    useEffect(() => {
+    if (!albumId) return;
+    let cancelled = false;
 
+    (async () => {
+      try {
+        const data = await AlbumIDCheck(albumId);
+        // 래핑된 응답({result: {...}})과 바로 본문 형태 둘 다 대응
+        const r: any = (data as any)?.result ?? data;
+
+        if (!cancelled) {
+          setAlbumName(r?.albumName ?? '이름');
+          setAlbumType(r?.albumType ?? '앨범 타입');
+          setDescription(r?.description ?? '');
+        }
+      } catch (e) {
+        console.error('앨범 ID 데이터 조회 실패:', e);
+      }
+    })();
+
+    return () => { cancelled = true };
+  }, [albumId]);
+
+  
   return (
     <div 
       id="print-root" 
@@ -177,8 +192,8 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
           </div>
           <div className="w-full max-w-[103px] min-h-[16px] flex items-center justify-center opacity-100">
             <div className="w-full font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center text-white">
-              드디어...졸업한다..!
-            </div>
+            {description || ""}
+          </div>
           </div>
         </div>
       </div>
@@ -209,7 +224,7 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
               onClick={handleViewMyAlbum}
             >
               <span className="font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center">
-                {isMyAlbum ? '나의 졸업 앨범 공유하기' : '내 앨범 보기/앨범 만들기'}
+                {isMyAlbum ? '나의 앨범 공유하기' : '내 앨범 보기/앨범 만들기'}
               </span>
             </CustomButton>
           </>
@@ -221,7 +236,7 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
               onClick={handleOpenDownloadModal}
             >
               <span className="font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center">
-                나의 졸업 앨범 다운로드
+                나의 앨범 다운로드
               </span>
             </CustomButton>
             <DownloadPDF data-print-hide="true"
