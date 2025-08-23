@@ -1,76 +1,65 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { kakaoLoginAPI } from '../../api/kakaoLogin';
 import { useAuthStore } from '../../store/authStore';
 
 const KakaoCallback = () => {
   const navigate = useNavigate();
-  const [status, setStatus] = useState<string>('처리 중...');
   const hasProcessed = useRef(false);
   const { login } = useAuthStore();
+  const [status, setStatus] = useState('처리 중...');
 
   useEffect(() => {
-    // URL에서 인가 코드 추출
-    const code = new URLSearchParams(window.location.search).get("code");
-    
-    if (code && !hasProcessed.current) {
-      console.log('받은 인가 코드:', code);
-      hasProcessed.current = true; // 중복 처리 방지
-      handleKakaoLogin(code);
-    } else if (!code) {
-      console.error('인가 코드가 없습니다.');
+    const code = new URLSearchParams(window.location.search).get('code');
+    if (!code) {
       setStatus('인가 코드를 받지 못했습니다.');
-      setTimeout(() => navigate('/login'), 2000);
+      setTimeout(() => navigate('/login', { replace: true }), 1500);
+      return;
     }
-  }, [navigate, login]);
+    if (hasProcessed.current) return;
+    hasProcessed.current = true;
 
-  const handleKakaoLogin = async (code: string) => {
-    try {
-    const { data, tokens, hasAlbum, albumId } = await kakaoLoginAPI.loginWithCode(code);
-      console.log('카카오 로그인 응답:', data);
-      
-      if (data.isSuccess) {
-        setStatus('로그인 성공! 홈으로 이동합니다...');
-        
-        // Access Token만 로컬스토리지에 저장
-        // Refresh Token은 HttpOnly 쿠키로 자동 저장됨
+    (async () => {
+      try {
+        const { data, tokens, hasAlbum, albumId } = await kakaoLoginAPI.loginWithCode(code);
+        // 1) 토큰이 있으면 로그인 상태 반영 (없어도 네비는 진행)
         if (tokens.accessToken) {
-          // JWT에서 만료 시간 추출
           let expiresAt: number | undefined;
           try {
-            const tokenParts = tokens.accessToken.replace('Bearer ', '').split('.');
-            if (tokenParts.length === 3) {
-              const payload = JSON.parse(atob(tokenParts[1]));
-              expiresAt = payload.exp * 1000; // Unix timestamp를 밀리초로 변환
+            // tokens.accessToken은 이미 'Bearer ' 제거된 순수 JWT 라고 가정
+            const parts = tokens.accessToken.split('.');
+            if (parts.length === 3) {
+              const payload = JSON.parse(atob(parts[1]));
+              if (payload?.exp) expiresAt = payload.exp * 1000;
             }
-          } catch (error) {
-            console.error('토큰 파싱 실패:', error);
+          } catch (e) {
+            console.warn('액세스 토큰 파싱 실패(무시하고 진행):', e);
           }
-          
-          // authStore에 로그인 상태 업데이트
           login(tokens.accessToken, expiresAt);
+        } else {
+          console.warn('Authorization 헤더가 없어도 서버 쿠키로 세션 유지될 수 있습니다.');
         }
-        
-        setTimeout(() => {
-          // albumId가 있으면 /home/:albumId로, 없으면 /making으로 이동
-          if (hasAlbum && albumId) {
+
+        setStatus('로그인 성공! 이동 중...');
+
+        // 2) 앨범 유무 분기: 최초 로그인(albumExists=false) → /making
+        if (hasAlbum) {
+          // 앨범이 있다고 응답하면 가능하면 ID로 이동(없으면 홈으로)
+          if (albumId) {
             navigate(`/home/${albumId}`, { replace: true });
           } else {
-            navigate('/making', { replace: true });
+            navigate('/', { replace: true });
           }
-        }, 2000);
-      } else {
-        console.error('로그인 실패:', data.message);
-        setStatus(`로그인 실패: ${data.message}`);
-        setTimeout(() => navigate('/login'), 3000);
+        } else {
+          navigate('/making', { replace: true }); // 최초 로그인 경로 
+        }
+      } catch (err: any) {
+        console.error('로그인 처리 중 오류:', err);
+        setStatus(`로그인 실패: ${err?.message ?? '알 수 없는 오류'}`);
+        setTimeout(() => navigate('/login', { replace: true }), 1500);
       }
-    } catch (error) {
-      console.error('로그인 처리 중 에러:', error);
-      const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
-      setStatus(`로그인 처리 중 오류: ${errorMessage}`);
-      setTimeout(() => navigate('/login'), 3000);
-    }
-  };
+    })();
+  }, [navigate, login]);
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[var(--color-main)]">
@@ -83,4 +72,4 @@ const KakaoCallback = () => {
   );
 };
 
-export default KakaoCallback; 
+export default KakaoCallback;

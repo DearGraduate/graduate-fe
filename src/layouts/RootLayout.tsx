@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import AuthBridge from "../components/AuthBridge";
 
 const RootLayout = () => {
     const isWindow = useMediaQuery({ query: "(min-width: 1025px)" });
@@ -15,6 +16,7 @@ const RootLayout = () => {
         ? 'w-screen' : 
         isMobile
         ? 'w-screen' : ''}`}>
+        <AuthBridge />
         <Outlet/>
         </main>
     )
