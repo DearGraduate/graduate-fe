@@ -45,7 +45,6 @@ const EditDeleteBottomSheet = ({ isOpen, onRequestClose, letterData }: EditDelet
     return null;
   }
 
-
   const handleDelete = async () => {
     console.log('Delete button clicked');
     console.log('letterId:', selectedLetterId);
@@ -96,6 +95,7 @@ const EditDeleteBottomSheet = ({ isOpen, onRequestClose, letterData }: EditDelet
               </h3>
 
               <div className="flex justify-center gap-3">
+                {/*
                 <CustomButton
                   onClick={() => {
                     if (letterData) setSelectedLetterData(letterData);
@@ -105,6 +105,7 @@ const EditDeleteBottomSheet = ({ isOpen, onRequestClose, letterData }: EditDelet
                 >
                   축하글 수정하기
                 </CustomButton>
+                */}
 
                 <CustomButton
                   onClick={() => setMode("confirm")}

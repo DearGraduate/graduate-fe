@@ -1,8 +1,5 @@
 import { useRef, useState } from "react";
 import addPhotoIcon from "../assets/icons/addphoto.png";
-import default1 from "../assets/icons/default1.png";
-import default2 from "../assets/icons/default2.png";
-import default3 from "../assets/icons/default3.png";
 
 type Props = {
   value?: string;
@@ -18,7 +15,6 @@ export default function PhotoAttachStrip({
   viewportWidth = 288, 
 }: Props) {
   const fileRef = useRef<HTMLInputElement | null>(null);
-  const defaults = [default1, default2, default3];
   const [preview, setPreview] = useState<string | null>(null);
 
   const openPicker = () => fileRef.current?.click();
@@ -99,15 +95,6 @@ export default function PhotoAttachStrip({
         <div onClick={openPicker} style={{ cursor: "pointer" }}>
           <Tile src={preview || addPhotoIcon} isSelected={!!preview} />
         </div>
-
-        {defaults.map((src) => (
-          <Tile
-            key={src}
-            src={src}
-            isSelected={value === src}
-            onClick={() => handleDefaultPick(src)}
-          />
-        ))}
       </div>
 
       <input

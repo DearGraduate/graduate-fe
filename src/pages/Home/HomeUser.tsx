@@ -273,7 +273,7 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
               onClick={handleWriteCongratulatoryMessage}
             >
               <span className="font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center">
-                {isMyAlbum ? '나에게 축하글 작성하기' : '축하글 작성하기'}
+                축하글 작성하기
               </span>
             </CustomButton>
             <CustomButton
