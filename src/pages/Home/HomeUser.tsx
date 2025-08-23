@@ -169,12 +169,12 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
       className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border"
     >
       <div className="w-full max-w-[393px] min-h-[200px] py-10 pb-5 opacity-100 flex flex-col items-center justify-start relative flex-shrink-0">
-        <div className="w-full flex flex-row items-start justify-between relative mt-10 px-[35px] box-border">
-          <div className="min-w-[52px] h-[23px] flex items-center justify-center gap-[3px] border border-white p-[3px] px-2 bg-transparent opacity-100">
+        <div className="w-full flex flex-row items-start justify-end relative mt-10 px-[35px] box-border">
+          {/* <div className="min-w-[52px] h-[23px] flex items-center justify-center gap-[3px] border border-white p-[3px] px-2 bg-transparent opacity-100">
             <span className="font-ydestreet font-bold text-[13px] leading-[150%] tracking-[0] text-center text-white whitespace-nowrap">
               D-23
             </span>
-          </div>
+          </div> */}
           {isMyAlbum && (
             <img 
               src={SetIcon} 
@@ -198,7 +198,7 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center min-h-0 mb-4">
+      <div className="flex-1 flex flex-col items-center justify-start min-h-0 mb-4">
         {albumExists ? (
           <AlbumSection albumId={albumId} />
         ) : (

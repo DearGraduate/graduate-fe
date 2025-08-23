@@ -31,8 +31,10 @@ const AlbumInfo = () => {
         <div 
         style={{ fontFamily: 'Pretendard', fontWeight: 300 }}
         className="text-[10px] space-y-[1px]">
-            <div>{counts.totalAlbumCount}개의 앨범이 제작 되었어요</div>
-            <div>{counts.totalLetterCount}개의 편지가 작성 되었어요</div>
+            {/* <div>{counts.totalAlbumCount}개의 앨범이 제작 되었어요</div>
+            <div>{counts.totalLetterCount}개의 편지가 작성 되었어요</div> */}
+            <div>73개의 앨범이 제작 되었어요</div>
+            <div>316개의 편지가 작성 되었어요</div>
         </div>
     );
 };
