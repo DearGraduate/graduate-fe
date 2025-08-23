@@ -179,7 +179,7 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
     else if (g.setPendingRedirect) g.setPendingRedirect(undefined as any);
   // eslint-disable-next-line no-empty
   } catch {}
-  navigate('/login');
+  navigate('/sharing');
   };
 
   // 링크 진입: 앨범 메타 조회 + 비로그인 시 게스트 스토어에 보관
