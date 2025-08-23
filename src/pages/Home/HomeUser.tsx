@@ -12,6 +12,9 @@ import { useAlbumStore } from '../../store/albumStore';
 import { useAuthStore } from '../../store/authStore';
 import { albumService } from '../../services/albumService';
 import { useShallow } from 'zustand/react/shallow'
+import { AlbumIDCheck } from "../../api/albumId";
+import { useGuestAlbumStore } from '../../store/guestAlbumStore';
+
 
 interface HomeUserProps {
   albumId?: number;
@@ -30,6 +33,11 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
   const handleOpenDownloadModal = () => setDownloadModalOpen(true);
   const handleCloseDownloadModal = () => setDownloadModalOpen(false);
   const handleCloseDownloadCharacterModal = () => setDownloadCharacterModalOpen(false);
+
+  const [albumName, setAlbumName] = useState<string>('이름');
+  const [albumType, setAlbumType] = useState<string>('앨범 타입');
+  const [description, setDescription] = useState<string>('');
+
 
   // isRollingPaperExpired가 true일 때 자동으로 다운로드 캐릭터 모달 열기
   useEffect(() => {
@@ -98,23 +106,66 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
   };
 
   const handleLoginClick = () => {
+    // 로그인 버튼 눌렀을 때: 의도 저장 (/writing)
+    useGuestAlbumStore.getState().setPendingRedirect('/writing');
+    if (albumId != null) {
+      useGuestAlbumStore.getState().setFromAlbum({
+        id: albumId,
+        albumName,
+        albumType,
+        description,
+      });
+    }
     setIsLoginModalOpen(false);
     navigate('/login');
   };
 
-  // 축하글 작성 핸들러 - 앨범 ID가 있으면 해당 앨범에 작성
   const handleWriteCongratulatoryMessage = () => {
-    if (!isLoggedIn) {
-      setIsLoginModalOpen(true);
-      return;
+  // 최신 렌더의 값 사용 (getState 혼용 안 함)
+  console.log('[handleWrite] click', {
+    isLoggedIn,
+    albumId,
+    albumName,
+    albumType,
+    description
+  });
+
+  if (!isLoggedIn) {
+    // 로그인 X 게스트: 의도와 컨텍스트 저장
+    useGuestAlbumStore.getState().setPendingRedirect('/writing');
+    if (albumId != null) {
+      useGuestAlbumStore.getState().setFromAlbum({
+        id: albumId,
+        albumName,
+        albumType,
+        description,
+      });
     }
-    
-    if (albumId) {
-      navigate(`/writing?albumId=${albumId}`);
-    } else {
-      navigate('/writing');
-    }
-  };
+
+    //세션스토리지 저장 확인
+    try {
+      const raw = sessionStorage.getItem('guest-album-store');
+      console.log('[handleWrite] guest-store session:', raw);
+    // eslint-disable-next-line no-empty
+    } catch {}
+
+    setIsLoginModalOpen(true);
+    return;
+  }
+
+  const albumStore = useAlbumStore.getState();
+
+  if (albumId == null) {
+    console.log('[handleWrite] no albumId → clear + /writing');
+    albumStore.clear();
+    navigate('/writing');
+    return;
+  }
+
+  console.log('[handleWrite] save albumId & go /writing');
+  albumStore.setAlbumId(albumId);
+  navigate('/writing');
+};
 
   // 내 앨범 보기/앨범 만들기 핸들러
   const handleViewMyAlbum = () => {
@@ -122,31 +173,52 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
       setIsLoginModalOpen(true);
       return;
     }
-    
-    if (isMyAlbum) {
-      // 내 앨범인 경우 공유 페이지로 이동
-      navigate('/sharing');
-    } else {
-      // 남의 앨범인 경우 내 앨범으로 이동
-      navigate('/');
-    }
+    try {
+    const g = useGuestAlbumStore.getState();
+    if ((g as any).clearPending) (g as any).clearPending();
+    else if (g.setPendingRedirect) g.setPendingRedirect(undefined as any);
+  // eslint-disable-next-line no-empty
+  } catch {}
+  navigate('/login');
   };
 
-      const { albumName, albumType , discription } = useAlbumStore(
-        useShallow((s) => ({
-          albumName: s.albumName,
-          albumType: s.albumType,
-          discription: s.description
-        }))
-      )
-    
-      const didFetch = useRef(false)
-      useEffect(() => {
-        if (didFetch.current) return
-        didFetch.current = true
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        albumService.fetch().catch(() => {})
-      }, [])
+  // 링크 진입: 앨범 메타 조회 + 비로그인 시 게스트 스토어에 보관
+  useEffect(() => {
+    if (!albumId) return;
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const data = await AlbumIDCheck(albumId);
+        const r: any = (data as any)?.result ?? data;
+
+        if (!cancelled) {
+          const name = r?.albumName ?? '이름';
+          const type = r?.albumType ?? '앨범 타입';
+          const desc = r?.description ?? '';
+
+          setAlbumName(name);
+          setAlbumType(type);
+          setDescription(desc);
+
+          // 비로그인이라면 게스트 컨텍스트로도 보관
+          const authNow = useAuthStore.getState();
+          if (!authNow.isLoggedIn && albumId != null) {
+            useGuestAlbumStore.getState().setFromAlbum({
+              id: albumId,
+              albumName: name,
+              albumType: type,
+              description: desc,
+            });
+          }
+        }
+      } catch (e) {
+        console.error('앨범 ID 데이터 조회 실패:', e);
+      }
+    })();
+
+    return () => { cancelled = true };
+  }, [albumId]);
 
   return (
     <div 
@@ -155,12 +227,12 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
       className="w-full min-h-screen m-0 flex flex-col items-center bg-[var(--color-main)] relative px-5 box-border"
     >
       <div className="w-full max-w-[393px] min-h-[200px] py-10 pb-5 opacity-100 flex flex-col items-center justify-start relative flex-shrink-0">
-        <div className="w-full flex flex-row items-start justify-between relative mt-10 px-[35px] box-border">
-          <div className="min-w-[52px] h-[23px] flex items-center justify-center gap-[3px] border border-white p-[3px] px-2 bg-transparent opacity-100">
+        <div className="w-full flex flex-row items-start justify-end relative mt-10 px-[35px] box-border">
+          {/* <div className="min-w-[52px] h-[23px] flex items-center justify-center gap-[3px] border border-white p-[3px] px-2 bg-transparent opacity-100">
             <span className="font-ydestreet font-bold text-[13px] leading-[150%] tracking-[0] text-center text-white whitespace-nowrap">
               D-23
             </span>
-          </div>
+          </div> */}
           {isMyAlbum && (
             <img 
               src={SetIcon} 
@@ -178,13 +250,13 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
           </div>
           <div className="w-full max-w-[103px] min-h-[16px] flex items-center justify-center opacity-100">
             <div className="w-full font-ydestreet font-light text-[12px] leading-[100%] tracking-[0] text-center text-white">
-            {discription || ""}
-          </div>
+              {description || ""}
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center min-h-0 mb-4">
+      <div className="flex-1 flex flex-col items-center justify-start min-h-0 mb-4">
         {albumExists ? (
           <AlbumSection albumId={albumId} />
         ) : (
@@ -249,4 +321,4 @@ const HomeUser = ({ albumId, isMyAlbum }: HomeUserProps) => {
   )
 }
 
-export default HomeUser
+export default HomeUser;
