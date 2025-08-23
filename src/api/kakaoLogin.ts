@@ -36,7 +36,7 @@ export const kakaoLoginAPI = {
     const KAKAO_REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
 
     // 환경에 따라 리다이렉트 URI 설정 (개발 예시)
-    const REDIRECT_URI = 'https://localhost:3000/login/kakao/callback';
+    const REDIRECT_URI = 'https://www.photory.site/login/kakao/callback';
 
     if (!KAKAO_REST_API_KEY) {
       throw new Error('카카오 API 키가 설정되지 않았습니다.');
